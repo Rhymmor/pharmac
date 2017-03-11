@@ -1,0 +1,4 @@
+#!/bin/sh
+
+node ./app/web/src/server/main.js
+

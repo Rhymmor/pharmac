@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "noImplicitAny": true,
+        "listFiles": false,
+        "rootDir": "..",
+        "jsx": "react",
+        "target": "es6",
+        "outDir": "app",
+        "inlineSourceMap": false,
+        "inlineSources": false,
+        "sourceMap": true,
+        "watch": false,
+        "preserveConstEnums": true,
+        "experimentalDecorators": true
+    },
+    "exclude": [
+        "node_modules",
+        "app"
+    ]
+}
