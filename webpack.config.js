@@ -79,6 +79,7 @@ var frontend = {
             { test: /\.less$/, loaders: [ 'style-loader', 'css-loader', 'less-loader' ] },
             { test: /\.(ttf|eot|svg|woff2?)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
             { test: /\.json$/, loader: "json-loader" },
+            { test: /\.(png|jpg)$/, loader: 'url-loader' }
         ]
     },
 

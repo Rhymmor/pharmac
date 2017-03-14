@@ -111,7 +111,7 @@
     "ts-node": "^2.0.0",
     "typescript": "^2.1.4",
     "uglifyjs": "^2.4.10",
-    "url-loader": "^0.5.7",
+    "url-loader": "^0.5.8",
     "webpack": "^2.2.0",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-server": "^2.1.0-beta.12",

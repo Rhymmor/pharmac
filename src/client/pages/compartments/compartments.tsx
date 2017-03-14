@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import './compartments.scss'
 import {Box, BoxHeader} from '../../components'
 
 interface ICompartmentsProps {
