@@ -7,8 +7,7 @@ export interface IAction {
 }
 
 export const Action = {
-    UPDATE_DB_CONFIGS_ALL: 'UPDATE_DB_CONFIGS_ALL',
-
+    UPDATE_MODEL: 'UPDATE_MODEL',
 }
 
 /* Redux actions.

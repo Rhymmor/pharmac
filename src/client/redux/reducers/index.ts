@@ -1,3 +1,4 @@
+import { IModelStore, model } from './formulas';
 import { Reducer, combineReducers } from 'redux';
 
 /* Redux reducers
@@ -7,9 +8,9 @@ import { Reducer, combineReducers } from 'redux';
  * */
 
 export const rootReducer = combineReducers({
-
+    model
 });
 
 export interface IStore {
-
+    model: IModelStore;
 }

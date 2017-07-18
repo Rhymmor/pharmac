@@ -20,4 +20,22 @@ export function withCapital(str: string) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
+export function safeEval<TResult>(evalFunc: ()=>TResult, defaultVal?: TResult) {
+    try {
+        const res = evalFunc();
+        return res !== undefined ? res : defaultVal;
+    } catch (e) {
+        return defaultVal;
+    }
+}
+
+export function safeGet<TSrc, TResult>(source: TSrc, mapFunc: (v: TSrc)=>TResult, defaultVal?: TResult) {
+    try {
+        const res = mapFunc(source);
+        return res !== undefined ? res : defaultVal;
+    } catch (e) {
+        return defaultVal;
+    }
+}
+
 export {bytes}
