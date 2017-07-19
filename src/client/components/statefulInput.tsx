@@ -1,6 +1,6 @@
 import { safeEval, safeGet } from '../../lib/utils';
 import * as React from 'react'; 
-import { FormControl, FormGroup } from "react-bootstrap"; 
+import { FormControl, FormGroup, FormControlProps } from "react-bootstrap"; 
  
 export interface StatefulFormControlProps { 
     className?: string; 
@@ -8,11 +8,12 @@ export interface StatefulFormControlProps {
     value: any; // type/number 
     placeholder?: string; // showed instead of '' 
     controlId?: string; // required for validator 
-    onSubmit(value: any): boolean | void; // type/number 
+    onSubmit(value: any, e?: any): boolean | void; // type/number 
     formatter?(value: any): any; 
     parser?(text: any): any; 
     validator?(text: any): boolean; 
     rows?: number;  //textarea only 
+    autofocus?: boolean;
 } 
  
 export interface StatefulFormControlState { 
@@ -23,7 +24,7 @@ export interface StatefulFormControlState {
  * value is confirmed on focus lost 
  */ 
 export class StatefulFormControl extends React.Component<StatefulFormControlProps, StatefulFormControlState> { 
- 
+
     static toText(props: StatefulFormControlProps) { 
         const formatter = props.formatter || (x=>x); 
         return safeGet(props, x=>formatter(x.value), ''); 
@@ -36,6 +37,9 @@ export class StatefulFormControl extends React.Component<StatefulFormControlProp
         }; 
     } 
  
+    componentDidMount() {
+    }
+
     componentWillReceiveProps(nextProps: StatefulFormControlProps) { 
         if (nextProps.value !== this.props.value) { 
             this.setState({text: StatefulFormControl.toText(nextProps)}); 
@@ -51,7 +55,7 @@ export class StatefulFormControl extends React.Component<StatefulFormControlProp
         const formatter = this.props.formatter || (x=>x); 
         try { 
             const pval = parser(this.state.text); 
-            if (this.props.onSubmit(pval)) { 
+            if (this.props.onSubmit(pval, e)) { 
                 this.setState({text: formatter(pval)}); 
             } else { 
                 this.setState({text: formatter(this.props.value)}); 
@@ -63,12 +67,12 @@ export class StatefulFormControl extends React.Component<StatefulFormControlProp
  
     _handleKeyPress = (e: any) => { 
         if (e.key === 'Enter') { 
-            this.onSubmit(null); 
+            this.onSubmit(e);
         } 
     } 
  
     render() { 
-        const {type, className, validator, controlId, placeholder, rows} = this.props; 
+        const {type, className, validator, controlId, placeholder, rows, autofocus} = this.props; 
         const {text} = this.state; 
         const commonProps = { 
             value: safeEval(()=>text, ''), 
@@ -83,6 +87,7 @@ export class StatefulFormControl extends React.Component<StatefulFormControlProp
             ); 
         } 
         const formControl = <FormControl 
+            autoFocus={!!autofocus}
             type={type} 
             className={className || ''} 
             value={safeEval(()=>text, '')} 

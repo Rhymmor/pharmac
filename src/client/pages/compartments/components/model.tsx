@@ -1,7 +1,7 @@
 import { BoxHeader } from '../../../components/layout';
 import { Box } from '../../../components';
 import { Formula } from './formula';
-import { generateFormula } from '../../../utils/formula-utils';
+import { generateFormula, getDefaultFormula } from '../../../utils/formula-utils';
 import { IFormula, IModel } from '../../../redux/reducers/formulas';
 import * as React from 'react';
 import * as _ from 'lodash';
@@ -34,7 +34,7 @@ export class Model extends React.PureComponent<IModelProps, IModelState> {
 
     addFormula = () => {
         this.props.modifyModel(model => {
-            model.push(generateFormula());
+            model.push(getDefaultFormula(model.length + 1));
         })
     }
 
@@ -46,8 +46,9 @@ export class Model extends React.PureComponent<IModelProps, IModelState> {
                 </BoxHeader>
                 <div className='model-body'>
                     {
-                        _.map(this.props.model, formula => (
+                        _.map(this.props.model, (formula, idx) => (
                             <Formula key={formula.id}
+                                idx={idx + 1}
                                 formula={formula} 
                                 modifyFormula={this.modifyFormula(formula.id)} 
                             />

@@ -82,3 +82,20 @@ body {
     width: $workzone-width;
     margin: 0px auto;
 }
+
+.transp-button {
+    background: Transparent no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    padding: 0px;
+    color: #333333;
+    &:focus, &:active {
+        outline:0;
+        box-shadow: none;
+    }
+}
+
+.inline-block {
+    display: inline-block;
+}

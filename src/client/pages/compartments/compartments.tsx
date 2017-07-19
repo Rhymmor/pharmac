@@ -1,3 +1,4 @@
+import { DirectProblem } from './components/direct-problem';
 import { Model } from './components/model';
 import { generateFormula } from '../../utils/formula-utils';
 import { Formula } from './components/formula';
@@ -5,14 +6,10 @@ import { updateModel } from '../../redux/actions/formulas';
 import { IFormula, IModel } from '../../redux/reducers/formulas';
 import { IStore } from '../../redux/reducers';
 import * as React from 'react';
-import './compartments.scss'
 import {Box, BoxHeader} from '../../components';
 import {connect} from 'react-redux';
 import * as _ from 'lodash';
-
-const tex = `f(x) = \\int_{-\\infty}^\\infty
-    \\hat f(\\xi)\\,e^{2 \\pi i \\xi x}
-    \\,d\\xi`
+import './compartments.scss';
 
 interface ICompartmentsProps {
     dispatch: Function;
@@ -41,6 +38,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
         return (
             <div className="page-workzone">
                 <Model modifyModel={this.modifyModel} model={this.props.model}/>
+                <DirectProblem />
             </div>
         );
     }
