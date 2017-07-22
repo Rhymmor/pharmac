@@ -11,7 +11,7 @@ import {getValidationError} from '../utils';
 
 export const modelRouter = Router();
 
-modelRouter.post("/api/model/direct-problem", createModel);
+modelRouter.post("/api/model/direct-problem", directSolveModel);
 
 interface ICreateModelRequest {
     model: IModel;
@@ -22,13 +22,18 @@ const schemaICreateModelRequestKeys: UseKeys<ICreateModelRequest, joi.Schema> = 
 }
 const schemaICreateModelRequest = joi.object().keys(schemaICreateModelRequestKeys);
 
-function createModel(req: Request, res: Response) {
+async function directSolveModel(req: Request, res: Response) {
     const validator = validateSchema<ICreateModelRequest>(req.body, schemaICreateModelRequest);
     if (!validator.valid) {
-        res.status(400).json({error: getValidationError(validator.error)});
+        res.status(400).json(getValidationError(validator.error));
         return;
     }
     const solver = new ModelSolver(validator.obj.model);
-    solver.solve();
-    res.status(200);
+    try {
+        const solution = await solver.solve();
+        console.log(solution);
+        res.status(200).json(solution);
+    } catch (e) {
+        res.status(400).json({error: e});
+    }
 }

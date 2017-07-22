@@ -1,21 +1,12 @@
-
 from __future__ import division
 import math
 import operator
 from pyparsing import (Literal, CaselessLiteral, Word, Combine, Group, Optional,
                        ZeroOrMore, Forward, nums, alphas, oneOf)
 
-__author__ = 'Paul McGuire'
-__version__ = '$Revision: 0.0 $'
-__date__ = '$Date: 2009-03-20 $'
 __source__ = '''http://pyparsing.wikispaces.com/file/view/fourFn.py
 http://pyparsing.wikispaces.com/message/view/home/15549426
 '''
-__note__ = '''
-All I've done is rewrap Paul McGuire's fourFn.py as a class, so I can use it
-more easily in other places.
-'''
-
 
 class NumericStringParser(object):
     '''

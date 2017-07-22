@@ -16,8 +16,6 @@ class NumpyEncoder(json.JSONEncoder):
 
 def read_in():
     model = sys.stdin.readlines()
-    # Since our input would only be having one line, parse our JSON data from that
-    #print model
     return json.loads(model[0])
 
 def model_eval(funcs, t, params_dict, parser):
@@ -26,7 +24,6 @@ def model_eval(funcs, t, params_dict, parser):
 def main():
     model = read_in()
     if (model is not None):
-        print model
         parser = ModelParser(model['model'])
         points_count = 1001
         t = np.linspace(0, model['interval'], points_count)
