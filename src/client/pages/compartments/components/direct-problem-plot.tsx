@@ -1,8 +1,8 @@
 import { safeGet } from '../../../../lib/utils';
-import { IDirectProblemSolution } from '../../../../server/modules/model-solver';
 import * as React from 'react';
-import {Line} from 'react-chartjs-2';
-
+const rc = require('recharts');
+import * as _ from 'lodash';
+import {IDirectProblemSolution, IDirectProblemOptions} from '../../../../lib/common';
 
 export interface IDataset {
     label?: string
@@ -63,102 +63,54 @@ interface IDirectProblemPlotProps {
 }
 
 interface IDirectProblemPlotState {
-    data: IData
-    options: IOptions
+    data: any
 }
 
 const chartsColors = ["#FF6384", "#00CC88", "#36A2EB", "#CB9BCC", "#FFCE56", 'rgb(128, 128, 128)'];
-const defaultClassName = 'chart-box classWithPad';
+const defaultClassName = 'chart-box';
 
-function configureData(solution: IDirectProblemSolution): IData {
-    const labels: string[] = []
-    const datasets: IDataset[] = [];
-    for (let i = 0; i < safeGet(solution, x=>x.solution[0].length, 0); i++) {
-        datasets.push({
-            label: `x_${i + 1}`,
-            //cubicInterpolationMode: 'monotone',
-            lineTension: 2,
-            fill: false,
-            borderColor: chartsColors[i],
-            backgroundColor: chartsColors[i],
-            pointRadius: 0,
-            data: []
-        })
-    }
+const getLabel = (interval: number, length: number, idx: number) => String(idx * 10 / (length - 1));
+
+function confugureChartData(solution: IDirectProblemSolution) {
+    const data: {[key: string]: string | number}[] = [];
     for (let i = 0; i < safeGet(solution, x=>x.solution.length, 0); i++) {
+        const dataset: {[key: number]: number} = {};
         for (let j = 0; j < safeGet(solution, x=>x.solution[i].length, 0); j++) {
-            datasets[j].data.push(solution.solution[i][j]);
+            dataset[j + 1] = solution.solution[i][j];
         }
-        //TODO: remove harcoded interval
-        labels.push(String(i * 10 / (solution.solution.length - 1)));
+        data.push({label: getLabel(10, solution.solution.length, i), ...dataset});
     }
-    return { labels, datasets }
-}
-
-function configureOptions(solution: IDirectProblemSolution): IOptions {
-    return ({
-        title: {
-            display: true,
-            text: "Direct problem solution"
-        },
-        legend: {
-            display: true
-        },
-        tooltips: {
-            enabled: true,
-            mode: 'label'
-        },
-        scales: {
-            xAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'time'
-                },
-                ticks: {
-                    autoSkip: true,
-                    autoSkipPadding: 15
-                }
-            }],
-            yAxes: [{
-                scaleLabel: {
-                    display: true,
-                    labelString: 'value'
-                },
-                ticks: {
-                    beginAtZero: true
-                }
-            }]
-        }
-    });
+    return data;
 }
 
 export class DirectProblemPlot extends React.PureComponent<IDirectProblemPlotProps, IDirectProblemPlotState> {
     constructor(props: IDirectProblemPlotProps) {
         super(props);
         this.state = {
-            data: configureData(props.solution),
-            options: configureOptions(props.solution)
+            data: confugureChartData(props.solution),
         }
     }
 
     componentWillReceiveProps(nextProps: IDirectProblemPlotProps) {
         this.setState({
-            data: configureData(nextProps.solution),
-            options: configureOptions(nextProps.solution)
+            data: confugureChartData(nextProps.solution)
         });
     }
 
     render() {
-        const {className} = this.props;
-        const {data, options} = this.state;
+        const {className, solution} = this.props;
+        const {data} = this.state;
         return (
             <div className={className || defaultClassName}>
-                <Line 
-                    data={data}
-                    options={options}
-                    width={400}
-                    height={400}
-                />
+                <rc.LineChart width={600} height={300} data={data}>
+                    {_.map(safeGet(solution, x=>x.solution[0]), (x, idx) => (
+                        <rc.Line key={idx} type="monotone" dataKey={`${idx + 1}`} stroke={chartsColors[idx]} dot={false}/>
+                    ))}
+                    <rc.XAxis dataKey="label" />
+                    <rc.Tooltip/>
+                    <rc.Legend />
+                    <rc.YAxis type="number" />
+                </rc.LineChart>
             </div>
         );
     }
