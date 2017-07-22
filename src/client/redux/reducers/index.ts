@@ -1,3 +1,4 @@
+import { directProblem, IDirectProblemStore } from './direct-problem';
 import { IModelStore, model } from './formulas';
 import { Reducer, combineReducers } from 'redux';
 
@@ -8,9 +9,11 @@ import { Reducer, combineReducers } from 'redux';
  * */
 
 export const rootReducer = combineReducers({
-    model
+    model,
+    directProblem
 });
 
 export interface IStore {
     model: IModelStore;
+    directProblem: IDirectProblemStore;
 }

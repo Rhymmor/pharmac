@@ -5,14 +5,10 @@ import { logger } from './logger';
 import { IModel } from '../../client/redux/reducers/formulas';
 import {generate} from 'shortid';
 import * as path from 'path';
-//import {PythonShell} from 'python-shell';
+import {IDirectProblemSolution, IDirectProblemOptions} from '../../lib/common';
 const PythonShell = require('python-shell');
 import * as _ from 'lodash';
 import * as joi from 'joi';
-
-export interface IDirectProblemSolution {
-    solution: number[][]
-}
 
 const schemaIDirectProblemSolutionKeys: UseKeys<IDirectProblemSolution, joi.Schema> = {
     solution: joi.array().items(joi.array().items(joi.number())).required()

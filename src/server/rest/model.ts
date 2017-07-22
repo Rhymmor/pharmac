@@ -1,3 +1,5 @@
+import { schemaIDirectProblemOptions } from '../../client/redux/reducers/direct-problem';
+import { IDirectProblemOptions } from '../../lib/common';
 import { ModelSolver } from '../modules/model-solver';
 import { validateSchema } from '../modules/validator';
 import { UseKeys } from '../../lib/utils';
@@ -13,12 +15,14 @@ export const modelRouter = Router();
 
 modelRouter.post("/api/model/direct-problem", directSolveModel);
 
-interface ICreateModelRequest {
+export interface ICreateModelRequest {
     model: IModel;
+    options: IDirectProblemOptions
 }
 
 const schemaICreateModelRequestKeys: UseKeys<ICreateModelRequest, joi.Schema> = {
-    model: schemaIModel
+    model: schemaIModel,
+    options: schemaIDirectProblemOptions
 }
 const schemaICreateModelRequest = joi.object().keys(schemaICreateModelRequestKeys);
 
