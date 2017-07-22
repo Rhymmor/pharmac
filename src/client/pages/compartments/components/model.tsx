@@ -54,7 +54,7 @@ export class Model extends React.PureComponent<IModelProps, IModelState> {
                             />
                         ))
                     }
-                    <Box onClick={this.addFormula}>
+                    <Box onClick={this.addFormula} className='add-formula-btn'>
                         <span className="fa fa-plus"></span>
                     </Box>
                 </div>

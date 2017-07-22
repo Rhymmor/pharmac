@@ -1,3 +1,5 @@
+@import '../../styles/style.scss';
+
 .formula-text {
     display: inline-block;
     width: 300px;
@@ -18,8 +20,32 @@
     width: 100px;
 }
 
-.classWithPad {
-    display: block;
-    width: 100%;
-    height: 100%;
+.direct-problem-input {
+    @extend .transparent;
+    width: 100px;
+    margin-left: 8px;
+    margin-right: 16px;
+    font-weight: 600;
+    font-size: 16px;
+    color: #1089d8;
+}
+
+.add-formula-btn {
+    width: 300px;
+    text-align: center;
+    padding: 4px 0px;
+    margin-left: 55px;
+    cursor: pointer;
+    &>span {
+        font-size: 20px;
+        vertical-align: middle;
+    }
+}
+
+.formula-row {
+    margin-bottom: 8px;
+}
+
+.chart-box {
+    margin-top: 24px;
 }

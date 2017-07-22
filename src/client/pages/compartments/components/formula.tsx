@@ -46,7 +46,7 @@ export class Formula extends React.PureComponent<IFormulaProps, IFormulaState> {
     render() {
         const {formula, idx} = this.props;
         return (
-            <Row>
+            <Row className='formula-row'>
                 <Col xs={6}>
                     <div className='formula-text-head'>
                         <MathJax.Context>
