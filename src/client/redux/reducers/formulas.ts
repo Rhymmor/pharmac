@@ -1,6 +1,8 @@
+import { UseKeys } from '../../../lib/utils';
 import { getDefaultFormula } from '../../utils/formula-utils';
 import { Action } from '../actions';
 import { IModelAction } from '../actions/formulas';
+import * as joi from 'joi';
 
 export interface IFormula {
     id: string;
@@ -9,6 +11,14 @@ export interface IFormula {
 };
 
 export type IModel = IFormula[];
+const schemaIFormulaKeys: UseKeys<IFormula, joi.Schema> = {
+    id: joi.string().required(),
+    text: joi.string().required(),
+    initialValue: joi.number().required()
+}
+export const schemaIFormula = joi.object().keys(schemaIFormulaKeys);
+export const schemaIModel = joi.array().items(schemaIFormula).required();
+
 export type IModelStore = IModel;
 
 export function model(state: IModelStore = [getDefaultFormula(1)], action: IModelAction) {

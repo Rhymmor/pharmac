@@ -38,4 +38,16 @@ export function safeGet<TSrc, TResult>(source: TSrc, mapFunc: (v: TSrc)=>TResult
     }
 }
 
+export type UseKeys<K, T> = {
+    [keys in keyof K]: T;
+}
+
+export type UseStrings<K extends string, T> = {
+    [keys in K]: T;
+}
+
+export type Enum<S extends string> = {
+    readonly [key in S]: key;
+}
+
 export {bytes}

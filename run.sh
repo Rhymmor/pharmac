@@ -1,3 +1,3 @@
 #!/bin/sh
 
-tsc && exec ./bin/trex-web
+tsc && exec ./bin/pharmac

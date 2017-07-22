@@ -1,4 +1,4 @@
 #!/bin/sh
 
-node ./app/web/src/server/main.js
+tsc && ./node_modules/.bin/ts-node src/server/main.ts
 

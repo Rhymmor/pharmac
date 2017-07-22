@@ -38,7 +38,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
         return (
             <div className="page-workzone">
                 <Model modifyModel={this.modifyModel} model={this.props.model}/>
-                <DirectProblem />
+                <DirectProblem model={this.props.model}/>
             </div>
         );
     }
