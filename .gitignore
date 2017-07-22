@@ -9,3 +9,4 @@ webpack-stats.json
 app/
 .DS_Store
 .vscode/
+*.pyc
