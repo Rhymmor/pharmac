@@ -1,4 +1,4 @@
-import { ICreateModelRequest } from '../../../server/rest/model';
+import { IDirectProblemRequest } from '../../../server/rest/model';
 import {IDirectProblemSolution, IDirectProblemOptions} from '../../../lib/common';
 import { Action, IAction } from './';
 import * as request from 'superagent';
@@ -21,7 +21,7 @@ function updateDirectProblemSolution(solution: IDirectProblemSolution): IUpdateD
     return {type: Action.UPDATE_DIRECT_PROBLEM_SOLUTION, solution};
 }
 
-export function getSolution(body: ICreateModelRequest) {
+export function getSolution(body: IDirectProblemRequest) {
     return function (dispatch: Function) {
         request
             .post('/api/model/direct-problem')

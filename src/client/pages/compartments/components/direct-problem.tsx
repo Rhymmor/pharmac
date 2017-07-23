@@ -1,10 +1,11 @@
+import { ParamsBox } from './paramsBox';
 import { StatefulFormControl } from '../../../components/statefulInput';
 import { safeGet } from '../../../../lib/utils';
 import { IDirectProblemStore } from '../../../redux/reducers/direct-problem';
 import { Modifier } from '../../../utils/utils';
 import { IDirectProblemOptions, IDirectProblemSolution } from '../../../../lib/common';
 import { DirectProblemPlot } from './direct-problem-plot';
-import { IModel } from '../../../redux/reducers/formulas';
+import { IModel, IParameters } from '../../../redux/reducers/formulas';
 import { BoxHeader, Box } from '../../../components/layout';
 import * as React from 'react';
 import * as request from 'superagent';
@@ -15,6 +16,8 @@ interface IDirectProblemProps {
     solve: () => void;
     modifyOptions: (modify: Modifier<IDirectProblemOptions>) => void;
     directProblem: IDirectProblemStore;
+    params: IParameters;
+    modifyParams: (modify: Modifier<IParameters>) => void;
 }
 
 interface IDirectProblemState {
@@ -39,12 +42,9 @@ export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDir
     )
 
     render() {
-        const {solve, directProblem: {solution, options}} = this.props;
+        const {solve, directProblem: {solution, options}, params, modifyParams} = this.props;
         return (
-            <Box>
-                <BoxHeader>
-                    Direct problem
-                </BoxHeader>
+            <Box className='direct-box'>
                 <div>
                     <span>Interval:</span>
                     {this.renderInput('interval')}
@@ -56,7 +56,13 @@ export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDir
                     {
                          !!safeGet(solution, x=>x.solution.length) && 
                         <Col xs={6}>
-                            <DirectProblemPlot solution={solution}/>
+                            <DirectProblemPlot solution={solution} options={options}/>
+                        </Col>
+                    }
+                    {
+                        !!_.keys(params).length &&
+                        <Col xs={6}>
+                            <ParamsBox params={params} modifyParams={modifyParams}/>
                         </Col>
                     }
                 </Row>
