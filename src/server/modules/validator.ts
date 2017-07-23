@@ -1,6 +1,7 @@
 import * as joi from 'joi';
 import { logger } from './logger';
 
+export type IValidator = <T>(obj: any) => IValidationResult<T>;
 export interface IValidationResult<T> {
     valid: boolean; // Is object validated successfully
     error: joi.ValidationError | null; // Full validation error object, null if no errors

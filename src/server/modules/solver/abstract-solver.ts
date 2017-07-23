@@ -1,46 +1,51 @@
-import { validateSchema } from './validator';
-import { UseKeys } from '../../lib/utils';
-import { IModelAction } from '../../client/redux/actions/formulas';
-import { logger } from './logger';
-import { IModel } from '../../client/redux/reducers/formulas';
+import { IValidationResult, IValidator, validateSchema } from '../validator';
+import { UseKeys } from '../../../lib/utils';
+import { logger } from '../logger';
+import { IModel, IParameters } from '../../../client/redux/reducers/formulas';
 import {generate} from 'shortid';
 import * as path from 'path';
-import {IDirectProblemSolution, IDirectProblemOptions} from '../../lib/common';
 const PythonShell = require('python-shell');
 import * as _ from 'lodash';
 import * as joi from 'joi';
 
-const schemaIDirectProblemSolutionKeys: UseKeys<IDirectProblemSolution, joi.Schema> = {
-    solution: joi.array().items(joi.array().items(joi.number())).required()
-}
-function validateIDirectProblemSolution(obj: any) {
-    return validateSchema<IDirectProblemSolution>(obj, joi.object().keys(schemaIDirectProblemSolutionKeys));
+interface ISolverParameters {
+    options: any;
+    params: IParameters;
 }
 
-export class ModelSolver {
+export interface ISolverConstructor {
+    new (model: IModel): AbstractModelSolver;
+}
+
+export abstract class AbstractModelSolver {
     private model: IModel;
-    private scriptPath = path.join(__dirname, "solver");
+    protected scriptPath = path.join(path.dirname(__dirname), "py-solver");
     private script = 'direct_solver.py';
+    private validator: IValidator;
 
-    constructor(model: IModel) {
+    constructor(model: IModel, validator: IValidator, script: string, scriptPath?: string) {
         this.model = model;
+        this.script = script;
+        this.validator = validator;
+        if (scriptPath) {
+            this.scriptPath = path.join(this.scriptPath, scriptPath);
+        }
     }
 
-    public solve() {
-        return new Promise<IDirectProblemSolution>((resolve, reject) => {
+    public solve<T>(params: ISolverParameters) {
+        return new Promise<T>((resolve, reject) => {
             logger.info('Solving')
             const shell = new PythonShell(this.script, {scriptPath: this.scriptPath});
             const data = {
                 model: _.map(this.model, x => x.text),
                 initialValues: _.map(this.model, x => x.initialValue),
-                interval: 10
+                options: params.options,
+                parameters: params.params
             }
             shell.send(JSON.stringify(data));
             shell.on('message', (message: string) => {
-                logger.info('message from py');
-                console.log(message);
                 try {
-                    const validator = validateIDirectProblemSolution(JSON.parse(message));
+                    const validator = this.validator<T>(JSON.parse(message));
                     if (validator.valid) {
                         resolve(validator.obj);
                     } else {
@@ -54,7 +59,6 @@ export class ModelSolver {
                 if (err) {
                     reject(err);
                 }
-                logger.info('finished');
             });
         })
     }
