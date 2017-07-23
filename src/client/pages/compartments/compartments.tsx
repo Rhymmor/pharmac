@@ -1,8 +1,11 @@
-import { getSolution, updateDirectProblemOptions } from '../../redux/actions/direct-problem';
+import { getIdentifiabilitySolution } from '../../redux/actions/identifiability';
+import { IdentifiabilityProblem } from './components/identifiability/identifiability';
+import { IIdentifiabilityStore } from '../../redux/reducers/identifiability';
+import { getDirectSolution, updateDirectProblemOptions } from '../../redux/actions/direct-problem';
 import { IDirectProblemOptions, IDirectProblemSolution } from '../../../lib/common';
 import { Modifier, modifyTarget } from '../../utils/utils';
 import { IDirectProblemStore } from '../../redux/reducers/direct-problem';
-import { DirectProblem } from './components/direct-problem';
+import { DirectProblem } from './components/direct-problem/direct-problem';
 import { Model } from './components/model';
 import { generateFormula } from '../../utils/formula-utils';
 import { Formula } from './components/formula';
@@ -20,6 +23,7 @@ interface ICompartmentsProps {
     dispatch: Function;
     modelStore: IModelStore;
     directProblem: IDirectProblemStore;
+    identifyStore: IIdentifiabilityStore;
 }
 
 interface ICompartmentsState {
@@ -29,7 +33,8 @@ interface ICompartmentsState {
 function mapStateToProps(state: IStore, ownProps: any): Partial<ICompartmentsProps> {
     return {
         modelStore: state.model,
-        directProblem: state.directProblem
+        directProblem: state.directProblem,
+        identifyStore: state.identifiability
     }
 }
 
@@ -64,9 +69,15 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
             (x: IDirectProblemOptions) => this.props.dispatch(updateDirectProblemOptions(x)));
     }
 
-    solveDirectProblem = () => this.props.dispatch(getSolution({
+    solveDirectProblem = () => this.props.dispatch(getDirectSolution({
         model: this.props.modelStore.model,
         options: this.props.directProblem.options,
+        params: this.props.modelStore.parameters
+    }));
+
+    solveIdentifyProblem = () => this.props.dispatch(getIdentifiabilitySolution({
+        model: this.props.modelStore.model,
+        options: this.props.identifyStore.options,
         params: this.props.modelStore.parameters
     }));
 
@@ -101,6 +112,8 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
         switch (active) {
             case Tabs.DIRECT:
                 return this.renderDirect();
+            case Tabs.IDENTIFY:
+                return this.renderIdentify();
             default:
                 return;
         }
@@ -113,6 +126,19 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
                 solve={this.solveDirectProblem} 
                 modifyOptions={this.modifyOptions} 
                 directProblem={directProblem}
+                params={parameters}
+                modifyParams={this.modifyParams}
+            />
+        );
+    }
+
+    renderIdentify = () => {
+        const {identifyStore, modelStore: {parameters}} = this.props;
+        return (
+            <IdentifiabilityProblem
+                solve={this.solveIdentifyProblem} 
+                modifyOptions={this.modifyOptions} 
+                identifyStore={identifyStore}
                 params={parameters}
                 modifyParams={this.modifyParams}
             />

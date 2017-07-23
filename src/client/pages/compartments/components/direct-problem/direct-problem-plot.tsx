@@ -1,8 +1,8 @@
-import { safeGet } from '../../../../lib/utils';
+import { safeGet } from '../../../../../lib/utils';
 import * as React from 'react';
 const rc = require('recharts');
 import * as _ from 'lodash';
-import {IDirectProblemSolution, IDirectProblemOptions} from '../../../../lib/common';
+import {IDirectProblemSolution, IDirectProblemOptions} from '../../../../../lib/common';
 
 export interface IDataset {
     label?: string
