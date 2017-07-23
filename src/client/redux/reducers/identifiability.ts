@@ -1,6 +1,8 @@
+import { IIdentifiabilityAction } from '../actions/identifiability';
 import { UseKeys } from '../../../lib/utils';
 import * as _ from 'lodash';
 import * as joi from 'joi';
+import { Action } from '../actions';
 
 export interface IIdentifiabilityOptions {
     interval: number
@@ -32,4 +34,15 @@ export interface IIdentifiabilityStore {
 const defaultStore: IIdentifiabilityStore = {
     options: _.cloneDeep(defaultOptions),
     solution: _.cloneDeep(defaultSolution)
+}
+
+export function identifiability(state: IIdentifiabilityStore = defaultStore, action: IIdentifiabilityAction) {
+    switch (action.type) {
+        case Action.UPDATE_IDENTIFIABILITY_OPTIONS:
+            return {...state, options: _.cloneDeep(action.options)};
+        case Action.UPDATE_IDENTIFIABILITY_SOLUTION:
+            return {...state, solution: _.cloneDeep(action.solution)};
+        default:
+            return state;
+    }
 }

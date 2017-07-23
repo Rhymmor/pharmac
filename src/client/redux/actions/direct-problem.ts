@@ -21,7 +21,7 @@ function updateDirectProblemSolution(solution: IDirectProblemSolution): IUpdateD
     return {type: Action.UPDATE_DIRECT_PROBLEM_SOLUTION, solution};
 }
 
-export function getSolution(body: IDirectProblemRequest) {
+export function getDirectSolution(body: IDirectProblemRequest) {
     return function (dispatch: Function) {
         request
             .post('/api/model/direct-problem')
