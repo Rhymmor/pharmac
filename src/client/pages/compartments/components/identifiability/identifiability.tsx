@@ -1,3 +1,4 @@
+import { IdentifiabilityPlot } from './identifiability-plot';
 import { IIdentifiabilityOptions, IIdentifiabilityStore } from '../../../../redux/reducers/identifiability';
 import { ParamsBox } from '../paramsBox';
 import { StatefulFormControl } from '../../../../components/statefulInput';
@@ -51,6 +52,12 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
                     <Button onClick={solve} className='inline-block'>Solve</Button>
                 </div>
                 <Row>
+                    {
+                         !!safeGet(solution, x=>_.keys(x.solution).length) && 
+                        <Col xs={6}>
+                            <IdentifiabilityPlot solution={solution}/>
+                        </Col>
+                    }
                     {
                         !!_.keys(params).length &&
                         <Col xs={6}>
