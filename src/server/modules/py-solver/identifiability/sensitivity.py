@@ -1,7 +1,17 @@
-from ...model_parser import ModelParser
-from scipy.integrate import odeint
-from ...utils import read_in, model_eval, NumpyEncoder
+import json
 import numpy as np
+from scipy.integrate import odeint
+# hack to allow relative exports
+if __name__ == '__main__':
+    if __package__ is None:
+        import sys
+        from os import path
+        sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
+        from model_parser import ModelParser
+        from utils import read_in, model_eval, NumpyEncoder
+    else:
+        from ..model_parser import ModelParser
+        from ...utils import read_in, model_eval, NumpyEncoder
 
 def sens_value(sol, par, delta_x, delta_y):
     if sol != 0 and delta_x != 0:
