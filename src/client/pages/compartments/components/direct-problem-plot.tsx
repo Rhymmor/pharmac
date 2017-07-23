@@ -60,6 +60,7 @@ export interface IAxe {
 interface IDirectProblemPlotProps {
     className?: string
     solution: IDirectProblemSolution;
+    options: IDirectProblemOptions;
 }
 
 interface IDirectProblemPlotState {
@@ -69,16 +70,16 @@ interface IDirectProblemPlotState {
 const chartsColors = ["#FF6384", "#00CC88", "#36A2EB", "#CB9BCC", "#FFCE56", 'rgb(128, 128, 128)'];
 const defaultClassName = 'chart-box';
 
-const getLabel = (interval: number, length: number, idx: number) => String(idx * 10 / (length - 1));
+const getLabel = (interval: number, length: number, idx: number) => String(idx * interval / (length - 1));
 
-function confugureChartData(solution: IDirectProblemSolution) {
+function confugureChartData(solution: IDirectProblemSolution, interval: number) {
     const data: {[key: string]: string | number}[] = [];
     for (let i = 0; i < safeGet(solution, x=>x.solution.length, 0); i++) {
         const dataset: {[key: number]: number} = {};
         for (let j = 0; j < safeGet(solution, x=>x.solution[i].length, 0); j++) {
             dataset[j + 1] = solution.solution[i][j];
         }
-        data.push({label: getLabel(10, solution.solution.length, i), ...dataset});
+        data.push({label: getLabel(interval, solution.solution.length, i), ...dataset});
     }
     return data;
 }
@@ -87,13 +88,13 @@ export class DirectProblemPlot extends React.PureComponent<IDirectProblemPlotPro
     constructor(props: IDirectProblemPlotProps) {
         super(props);
         this.state = {
-            data: confugureChartData(props.solution),
+            data: confugureChartData(props.solution, props.options.interval),
         }
     }
 
     componentWillReceiveProps(nextProps: IDirectProblemPlotProps) {
         this.setState({
-            data: confugureChartData(nextProps.solution)
+            data: confugureChartData(nextProps.solution, nextProps.options.interval)
         });
     }
 
