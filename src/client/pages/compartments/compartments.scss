@@ -49,3 +49,27 @@
 .chart-box {
     margin-top: 24px;
 }
+
+.param-input {
+    margin-left: 8px;
+    margin-top: 8px;
+    width: 100px;
+}
+
+.direct-box {
+    padding: 20px;
+}
+
+.compart-nav {
+    &>li {
+        >a:hover, >a:focus {
+            border-color: transparent;
+            background-color: transparent;
+        }
+    }
+    &>li.active {
+        >a, >a:hover, >a:focus {
+            background-color: #fafaf8;
+        }
+    }
+}
