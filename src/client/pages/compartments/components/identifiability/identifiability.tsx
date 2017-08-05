@@ -1,5 +1,5 @@
 import { IdentifiabilityPlot } from './identifiability-plot';
-import { IIdentifiabilityOptions, IIdentifiabilityStore } from '../../../../redux/reducers/identifiability';
+import { IIdentifiabilityOptions, IIdentifiabilityStore } from '../../../../redux/reducers/solvers/identifiability';
 import { ParamsBox } from '../paramsBox';
 import { StatefulFormControl } from '../../../../components/statefulInput';
 import { safeGet } from '../../../../../lib/utils';

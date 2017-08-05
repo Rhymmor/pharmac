@@ -2,7 +2,7 @@ import { safeGet } from '../../../../../lib/utils';
 import * as React from 'react';
 const rc = require('recharts');
 import * as _ from 'lodash';
-import {IDirectProblemSolution, IDirectProblemOptions} from '../../../../../lib/common';
+import {IDirectProblemSolution, IDirectProblemOptions} from '../../../../redux/reducers/solvers/direct-problem';
 
 export interface IDataset {
     label?: string

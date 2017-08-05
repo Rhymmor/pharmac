@@ -1,20 +1,17 @@
-import { IIdentifiabilityAction } from '../actions/identifiability';
-import { UseKeys } from '../../../lib/utils';
+import { ICommonOptions, defaultCommonOptions, schemaICommonOptionsKeys } from './';
+import { IIdentifiabilityAction } from '../../actions/identifiability';
+import { UseKeys } from '../../../../lib/utils';
 import * as _ from 'lodash';
 import * as joi from 'joi';
-import { Action } from '../actions';
+import { Action } from '../../actions';
 
-export interface IIdentifiabilityOptions {
-    interval: number
-    points: number
+export interface IIdentifiabilityOptions extends ICommonOptions {
 }
 const defaultOptions: IIdentifiabilityOptions = {
-    interval: 10,
-    points: 1000
+    ...defaultCommonOptions
 }
-const schemaIIdentifyabilityOptionsKeys: UseKeys<IIdentifiabilityOptions, joi.Schema> = {
-    interval: joi.number().integer().greater(0).required(),
-    points: joi.number().integer().greater(0).required()
+export const schemaIIdentifyabilityOptionsKeys: UseKeys<IIdentifiabilityOptions, joi.Schema> = {
+    ...schemaICommonOptionsKeys
 }
 export const schemaIIdentifiabilityOptions = joi.object().keys(schemaIIdentifyabilityOptionsKeys);
 

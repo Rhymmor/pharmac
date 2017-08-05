@@ -1,5 +1,5 @@
-import { identifiability, IIdentifiabilityStore } from './identifiability';
-import { directProblem, IDirectProblemStore } from './direct-problem';
+import { identifiability, IIdentifiabilityStore } from './solvers/identifiability';
+import { directProblem, IDirectProblemStore } from './solvers/direct-problem';
 import { IModelStore, model } from './formulas';
 import { Reducer, combineReducers } from 'redux';
 

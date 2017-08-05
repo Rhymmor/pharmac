@@ -1,10 +1,9 @@
 import { getIdentifiabilitySolution } from '../../redux/actions/identifiability';
 import { IdentifiabilityProblem } from './components/identifiability/identifiability';
-import { IIdentifiabilityStore } from '../../redux/reducers/identifiability';
+import { IIdentifiabilityStore } from '../../redux/reducers/solvers/identifiability';
 import { getDirectSolution, updateDirectProblemOptions } from '../../redux/actions/direct-problem';
-import { IDirectProblemOptions, IDirectProblemSolution } from '../../../lib/common';
 import { Modifier, modifyTarget } from '../../utils/utils';
-import { IDirectProblemStore } from '../../redux/reducers/direct-problem';
+import { IDirectProblemStore, IDirectProblemOptions, IDirectProblemSolution } from '../../redux/reducers/solvers/direct-problem';
 import { DirectProblem } from './components/direct-problem/direct-problem';
 import { Model } from './components/model';
 import { generateFormula } from '../../utils/formula-utils';

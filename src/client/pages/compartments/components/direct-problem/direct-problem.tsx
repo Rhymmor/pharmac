@@ -1,9 +1,8 @@
 import { ParamsBox } from '../paramsBox';
 import { StatefulFormControl } from '../../../../components/statefulInput';
 import { safeGet } from '../../../../../lib/utils';
-import { IDirectProblemStore } from '../../../../redux/reducers/direct-problem';
+import { IDirectProblemStore, IDirectProblemOptions, IDirectProblemSolution } from '../../../../redux/reducers/solvers/direct-problem';
 import { Modifier } from '../../../../utils/utils';
-import { IDirectProblemOptions, IDirectProblemSolution } from '../../../../../lib/common';
 import { DirectProblemPlot } from './direct-problem-plot';
 import { IModel, IParameters } from '../../../../redux/reducers/formulas';
 import { BoxHeader, Box } from '../../../../components/layout';

@@ -2,7 +2,7 @@ import { AbstractModelSolver } from './abstract-solver';
 import { validateSchema } from '../validator';
 import { UseKeys } from '../../../lib/utils';
 import { IModel, IParameters } from '../../../client/redux/reducers/formulas';
-import {IDirectProblemSolution, IDirectProblemOptions} from '../../../lib/common';
+import { IDirectProblemSolution, IDirectProblemOptions } from '../../../client/redux/reducers/solvers/direct-problem';
 import * as joi from 'joi';
 
 const schemaIDirectProblemSolutionKeys: UseKeys<IDirectProblemSolution, joi.Schema> = {

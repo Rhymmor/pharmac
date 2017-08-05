@@ -48,9 +48,9 @@ def main():
         points_count = model['options']['points']
         t = np.linspace(0, model['options']['interval'], points_count)
         params_dict = model['parameters']
-
-    result = sensitivity(model_eval, model['initialValues'], t, params_dict, 0.0000001, parser)
-    print json.dumps({'solution': result}, cls=NumpyEncoder)
+        delta = 0.00001     #TODO: remove hardcode
+        result = sensitivity(model_eval, model['initialValues'], t, params_dict, delta, parser)
+        print json.dumps({'solution': result}, cls=NumpyEncoder)
 
 if __name__ == '__main__':
     main()

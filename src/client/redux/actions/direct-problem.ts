@@ -1,5 +1,5 @@
-import { IDirectProblemRequest } from '../../../server/rest/model';
-import {IDirectProblemSolution, IDirectProblemOptions} from '../../../lib/common';
+import { IDirectProblemRequest } from '../../../server/rest/model/direct-problem-rest';
+import {IDirectProblemSolution, IDirectProblemOptions} from '../reducers/solvers/direct-problem';
 import { Action, IAction } from './';
 import * as request from 'superagent';
 

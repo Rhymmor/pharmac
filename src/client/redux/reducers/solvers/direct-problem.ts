@@ -1,17 +1,22 @@
-import { UseKeys } from '../../../lib/utils';
-import { Action } from '../actions';
-import { IDirectProblemAction } from '../actions/direct-problem';
+import { ICommonOptions, defaultCommonOptions, schemaICommonOptionsKeys } from './';
+import { UseKeys } from '../../../../lib/utils';
+import { Action } from '../../actions';
+import { IDirectProblemAction } from '../../actions/direct-problem';
 import * as _ from 'lodash';
 import * as joi from 'joi';
-import {IDirectProblemSolution, IDirectProblemOptions} from '../../../lib/common';
+
+export interface IDirectProblemSolution {
+    solution: number[][]
+}
+
+export interface IDirectProblemOptions extends ICommonOptions {
+}
 
 const defaultOptions: IDirectProblemOptions = {
-    interval: 10,
-    points: 1000
+    ...defaultCommonOptions
 }
-const schemaIDirectProblemOptionsKeys: UseKeys<IDirectProblemOptions, joi.Schema> = {
-    interval: joi.number().integer().greater(0).required(),
-    points: joi.number().integer().greater(0).required()
+export const schemaIDirectProblemOptionsKeys: UseKeys<IDirectProblemOptions, joi.Schema> = {
+    ...schemaICommonOptionsKeys
 }
 export const schemaIDirectProblemOptions = joi.object().keys(schemaIDirectProblemOptionsKeys);
 

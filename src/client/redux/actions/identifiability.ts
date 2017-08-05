@@ -1,5 +1,5 @@
-import { IIdentifiabilityOptions, IIdentifiabilitySolution } from '../reducers/identifiability';
-import { IIdentifiabilityRequest } from '../../../server/rest/model';
+import { IIdentifiabilityOptions, IIdentifiabilitySolution } from '../reducers/solvers/identifiability';
+import { IIdentifiabilityRequest } from '../../../server/rest/model/identifiability-rest';
 import { Action, IAction } from './';
 import * as request from 'superagent';
 

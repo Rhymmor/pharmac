@@ -1,4 +1,4 @@
-import { IIdentifiabilityOptions } from '../../../client/redux/reducers/identifiability';
+import { IIdentifiabilityOptions } from '../../../client/redux/reducers/solvers/identifiability';
 import { validateSchema } from '../validator';
 import { UseKeys } from '../../../lib/utils';
 import { IModel, IParameters } from '../../../client/redux/reducers/formulas';
