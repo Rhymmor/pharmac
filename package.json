@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "node scripts/dev-server.js",
     "webpack-dev": "node_modules/.bin/webpack-dev-server --content-base dist  --inline --hot --progress",
-    "test": "cross-env DATABASE=:memory: ts-node node_modules/mocha/bin/_mocha tests/**/**/* --timeout 5000 --recursive"
+    "build-run": "node_modules/.bin/tsc && sh ./bin/pharmac"
   },
   "dependencies": {
     "@types/awesomplete": "^1.1.2",
