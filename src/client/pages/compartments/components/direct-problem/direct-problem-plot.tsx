@@ -1,62 +1,9 @@
 import { IPlotProps } from '../abstract-problem';
 import { safeGet } from '../../../../../lib/utils';
 import * as React from 'react';
-const rc = require('recharts');
 import * as _ from 'lodash';
 import {IDirectProblemSolution, IDirectProblemOptions} from '../../../../redux/reducers/solvers/direct-problem';
-
-export interface IDataset {
-    label?: string
-    fill?: boolean
-    cubicInterpolationMode?: 'default' | 'monotone'
-    lineTension?: number
-    borderColor?: string
-    pointBorderColor?: string
-    pointBackgroundColor?: string
-    backgroundColor?: string | string[]
-    hoverBackgroundColor?: string | string[]
-    pointRadius?: number
-    data: Array<number>
-}
-
-export interface IData {
-    labels?: (string | number)[]
-    datasets: IDataset[]
-}
-
-export interface IOptions {
-    title?: {
-        display: boolean
-        text: string
-    },
-    legend?: {
-        display: boolean
-        labels?: {
-            fontColor: string
-        }
-    },
-    tooltips?: {
-        enabled: boolean
-        mode: string
-    },
-    scales?: IScales
-}
-
-export interface IScales {
-    xAxes: IAxe[]
-    yAxes: IAxe[]
-}
-
-export interface IAxe {
-    scaleLabel?: {display?: boolean, labelString: string}
-    ticks?: {
-        min?: number
-        max?: number
-        autoSkip?: boolean,
-        autoSkipPadding?: number,
-        beginAtZero?: boolean
-    }
-}
+const {BarChart, Bar, XAxis, YAxis, Tooltip, Legend, LineChart, Line} = require('recharts');
 
 interface IDirectProblemPlotProps extends IPlotProps<IDirectProblemSolution, IDirectProblemOptions> {
 }
@@ -101,15 +48,15 @@ export class DirectProblemPlot extends React.PureComponent<IDirectProblemPlotPro
         const {data} = this.state;
         return (
             <div className={className || defaultClassName}>
-                <rc.LineChart width={600} height={300} data={data}>
+                <LineChart width={600} height={300} data={data}>
                     {_.map(safeGet(solution, x=>x.solution[0]), (x, idx) => (
-                        <rc.Line key={idx} type="monotone" dataKey={`${idx + 1}`} stroke={chartsColors[idx]} dot={false}/>
+                        <Line key={idx} type="monotone" dataKey={`${idx + 1}`} stroke={chartsColors[idx]} dot={false}/>
                     ))}
-                    <rc.XAxis dataKey="label" />
-                    <rc.Tooltip/>
-                    <rc.Legend />
-                    <rc.YAxis type="number" />
-                </rc.LineChart>
+                    <XAxis dataKey="label" />
+                    <Tooltip/>
+                    <Legend />
+                    <YAxis type="number" />
+                </LineChart>
             </div>
         );
     }
