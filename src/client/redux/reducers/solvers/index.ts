@@ -15,3 +15,12 @@ export const defaultCommonOptions: ICommonOptions = {
     interval: 10,
     points: 1000
 }
+
+export interface ICommonProblemStore<T extends ICommonOptions, K> {
+    options: T;
+    solution: K;
+}
+
+export interface ICommonSolution<T> {
+    solution: T
+}

@@ -1,12 +1,17 @@
-import { ICommonOptions, defaultCommonOptions, schemaICommonOptionsKeys } from './';
+import {
+    defaultCommonOptions,
+    ICommonOptions,
+    ICommonProblemStore,
+    ICommonSolution,
+    schemaICommonOptionsKeys
+} from './';
 import { UseKeys } from '../../../../lib/utils';
 import { Action } from '../../actions';
 import { IInverseProblemAction } from '../../actions/inverse-problem';
 import * as _ from 'lodash';
 import * as joi from 'joi';
 
-export interface IInverseProblemSolution {
-    solution: {[key: string]: number}
+export interface IInverseProblemSolution extends ICommonSolution<{[key: string]: number}> {
 }
 
 export interface IInverseProblemOptions extends ICommonOptions {
@@ -24,9 +29,7 @@ const defaultSolution: IInverseProblemSolution = {
     solution: {}
 }
 
-export interface IInverseProblemStore {
-    options: IInverseProblemOptions;
-    solution: IInverseProblemSolution;
+export interface IInverseProblemStore extends ICommonProblemStore<IInverseProblemOptions, IInverseProblemSolution> {
 }
 
 const defaultStore: IInverseProblemStore = {

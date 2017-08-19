@@ -1,12 +1,17 @@
-import { ICommonOptions, defaultCommonOptions, schemaICommonOptionsKeys } from './';
+import {
+    defaultCommonOptions,
+    ICommonOptions,
+    ICommonProblemStore,
+    ICommonSolution,
+    schemaICommonOptionsKeys
+} from './';
 import { UseKeys } from '../../../../lib/utils';
 import { Action } from '../../actions';
 import { IDirectProblemAction } from '../../actions/direct-problem';
 import * as _ from 'lodash';
 import * as joi from 'joi';
 
-export interface IDirectProblemSolution {
-    solution: number[][]
+export interface IDirectProblemSolution extends ICommonSolution<number[][]>{
 }
 
 export interface IDirectProblemOptions extends ICommonOptions {
@@ -24,9 +29,7 @@ const defaultSolution: IDirectProblemSolution = {
     solution: []
 }
 
-export interface IDirectProblemStore {
-    options: IDirectProblemOptions;
-    solution: IDirectProblemSolution;
+export interface IDirectProblemStore extends ICommonProblemStore<IDirectProblemOptions, IDirectProblemSolution> {
 }
 
 const defaultStore: IDirectProblemStore = {

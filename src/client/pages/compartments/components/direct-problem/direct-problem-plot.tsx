@@ -1,3 +1,4 @@
+import { IPlotProps } from '../abstract-problem';
 import { safeGet } from '../../../../../lib/utils';
 import * as React from 'react';
 const rc = require('recharts');
@@ -57,10 +58,7 @@ export interface IAxe {
     }
 }
 
-interface IDirectProblemPlotProps {
-    className?: string
-    solution: IDirectProblemSolution;
-    options: IDirectProblemOptions;
+interface IDirectProblemPlotProps extends IPlotProps<IDirectProblemSolution, IDirectProblemOptions> {
 }
 
 interface IDirectProblemPlotState {

@@ -1,4 +1,10 @@
-import { ICommonOptions, defaultCommonOptions, schemaICommonOptionsKeys } from './';
+import {
+    defaultCommonOptions,
+    ICommonOptions,
+    ICommonProblemStore,
+    ICommonSolution,
+    schemaICommonOptionsKeys
+} from './';
 import { IIdentifiabilityAction } from '../../actions/identifiability';
 import { UseKeys } from '../../../../lib/utils';
 import * as _ from 'lodash';
@@ -15,17 +21,14 @@ export const schemaIIdentifyabilityOptionsKeys: UseKeys<IIdentifiabilityOptions,
 }
 export const schemaIIdentifiabilityOptions = joi.object().keys(schemaIIdentifyabilityOptionsKeys);
 
-export interface IIdentifiabilitySolution {
-    solution: {[key: string]: number}
+export interface IIdentifiabilitySolution extends ICommonSolution<{[key: string]: number}> {
 }
 
 const defaultSolution: IIdentifiabilitySolution = {
     solution: {}
 }
 
-export interface IIdentifiabilityStore {
-    options: IIdentifiabilityOptions;
-    solution: IIdentifiabilitySolution;
+export interface IIdentifiabilityStore extends ICommonProblemStore<IIdentifiabilityOptions, IIdentifiabilitySolution> {
 }
 
 const defaultStore: IIdentifiabilityStore = {

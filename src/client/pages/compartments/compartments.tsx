@@ -124,7 +124,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
             <DirectProblem 
                 solve={this.solveDirectProblem} 
                 modifyOptions={this.modifyOptions} 
-                directProblem={directProblem}
+                problem={directProblem}
                 params={parameters}
                 modifyParams={this.modifyParams}
             />
