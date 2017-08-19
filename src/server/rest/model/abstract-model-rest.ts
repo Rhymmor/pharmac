@@ -14,11 +14,11 @@ export interface IModelRequest<T> {
 }
 
 export abstract class AbstractModelRest<K extends ICommonOptions, T extends IModelRequest<K>> {
-    private solver: ISolverConstructor;
+    private Solver: ISolverConstructor;
     private schemaOptionsKeys: UseKeys<K, joi.Schema>;
 
-    constructor(solver: ISolverConstructor, schemaOptionsKeys: UseKeys<K, joi.Schema>) {
-        this.solver = solver;
+    constructor(Solver: ISolverConstructor, schemaOptionsKeys: UseKeys<K, joi.Schema>) {
+        this.Solver = Solver;
         this.schemaOptionsKeys = schemaOptionsKeys;
     }
 
@@ -34,14 +34,14 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
         return validateSchema<T>(obj, this.getRequestSchema());
     }
 
-    solveModel(Solver: ISolverConstructor) {
+    solveModel() {
         return async (req: Request, res: Response) => {
             const validator = this.validateRequest(req.body);
             if (!validator.valid) {
                 res.status(400).json(getValidationError(validator.error));
                 return;
             }
-            const solver = new Solver(validator.obj.model);
+            const solver = new this.Solver(validator.obj.model);
             try {
                 const solution = await solver.solve({
                     params: validator.obj.params,

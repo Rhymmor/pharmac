@@ -7,5 +7,5 @@ export const modelRouter = Router();
 const directProblemRest = new DirectProblemRest();
 const identifiabilityRest = new IdentifiabilityRest();
 
-modelRouter.post("/api/model/direct-problem", directProblemRest.solveModel);
-modelRouter.post("/api/model/identifiability", identifiabilityRest.solveModel);
+modelRouter.post("/api/model/direct-problem", directProblemRest.solveModel());
+modelRouter.post("/api/model/identifiability", identifiabilityRest.solveModel());
