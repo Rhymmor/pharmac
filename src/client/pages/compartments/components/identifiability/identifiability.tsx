@@ -1,71 +1,26 @@
+import { AbstractProblem, IProblemProps } from '../abstract-problem';
 import { IdentifiabilityPlot } from './identifiability-plot';
-import { IIdentifiabilityOptions, IIdentifiabilityStore } from '../../../../redux/reducers/solvers/identifiability';
-import { ParamsBox } from '../paramsBox';
-import { StatefulFormControl } from '../../../../components/statefulInput';
-import { safeGet } from '../../../../../lib/utils';
-import { Modifier } from '../../../../utils/utils';
-import { IModel, IParameters } from '../../../../redux/reducers/formulas';
-import { BoxHeader, Box } from '../../../../components/layout';
 import * as React from 'react';
-import * as request from 'superagent';
-import { Row, Col, Button } from 'react-bootstrap';
-import * as _ from 'lodash';
 
-interface IIdentifiabilityProps {
-    solve: () => void;
-    modifyOptions: (modify: Modifier<IIdentifiabilityOptions>) => void;
-    identifyStore: IIdentifiabilityStore;
-    params: IParameters;
-    modifyParams: (modify: Modifier<IParameters>) => void;
+interface IIdentifiabilityProps extends IProblemProps<any, any, any> {
 }
 
 interface IIdentifiabilityState {
 }
 
 export class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, IIdentifiabilityState> {
-    modifyOptionKey = (key: keyof IIdentifiabilityOptions) => {
-        return (value: number) => {
-            this.props.modifyOptions((options) => {
-                options[key] = value > 0 && _.isInteger(value) ? value : null
-            });
-        }
-    }
-
-    renderInput = (key: keyof IIdentifiabilityOptions) => (
-        <StatefulFormControl 
-            className='inline-block direct-problem-input'
-            value={safeGet(this.props.identifyStore, x => x.options[key])} 
-            parser={Number} 
-            onSubmit={this.modifyOptionKey(key)}
-        />
-    )
-
     render() {
-        const {solve, identifyStore: {solution, options}, params, modifyParams} = this.props;
+        const {solve, problem, params, modifyParams, modifyOptions} = this.props;
+        //Typescript type bug
         return (
-            <Box className='direct-box'>
-                <div>
-                    <span>Interval:</span>
-                    {this.renderInput('interval')}
-                    <span>Points number:</span>
-                    {this.renderInput('points')}
-                    <Button onClick={solve} className='inline-block'>Solve</Button>
-                </div>
-                <Row>
-                    {
-                         !!safeGet(solution, x=>_.keys(x.solution).length) && 
-                        <Col xs={6}>
-                            <IdentifiabilityPlot solution={solution}/>
-                        </Col>
-                    }
-                    {
-                        !!_.keys(params).length &&
-                        <Col xs={6}>
-                            <ParamsBox params={params} modifyParams={modifyParams}/>
-                        </Col>
-                    }
-                </Row>
-            </Box>
+            <AbstractProblem
+                solve={solve}
+                params={params}
+                modifyParams={modifyParams}
+                modifyOptions={modifyOptions}
+                problem={problem}
+                Plot={IdentifiabilityPlot as any}
+            />
         );
     }
 }

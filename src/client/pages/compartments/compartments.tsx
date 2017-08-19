@@ -137,7 +137,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
             <IdentifiabilityProblem
                 solve={this.solveIdentifyProblem} 
                 modifyOptions={this.modifyOptions} 
-                identifyStore={identifyStore}
+                problem={identifyStore}
                 params={parameters}
                 modifyParams={this.modifyParams}
             />
