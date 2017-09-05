@@ -1,7 +1,7 @@
 var webpack = require("webpack");
 var WebpackDevServer = require("webpack-dev-server");
 
-var port = 8080;
+var port = process.env.PORT || 8080;
 var config = require("../webpack.config.js");
 
 // enable inline mode. see https://webpack.github.io/docs/webpack-dev-server.html#inline-mode-with-node-js-api
