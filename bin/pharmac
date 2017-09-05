@@ -1,4 +1,0 @@
-#!/bin/sh
-
-tsc && ./node_modules/.bin/ts-node src/server/main.ts
-
