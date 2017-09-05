@@ -34,7 +34,7 @@ async function main() {
         res.sendFile(path.join(project_root, '/browser-bundle', 'index.html'));
     });
 
-    const port = process.env.PORT || '3000';
+    const port = '3000';
     app.listen(port);
     logger.notice(`Server started on http://localhost:${port}`);
 }
