@@ -3488,7 +3488,7 @@
     },
     "http-proxy-middleware": {
       "version": "0.17.4",
-      "from": "http-proxy-middleware@>=0.17.4 <0.18.0",
+      "from": "https://registry.npmjs.org/http-proxy-middleware/-/http-proxy-middleware-0.17.4.tgz",
       "resolved": "https://registry.npmjs.org/http-proxy-middleware/-/http-proxy-middleware-0.17.4.tgz",
       "dev": true,
       "dependencies": {
