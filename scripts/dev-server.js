@@ -30,6 +30,8 @@ var server = new WebpackDevServer(compiler, {
   // Set this if you want to enable gzip compression for assets
   compress: false,
 
+  disableHostCheck: true,
+
   // route /api calls to the API server (see https://github.com/webpack/webpack-dev-server/pull/127 )
   proxy: {
      "/api/**": "http://localhost:3000"
