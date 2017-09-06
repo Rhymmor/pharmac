@@ -10,3 +10,4 @@ app/
 .DS_Store
 .vscode/
 *.pyc
+browser-bundle/
