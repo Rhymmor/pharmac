@@ -1,3 +1,6 @@
+import { getInverseSolution } from '../../redux/actions/inverse-problem';
+import { InverseProblem } from './components/inverse-problem/inverse-problem';
+import { IInverseProblemStore } from '../../redux/reducers/solvers/inverse-problem';
 import { getIdentifiabilitySolution } from '../../redux/actions/identifiability';
 import { IdentifiabilityProblem } from './components/identifiability/identifiability';
 import { IIdentifiabilityStore } from '../../redux/reducers/solvers/identifiability';
@@ -23,6 +26,7 @@ interface ICompartmentsProps {
     modelStore: IModelStore;
     directProblem: IDirectProblemStore;
     identifyStore: IIdentifiabilityStore;
+    inverseProblem: IInverseProblemStore;
 }
 
 interface ICompartmentsState {
@@ -33,7 +37,8 @@ function mapStateToProps(state: IStore, ownProps: any): Partial<ICompartmentsPro
     return {
         modelStore: state.model,
         directProblem: state.directProblem,
-        identifyStore: state.identifiability
+        identifyStore: state.identifiability,
+        inverseProblem: state.inverseProblem
     }
 }
 
@@ -80,6 +85,12 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
         params: this.props.modelStore.parameters
     }));
 
+    solveInverseProblem = () => this.props.dispatch(getInverseSolution({
+        model: this.props.modelStore.model,
+        options: this.props.identifyStore.options,
+        params: this.props.modelStore.parameters
+    }))
+
     checkParameters = (formula: string) => {
         const matches = _.filter(formula.match(PARAMETER_REGEX), isParameter);
         let isChanged = false;
@@ -113,6 +124,8 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
                 return this.renderDirect();
             case Tabs.IDENTIFY:
                 return this.renderIdentify();
+            case Tabs.INVERSE:
+                return this.renderInverse();
             default:
                 return;
         }
@@ -138,6 +151,19 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
                 solve={this.solveIdentifyProblem} 
                 modifyOptions={this.modifyOptions} 
                 problem={identifyStore}
+                params={parameters}
+                modifyParams={this.modifyParams}
+            />
+        );
+    }
+
+    renderInverse = () => {
+        const {inverseProblem, modelStore: {parameters}} = this.props;
+        return (
+            <InverseProblem
+                solve={this.solveInverseProblem} 
+                modifyOptions={this.modifyOptions} 
+                problem={inverseProblem}
                 params={parameters}
                 modifyParams={this.modifyParams}
             />

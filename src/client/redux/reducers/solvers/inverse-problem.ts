@@ -37,7 +37,7 @@ const defaultStore: IInverseProblemStore = {
     solution: _.cloneDeep(defaultSolution)
 }
 
-export function InverseProblem(state: IInverseProblemStore = defaultStore, action: IInverseProblemAction) {
+export function inverseProblem(state: IInverseProblemStore = defaultStore, action: IInverseProblemAction) {
     switch (action.type) {
         case Action.UPDATE_INVERSE_PROBLEM_OPTIONS:
             return {...state, options: _.cloneDeep(action.options)};
