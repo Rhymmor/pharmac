@@ -1,11 +1,13 @@
 import * as classnames from 'classnames';
 import { BoxHeader } from '../../../../components/layout';
 import {
-    InverseProblemMethodsType,
     IInverseProblemOptions,
     IInverseProblemSolution,
     IInverseProblemStore,
-    InverseProblemMethods
+    InverseProblemDataSelection,
+    InverseProblemDataSelectionType,
+    InverseProblemMethods,
+    InverseProblemMethodsType
 } from '../../../../redux/reducers/solvers/inverse-problem';
 import { IParameters } from '../../../../redux/reducers/formulas';
 import { Modifier } from '../../../../utils/utils';
@@ -31,10 +33,19 @@ const MethodsText: UseStrings<InverseProblemMethodsType, string> = {
     NelderMead: "Nelder-Mead"
 }
 
+const DataSelectionText: UseStrings<InverseProblemDataSelectionType, string> = {
+    Synthetic: "Synthetic data",
+    Experimental: "Experimental data"
+}
+
 export class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseProblemState> {
 
     modifyMethod = (value: InverseProblemMethodsType) => this.props.modifyOptions(options => {
         options.method = value;
+    })
+
+    modifyDataSelection = (value: InverseProblemDataSelectionType) => this.props.modifyOptions(options => {
+        options.dataSelection = value;
     })
 
     modifySyntheticParams = (modify: Modifier<IParameters>) => this.props.modifyOptions(options => {
@@ -58,6 +69,23 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
         </div>
     )
 
+    renderDataSelectionItems = () => _.map(InverseProblemDataSelection, (value, key) => (
+        <MenuItem key={key} onClick={() => this.modifyDataSelection(value)}>{DataSelectionText[value]}</MenuItem>
+    ))
+
+    renderDataSelectionDropdown = (type: InverseProblemDataSelectionType) => (
+        <div className={classnames("methods-dropdown", "inline-block")}>
+            <span>Data selection method:</span>
+            <DropdownButton
+                id="dataSelectionMethods"
+                title={DataSelectionText[type]}
+                className={classnames("methods-dropdown-button", "direct-problem-input")}
+            >
+                {this.renderDataSelectionItems()}
+            </DropdownButton>
+        </div>
+    )
+
     render() {
         const {solve, problem: {solution, options}, params, modifyParams, modifyOptions} = this.props;
         //Typescript type bug
@@ -65,13 +93,17 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
             <Box className='direct-box'>  
                 <BoxHeader>Options</BoxHeader>  
                 <div>
-                    <ModelOptions 
+                   <ModelOptions 
                         className='inline-block' 
                         options={options as any} 
                         modifyOptions={modifyOptions as any}
                     />
-                    {this.renderMethodsDropdown(options.method)}
                     <Button onClick={solve} className='inline-block'>Solve</Button>
+                </div>
+                <BoxHeader>Inverse Problem options</BoxHeader>
+                <div>
+                    {this.renderMethodsDropdown(options.method)}
+                    {this.renderDataSelectionDropdown(options.dataSelection)}
                 </div>
                 <Row>
                 {
@@ -81,7 +113,7 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
                     </Col>
                 }
                 {
-                    !!_.keys(params).length &&
+                    options.dataSelection === InverseProblemDataSelection.Synthetic && !!_.keys(params).length &&
                     <Col xs={6}>
                         <ParamsBox label='Synthetic parameters' params={options.syntheticParameters} modifyParams={this.modifySyntheticParams}/>
                     </Col>

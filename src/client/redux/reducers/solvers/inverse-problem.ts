@@ -16,24 +16,33 @@ export interface IInverseProblemSolution extends ICommonSolution<IParameters> {
 }
 
 export type InverseProblemMethodsType = "NelderMead";
-
 export const InverseProblemMethods: Readonly<Enum<InverseProblemMethodsType>> = {
     NelderMead: "NelderMead"
+}
+
+export type InverseProblemDataSelectionType = "Synthetic" | "Experimental";
+export const InverseProblemDataSelection: Readonly<Enum<InverseProblemDataSelectionType>> = {
+    Synthetic: "Synthetic",
+    Experimental: "Experimental",
 }
 
 export interface IInverseProblemOptions extends ICommonOptions {
     syntheticParameters?: IParameters;
     method: InverseProblemMethodsType;
+    dataSelection: InverseProblemDataSelectionType;
 }
 
 const defaultOptions: IInverseProblemOptions = {
     ...defaultCommonOptions,
-    method: InverseProblemMethods.NelderMead
+    method: InverseProblemMethods.NelderMead,
+    dataSelection: InverseProblemDataSelection.Synthetic
 }
+
 export const schemaIInverseProblemOptionsKeys: UseKeys<IInverseProblemOptions, joi.Schema> = {
     ...schemaICommonOptionsKeys,
     syntheticParameters: joi.object().pattern(/^/, joi.number()).optional(),
-    method: joi.string().allow(_.values(InverseProblemMethods))
+    method: joi.string().allow(_.values(InverseProblemMethods)),
+    dataSelection: joi.string().allow(_.values(InverseProblemDataSelection))
 }
 export const schemaIInverseProblemOptions = joi.object().keys(schemaIInverseProblemOptionsKeys);
 
