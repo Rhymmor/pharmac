@@ -13,7 +13,7 @@ import * as _ from 'lodash';
 export interface IPlotProps<S extends ICommonSolution<any>, T extends ICommonOptions> {
     className?: string
     solution: S;
-    options: T;
+    options?: T;
 }
 
 export interface IProblemProps<S extends ICommonSolution<any>, T extends ICommonOptions, K extends ICommonProblemStore<T, S>> {
