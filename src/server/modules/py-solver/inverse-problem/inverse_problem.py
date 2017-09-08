@@ -23,7 +23,7 @@ def get_dict(keys, values):
 
 def get_solution_subspace(sol, count, space):
     if sol is None or len(sol) == 0:
-        return
+        raise Exception('Error while trying generate synthetic data', 'No direct problem solution')
     subspace = []
     data = []
     for i in range(len(sol[0])):
@@ -32,7 +32,7 @@ def get_solution_subspace(sol, count, space):
     for i in range(count):
         point = step * (i + 1)
         for j in range(len(sol[0])):
-             data[j].append(sol[point][j])
+            data[j].append(sol[point][j])
         subspace.append(space[point])
     return {'t': subspace, 'data': data}
 
@@ -50,28 +50,51 @@ def min_func(q, data, y0, space, param_keys, parser):
             res += (point - sol[int(time * step), idx]) ** 2
     return res
 
+def prepare_data_values(exp_data):
+    values = []
+    for i in range(len(exp_data[0]['value'])):
+        values.append([])
+    for point in exp_data:
+        for idx, value in zip(range(len(point['value'])), point['value']):
+            values[idx].append(value)
+    return values
+
+def prepare_experimental_data(exp_data):
+    data = {}
+    if len(exp_data) == 0:
+        raise Exception('Experimental data is empty')
+
+    data['t'] = [float(x['time']) for x in exp_data]
+    data['data'] = prepare_data_values(exp_data)
+    return data
+
 def main():
     model = read_in()
     if model is not None:
         parser = ModelParser(model['model'])
-        points_count = model['options']['points']
-        interval = model['options']['interval']
+        options = model['options']
+        points_count = options['points']
+        interval = options['interval']
         space = np.linspace(0, interval, points_count)
         y0 = model['initialValues']
         params_dict = model['parameters']
-        synth_params = {}
-        try:
-            synth_params = model['options']['syntheticParameters']
-        except:
-            None
+        data_selection = options['dataSelection']
 
-        synth_data_points_count = 10    #TODO: remove harcode
-        synth = get_synth_data(y0, synth_params, synth_data_points_count, space, parser)
+        inverse_data = {}
+        if data_selection == 'Synthetic':
+            synth_params = options['syntheticParameters']
+            synth_data_points_count = 10    #TODO: remove harcode
+            inverse_data = get_synth_data(y0, synth_params, synth_data_points_count, space, parser)
+        elif data_selection == 'Experimental':
+            inverse_data = prepare_experimental_data(options['data'])
+        else:
+            raise Exception('Wrong data selection method type')
 
-        method = model['options']['method']
-        result = minimize(min_func, params_dict.values(), method=method,  args=(synth, y0, space, params_dict.keys(), parser),
-               options={'xtol': 1e-8})
-        
+        method = options['method']
+        result = minimize(min_func, params_dict.values(), method=method,
+                          args=(inverse_data, y0, space, params_dict.keys(), parser),
+                          options={'xtol': 1e-8})
+
         print json.dumps({'solution': get_dict(params_dict.keys(), result.x)}, cls=NumpyEncoder)
 
 if __name__ == '__main__':

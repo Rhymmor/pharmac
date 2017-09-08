@@ -1,7 +1,7 @@
 import { lstat } from 'async-file';
 import * as umzug from 'umzug';
 
-import { logger } from '../modules/logger';
+import { logger } from '../../lib/logger';
 import { sequelize } from './connection';
 
 /**

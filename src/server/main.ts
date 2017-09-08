@@ -1,4 +1,5 @@
-import { logger } from './modules/logger';
+import { logger, setGlobalLogger } from '../lib/logger';
+import { backendLogger } from './modules/backend-logger';
 import express = require('express');
 import * as path from 'path';
 const bodyParser = require('body-parser');
@@ -8,6 +9,8 @@ import { synchronize, migrate } from './database/database';
 import { router } from "./rest/router";
 
 async function main() {
+
+    setGlobalLogger(backendLogger);
     // Synchronize DB
     await synchronize();
     // Migrate DB
@@ -36,7 +39,7 @@ async function main() {
 
     const port = '3000';
     app.listen(port);
-    logger.notice(`Server started on http://localhost:${port}`);
+    logger.warn(`Server started on http://localhost:${port}`);
 }
 
 main();

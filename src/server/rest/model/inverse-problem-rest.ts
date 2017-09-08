@@ -4,6 +4,7 @@ import { IValidationResult, validateSchema } from '../../modules/validator';
 import { InverseModelSolver } from '../../modules/solver/inverse-solver';
 import {
     IInverseProblemOptions,
+    InverseProblemDataSelection,
     InverseProblemMethodsType,
     schemaIInverseProblemOptionsKeys
 } from '../../../client/redux/reducers/solvers/inverse-problem';
@@ -19,6 +20,11 @@ const PythonMethodNames: UseStrings<InverseProblemMethodsType, string> = {
 
 function modifyBody(body: IInverseProblemRequest) {
     body.options.method = PythonMethodNames[body.options.method] as any;
+    if (body.options.dataSelection === InverseProblemDataSelection.Synthetic) {
+        body.options.data = undefined;
+    } else if (body.options.dataSelection === InverseProblemDataSelection.Experimental) {
+        body.options.syntheticParameters = undefined;
+    }
 }
 
 export class InverseProblemRest extends AbstractModelRest<IInverseProblemOptions, IInverseProblemRequest> {

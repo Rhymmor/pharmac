@@ -10,6 +10,12 @@ import * as React from 'react';
 import ReactDOM = require('react-dom');
 import {AppRouter} from './router'
 
+import { setGlobalLogger } from '../lib/logger';
+import { browserLogger } from './frontend-logger';
+
+ // Init logger
+setGlobalLogger(browserLogger);
+
 ReactDOM.render(
     <AppRouter/>,
     document.getElementById("react-root")

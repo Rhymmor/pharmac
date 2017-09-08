@@ -1,3 +1,5 @@
+import { Dropzone } from '../../../../components/Dropzone';
+import { FunctionPlot } from '../plots/FunctionPlot';
 import * as classnames from 'classnames';
 import { BoxHeader } from '../../../../components/layout';
 import {
@@ -7,16 +9,17 @@ import {
     InverseProblemDataSelection,
     InverseProblemDataSelectionType,
     InverseProblemMethods,
-    InverseProblemMethodsType
+    InverseProblemMethodsType,
+    validateInverseProblemData
 } from '../../../../redux/reducers/solvers/inverse-problem';
 import { IParameters } from '../../../../redux/reducers/formulas';
 import { Modifier } from '../../../../utils/utils';
 import { ParamsBox } from '../paramsBox';
-import { safeGet, UseStrings } from '../../../../../lib/utils';
+import { safeGet, tryParseJSON, UseStrings } from '../../../../../lib/utils';
 import { ModelOptions } from '../ModelOptions';
 import { Box } from '../../../../components';
 import { InverseProblemPlot } from './inverse-problem-plot';
-import { AbstractProblem, IProblemProps } from '../abstract-problem';
+import { IProblemProps } from '../abstract-problem';
 import * as React from 'react';
 import { Row, Col, Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import * as _ from 'lodash';
@@ -86,25 +89,81 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
         </div>
     )
 
-    render() {
-        const {solve, problem: {solution, options}, params, modifyParams, modifyOptions} = this.props;
-        //Typescript type bug
+    renderInverseOptions = (options: IInverseProblemOptions) => (
+        <div>
+            <BoxHeader>Inverse Problem options</BoxHeader>
+            <div>
+                {this.renderMethodsDropdown(options.method)}
+                {this.renderDataSelectionDropdown(options.dataSelection)}
+            </div>
+        </div>
+    )
+
+    renderCommonOptions = () => {
+        const {problem: {options}, modifyOptions, solve} = this.props;
         return (
-            <Box className='direct-box'>  
+            <div>
                 <BoxHeader>Options</BoxHeader>  
                 <div>
-                   <ModelOptions 
+                    <ModelOptions 
                         className='inline-block' 
                         options={options as any} 
                         modifyOptions={modifyOptions as any}
                     />
                     <Button onClick={solve} className='inline-block'>Solve</Button>
                 </div>
-                <BoxHeader>Inverse Problem options</BoxHeader>
+            </div>
+        );
+    }
+
+    loadData = (files: File[]) => {
+        const fr = new FileReader();
+        const file = files[0];
+        fr.readAsText(file);
+        fr.onloadend = () => {
+            const data = tryParseJSON(fr.result);
+            const validator = validateInverseProblemData(data);
+            if (validator.valid) {
+                this.props.modifyOptions(options => options.data = data);
+            } else {
+                
+            }
+        }
+    }
+
+    renderDataSelectionSettings = (options: IInverseProblemOptions) => {
+        if (options.dataSelection === InverseProblemDataSelection.Synthetic) {
+            if (!!_.keys(options.syntheticParameters).length) {
+                return (
+                    <ParamsBox 
+                        label='Synthetic parameters' 
+                        params={options.syntheticParameters} 
+                        modifyParams={this.modifySyntheticParams}
+                    />
+                );
+            }
+        } else if (options.dataSelection === InverseProblemDataSelection.Experimental) {
+            const solution = _.map(options.data, point => point.value);
+            const linspace = _.map(options.data, point => String(point.time));
+            return (
                 <div>
-                    {this.renderMethodsDropdown(options.method)}
-                    {this.renderDataSelectionDropdown(options.dataSelection)}
+                    <BoxHeader>Experimental data</BoxHeader>
+                    <Button>
+                        <Dropzone className="dropzone-button" onDrop={this.loadData}>Load from file</Dropzone>
+                    </Button>
+                    <FunctionPlot solution={{solution}} timeLinspace={linspace}/>
                 </div>
+            );
+        }
+    }
+
+    render() {
+        const {solve, problem: {solution, options}, params, modifyParams, modifyOptions} = this.props;
+        //Typescript type bug
+        return (
+            <Box className='direct-box'>  
+                {this.renderCommonOptions()}
+                {this.renderInverseOptions(options)}
                 <Row>
                 {
                     !!_.keys(params).length &&
@@ -112,12 +171,9 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
                         <ParamsBox label='Initial parameters' params={params} modifyParams={modifyParams}/>
                     </Col>
                 }
-                {
-                    options.dataSelection === InverseProblemDataSelection.Synthetic && !!_.keys(params).length &&
-                    <Col xs={6}>
-                        <ParamsBox label='Synthetic parameters' params={options.syntheticParameters} modifyParams={this.modifySyntheticParams}/>
-                    </Col>
-                }
+                <Col xs={6}>
+                    {this.renderDataSelectionSettings(options)}
+                </Col>
                 </Row>
                 <BoxHeader>Result</BoxHeader>
                 <Row>

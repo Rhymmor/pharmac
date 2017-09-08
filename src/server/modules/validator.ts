@@ -1,5 +1,5 @@
 import * as joi from 'joi';
-import { logger } from './logger';
+import { logger } from '../../lib/logger';
 
 export type IValidator = <T>(obj: any) => IValidationResult<T>;
 export interface IValidationResult<T> {
