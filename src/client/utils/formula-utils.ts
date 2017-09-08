@@ -10,6 +10,6 @@ export function generateFormula(formula?: string): IFormula {
     return {
         id: generate(),
         text,
-        initialValue: 0
+        initialValue: 1
     }
 }

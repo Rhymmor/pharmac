@@ -13,7 +13,7 @@ export const schemaICommonOptionsKeys: UseKeys<ICommonOptions, joi.Schema> = {
 
 export const defaultCommonOptions: ICommonOptions = {
     interval: 10,
-    points: 1000
+    points: 1001
 }
 
 export interface ICommonProblemStore<T extends ICommonOptions, K> {
