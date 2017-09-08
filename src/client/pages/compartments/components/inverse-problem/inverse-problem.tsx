@@ -86,25 +86,40 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
         </div>
     )
 
-    render() {
-        const {solve, problem: {solution, options}, params, modifyParams, modifyOptions} = this.props;
-        //Typescript type bug
+    renderInverseOptions = (options: IInverseProblemOptions) => (
+        <div>
+            <BoxHeader>Inverse Problem options</BoxHeader>
+            <div>
+                {this.renderMethodsDropdown(options.method)}
+                {this.renderDataSelectionDropdown(options.dataSelection)}
+            </div>
+        </div>
+    )
+
+    renderCommonOptions = () => {
+        const {problem: {options}, modifyOptions, solve} = this.props;
         return (
-            <Box className='direct-box'>  
+            <div>
                 <BoxHeader>Options</BoxHeader>  
                 <div>
-                   <ModelOptions 
+                    <ModelOptions 
                         className='inline-block' 
                         options={options as any} 
                         modifyOptions={modifyOptions as any}
                     />
                     <Button onClick={solve} className='inline-block'>Solve</Button>
                 </div>
-                <BoxHeader>Inverse Problem options</BoxHeader>
-                <div>
-                    {this.renderMethodsDropdown(options.method)}
-                    {this.renderDataSelectionDropdown(options.dataSelection)}
-                </div>
+            </div>
+        );
+    }
+
+    render() {
+        const {solve, problem: {solution, options}, params, modifyParams, modifyOptions} = this.props;
+        //Typescript type bug
+        return (
+            <Box className='direct-box'>  
+                {this.renderCommonOptions()}
+                {this.renderInverseOptions(options)}
                 <Row>
                 {
                     !!_.keys(params).length &&
