@@ -1,3 +1,4 @@
+import { BoxHeader } from '../../../../components/layout';
 import {
     IInverseProblemOptions,
     IInverseProblemSolution,
@@ -27,7 +28,8 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
         const {solve, problem: {solution, options}, params, modifyParams, modifyOptions, modifySyntheticParams} = this.props;
         //Typescript type bug
         return (
-            <Box className='direct-box'>    
+            <Box className='direct-box'>  
+                <BoxHeader>Options</BoxHeader>  
                 <div>
                     <ModelOptions 
                         className='inline-block' 
@@ -37,24 +39,24 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
                     <Button onClick={solve} className='inline-block'>Solve</Button>
                 </div>
                 <Row>
-                    {
-                        !!_.keys(params).length &&
-                        <Col xs={6}>
-                            <ParamsBox label='Initial parameters' params={params} modifyParams={modifyParams}/>
-                        </Col>
-                    }
-                    {
-                        !!_.keys(params).length &&
-                        <Col xs={6}>
-                            <ParamsBox label='Synthetic parameters' params={options.syntheticParameters} modifyParams={modifySyntheticParams}/>
-                        </Col>
-                    }
-                    {
-                        !!safeGet(solution, x=>_.keys(x.solution).length) && 
-                        <Col xs={6}>
-                            <InverseProblemPlot solution={solution}/>
-                        </Col>
-                    }
+                {
+                    !!_.keys(params).length &&
+                    <Col xs={6}>
+                        <ParamsBox label='Initial parameters' params={params} modifyParams={modifyParams}/>
+                    </Col>
+                }
+                {
+                    !!_.keys(params).length &&
+                    <Col xs={6}>
+                        <ParamsBox label='Synthetic parameters' params={options.syntheticParameters} modifyParams={modifySyntheticParams}/>
+                    </Col>
+                }
+                </Row>
+                <BoxHeader>Result</BoxHeader>
+                <Row>
+                    <Col xs={6}>
+                        <InverseProblemPlot solution={solution}/>
+                    </Col>
                 </Row>
             </Box>
         );

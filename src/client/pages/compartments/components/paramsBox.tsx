@@ -1,9 +1,11 @@
+import { BoxHeader } from '../../../components/layout';
 import { StatefulFormControl } from '../../../components/statefulInput';
 import { safeGet } from '../../../../lib/utils';
 import { Modifier } from '../../../utils/utils';
 import { IParameters } from '../../../redux/reducers/formulas';
 import * as React from 'react';
 import * as _ from 'lodash';
+import { Row, Col } from 'react-bootstrap';
 const MathJax = require('react-mathjax');
 
 interface IParamsBoxProps {
@@ -22,7 +24,7 @@ export class ParamsBox extends React.PureComponent<IParamsBoxProps, IParamsBoxSt
 
     renderParam = (key: string) => {
         return (
-            <div key={key}>
+            <Col key={key} xs={3}>
                 <MathJax.Context>
                     <MathJax.Node inline>{key}</MathJax.Node>
                 </MathJax.Context>
@@ -32,7 +34,7 @@ export class ParamsBox extends React.PureComponent<IParamsBoxProps, IParamsBoxSt
                     parser={Number} 
                     onSubmit={this.modifyParam(key)}
                 />
-            </div>
+            </Col>
         );
     }
 
@@ -40,8 +42,10 @@ export class ParamsBox extends React.PureComponent<IParamsBoxProps, IParamsBoxSt
         const {params, label} = this.props;
         return (
             <div>
-                <span>{label}</span>
-                {_.map(params, (val, key) => this.renderParam(key))}
+                <BoxHeader><span>{label}</span></BoxHeader>
+                <Row>
+                    {_.map(params, (val, key) => this.renderParam(key))}
+                </Row>
             </div>
         );
     }
