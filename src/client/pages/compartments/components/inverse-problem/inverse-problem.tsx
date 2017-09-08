@@ -16,7 +16,7 @@ import { safeGet, UseStrings } from '../../../../../lib/utils';
 import { ModelOptions } from '../ModelOptions';
 import { Box } from '../../../../components';
 import { InverseProblemPlot } from './inverse-problem-plot';
-import { AbstractProblem, IProblemProps } from '../abstract-problem';
+import { IProblemProps } from '../abstract-problem';
 import * as React from 'react';
 import { Row, Col, Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import * as _ from 'lodash';
