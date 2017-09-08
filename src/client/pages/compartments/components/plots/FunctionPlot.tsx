@@ -6,6 +6,7 @@ import * as _ from 'lodash';
 const {BarChart, Bar, XAxis, YAxis, Tooltip, Legend, LineChart, Line} = require('recharts');
 
 interface IFunctionPlotProps<T extends ICommonOptions> extends IPlotProps<IFunctionSolution, T> {
+    timeLinspace?: string[]
 }
 
 interface IFunctionSolution {
@@ -23,22 +24,30 @@ const defaultClassName = 'chart-box';
 
 const getLabel = (interval: number, length: number, idx: number) => String(idx * interval / (length - 1));
 
-function configureChartData(solution: IFunctionSolution, interval: number) {
+function getLinspace(interval: number, count: number) {
+    const linspace: string[] = [];
+    for (let i = 0; i < count; i++) {
+        linspace.push(getLabel(interval, count, i));
+    }
+    return linspace;
+}
+
+function configureChartData(solution: IFunctionSolution, linspace: string[]) {
     if (solution && solution.solution && solution.solution.length) {
-        return getChartData(solution, interval);
+        return getChartData(solution, linspace);
     }
 
     return getDefaultData();
 }
 
-function getChartData(solution: IFunctionSolution, interval: number) {
+function getChartData(solution: IFunctionSolution, linspace: string[]) {
     const data: FunctionData = [];
     for (let i = 0; i < safeGet(solution, x=>x.solution.length, 0); i++) {
         const dataset: {[key: number]: number} = {};
         for (let j = 0; j < safeGet(solution, x=>x.solution[i].length, 0); j++) {
             dataset[j + 1] = solution.solution[i][j];
         }
-        data.push({label: getLabel(interval, solution.solution.length, i), ...dataset});
+        data.push({label: linspace[i], ...dataset});
     }
     return data;
 }
@@ -50,14 +59,17 @@ function getDefaultData(): FunctionData {
 export class FunctionPlot<T extends ICommonOptions> extends React.PureComponent<IFunctionPlotProps<T>, IFunctionPlotState> {
     constructor(props: IFunctionPlotProps<T>) {
         super(props);
+        const linspace = props.timeLinspace || getLinspace(props.options.interval, safeGet(props.solution, x=>x.solution.length));
         this.state = {
-            data: configureChartData(props.solution, props.options.interval),
+            data: configureChartData(props.solution,  linspace),
         }
     }
 
     componentWillReceiveProps(nextProps: IFunctionPlotProps<T>) {
+        const linspace = nextProps.timeLinspace 
+            || getLinspace(nextProps.options.interval, safeGet(nextProps.solution, x=>x.solution.length));
         this.setState({
-            data: configureChartData(nextProps.solution, nextProps.options.interval)
+            data: configureChartData(nextProps.solution, linspace)
         });
     }
 
