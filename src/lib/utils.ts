@@ -51,3 +51,11 @@ export type Enum<S extends string> = {
 }
 
 export {bytes}
+
+export function tryParseJSON(text: string, handleError?: Function) {
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        handleError(e);
+    }
+}

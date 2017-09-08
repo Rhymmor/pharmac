@@ -1,3 +1,4 @@
+import { validateSchema } from '../../../../server/modules/validator';
 import { IParameters } from '../formulas';
 import {
     defaultCommonOptions,
@@ -6,7 +7,7 @@ import {
     ICommonSolution,
     schemaICommonOptionsKeys
 } from './';
-import { Enum, UseKeys } from '../../../../lib/utils';
+import { Enum, UseKeys, UseStrings } from '../../../../lib/utils';
 import { Action } from '../../actions';
 import { IInverseProblemAction } from '../../actions/inverse-problem';
 import * as _ from 'lodash';
@@ -26,10 +27,25 @@ export const InverseProblemDataSelection: Readonly<Enum<InverseProblemDataSelect
     Experimental: "Experimental",
 }
 
+interface IDataPoint {
+    time: number;
+    value: number[];
+}
+export type InverseProblemData = IDataPoint[];
+const schemaIIDataPointKeys: UseKeys<IDataPoint, joi.Schema> = {
+    time: joi.number().required(),
+    value: joi.array().items(joi.number()).required()
+}
+const schemaInverseProblemData = joi.array().items(joi.object().keys(schemaIIDataPointKeys));
+export function validateInverseProblemData(obj: any) {
+    return validateSchema<InverseProblemData>(obj, schemaInverseProblemData);
+}
+
 export interface IInverseProblemOptions extends ICommonOptions {
     syntheticParameters?: IParameters;
     method: InverseProblemMethodsType;
     dataSelection: InverseProblemDataSelectionType;
+    data?: InverseProblemData;
 }
 
 const defaultOptions: IInverseProblemOptions = {
@@ -38,11 +54,13 @@ const defaultOptions: IInverseProblemOptions = {
     dataSelection: InverseProblemDataSelection.Synthetic
 }
 
+
 export const schemaIInverseProblemOptionsKeys: UseKeys<IInverseProblemOptions, joi.Schema> = {
     ...schemaICommonOptionsKeys,
     syntheticParameters: joi.object().pattern(/^/, joi.number()).optional(),
     method: joi.string().allow(_.values(InverseProblemMethods)),
-    dataSelection: joi.string().allow(_.values(InverseProblemDataSelection))
+    dataSelection: joi.string().allow(_.values(InverseProblemDataSelection)),
+    data: schemaInverseProblemData
 }
 export const schemaIInverseProblemOptions = joi.object().keys(schemaIInverseProblemOptionsKeys);
 
