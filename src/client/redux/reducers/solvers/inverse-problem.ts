@@ -12,7 +12,7 @@ import { IInverseProblemAction } from '../../actions/inverse-problem';
 import * as _ from 'lodash';
 import * as joi from 'joi';
 
-export interface IInverseProblemSolution extends ICommonSolution<{[key: string]: number}> {
+export interface IInverseProblemSolution extends ICommonSolution<IParameters> {
 }
 
 export interface IInverseProblemOptions extends ICommonOptions {

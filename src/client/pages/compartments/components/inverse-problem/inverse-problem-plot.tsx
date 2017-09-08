@@ -1,3 +1,4 @@
+import { safeGet } from '../../../../../lib/utils';
 import {IInverseProblemSolution, IInverseProblemOptions} from '../../../../redux/reducers/solvers/inverse-problem';
 import * as React from 'react';
 import * as _ from 'lodash';
@@ -8,7 +9,7 @@ interface IProps {
 }
 
 interface IState {
-    data: ISolutionData[];
+    data: ISolution;
 }
 
 interface ISolutionData {
@@ -16,11 +17,22 @@ interface ISolutionData {
     value: number;
 }
 
-function configureChartData(solution: IInverseProblemSolution): ISolutionData[] {
-    return _.map(solution.solution, (value, key) => {
-        return {name: key, value};
-    });
+type ISolution = ISolutionData[];
+
+function getDefaultSolution(): ISolution {
+    return [{name: '', value: 0}];
 }
+
+function configureChartData(solution: IInverseProblemSolution): ISolution {
+    if (solution && solution.solution && _.keys(solution.solution).length) {
+        return _.map(safeGet(solution, x => x.solution), (value, key) => {
+            return {name: key, value};
+        });
+    }
+
+    return getDefaultSolution();
+}
+
 
 export class InverseProblemPlot extends React.PureComponent<IProps, IState> {
     constructor(props: IProps) {
