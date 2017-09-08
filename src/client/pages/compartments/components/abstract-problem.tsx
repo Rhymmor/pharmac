@@ -1,3 +1,4 @@
+import { ModelOptions } from './ModelOptions';
 import { ParamsBox } from './paramsBox';
 import { Box } from '../../../components';
 import { StatefulFormControl } from '../../../components/statefulInput';
@@ -34,33 +35,17 @@ interface IAbstractProblemState {
 export class AbstractProblem<S extends ICommonSolution<any>, T extends ICommonOptions, K extends ICommonProblemStore<T, S>> 
         extends React.PureComponent<IAbstractProblemProps<S, T, K>, IAbstractProblemState> {
 
-    modifyOptionKey = (key: keyof T) => {
-        return (value: any) => {    //TODO: Typescript bug
-            this.props.modifyOptions((options) => {
-                options[key] = value > 0 && _.isInteger(value) ? value : null
-            });
-        }
-    }
-
-    renderInput = (key: keyof T) => (
-        <StatefulFormControl 
-            className='inline-block direct-problem-input'   //TODO: get classname from props
-            value={safeGet(this.props.problem, x => x.options[key])} 
-            parser={Number} 
-            onSubmit={this.modifyOptionKey(key)}
-        />
-    )
-
     render() {
-        const {solve, problem: {solution, options}, params, modifyParams, Plot} = this.props;
+        const {solve, problem: {solution, options}, params, modifyParams, Plot, modifyOptions} = this.props;
         return (
             //TODO: get classname from props
             <Box className='direct-box'>    
                 <div>
-                    <span>Interval:</span>
-                    {this.renderInput('interval')}
-                    <span>Points number:</span>
-                    {this.renderInput('points')}
+                    <ModelOptions 
+                        className='inline-block' 
+                        options={options as any} 
+                        modifyOptions={modifyOptions as any}
+                    />
                     <Button onClick={solve} className='inline-block'>Solve</Button>
                 </div>
                 <Row>
@@ -73,7 +58,7 @@ export class AbstractProblem<S extends ICommonSolution<any>, T extends ICommonOp
                     {
                         !!_.keys(params).length &&
                         <Col xs={6}>
-                            <ParamsBox params={params} modifyParams={modifyParams}/>
+                            <ParamsBox label='Parameters' params={params} modifyParams={modifyParams}/>
                         </Col>
                     }
                 </Row>

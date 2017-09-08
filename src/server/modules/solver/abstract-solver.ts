@@ -20,7 +20,7 @@ export interface ISolverConstructor {
 export abstract class AbstractModelSolver {
     private model: IModel;
     protected scriptPath = path.join(path.dirname(__dirname), "py-solver");
-    private script = 'direct_solver.py';
+    private script: string;
     private validator: IValidator;
 
     constructor(model: IModel, validator: IValidator, script: string, scriptPath?: string) {

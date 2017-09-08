@@ -1,9 +1,20 @@
+import { IParameters } from '../reducers/formulas';
 import { IInverseProblemRequest } from '../../../server/rest/model/inverse-problem-rest';
 import {IInverseProblemSolution, IInverseProblemOptions} from '../reducers/solvers/inverse-problem';
 import { Action, IAction } from './';
 import * as request from 'superagent';
 
-export type IInverseProblemAction = IUpdateInverseProblemOptionsAction & IUpdateInverseProblemSolutionAction;
+export type IInverseProblemAction = IUpdateInverseProblemOptionsAction 
+    & IUpdateInverseProblemSolutionAction
+    & IUpdateInverseProblemParametersAction;
+
+interface IUpdateInverseProblemParametersAction extends IAction {
+    params: IParameters;
+}
+
+export function updateInverseProblemParameters(params: IParameters): IUpdateInverseProblemParametersAction {
+    return {type: Action.UPDATE_SYNTHETIC_PARAMETERS, params};
+}
 
 interface IUpdateInverseProblemOptionsAction extends IAction {
     options: IInverseProblemOptions;

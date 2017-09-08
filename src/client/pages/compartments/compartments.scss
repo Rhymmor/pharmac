@@ -1,5 +1,7 @@
 @import '../../styles/style.scss';
 
+$input-text-color: #1089d8;
+
 .formula-text {
     display: inline-block;
     width: 300px;
@@ -27,7 +29,13 @@
     margin-right: 16px;
     font-weight: 600;
     font-size: 16px;
-    color: #1089d8;
+    color: $input-text-color;
+
+    &:hover, &:focus, &:active, &:active:focus, &:active:hover, &.dropdown-toggle.btn.btn-default,
+    &.dropdown-toggle, &.dropdown-toggle:focus, &.dropdown-toggle:hover, &.dropdown-toggle:active {
+        @extend .transparent;
+        color: $input-text-color;
+    }
 }
 
 .add-formula-btn {
@@ -58,6 +66,7 @@
 
 .direct-box {
     padding: 20px;
+    padding-top: 0px;
 }
 
 .compart-nav {

@@ -1,3 +1,4 @@
+import { Modifier } from '../../../client/utils/utils';
 import { ICommonOptions } from '../../../client/redux/reducers/solvers';
 import { UseKeys } from '../../../lib/utils';
 import { getValidationError } from '../../utils';
@@ -16,10 +17,14 @@ export interface IModelRequest<T> {
 export abstract class AbstractModelRest<K extends ICommonOptions, T extends IModelRequest<K>> {
     private Solver: ISolverConstructor;
     private schemaOptionsKeys: UseKeys<K, joi.Schema>;
+    private modifyBody: Modifier<T>;
 
-    constructor(Solver: ISolverConstructor, schemaOptionsKeys: UseKeys<K, joi.Schema>) {
+    constructor(Solver: ISolverConstructor, schemaOptionsKeys: UseKeys<K, joi.Schema>, modifyBody?: Modifier<T>) {
         this.Solver = Solver;
         this.schemaOptionsKeys = schemaOptionsKeys;
+        if (modifyBody) {
+            this.modifyBody = modifyBody;
+        }
     }
 
     protected getRequestSchema() {
@@ -37,6 +42,9 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
     solveModel() {
         return async (req: Request, res: Response) => {
             const validator = this.validateRequest(req.body);
+            if (this.modifyBody) {
+                this.modifyBody(validator.obj);
+            }
             if (!validator.valid) {
                 res.status(400).json(getValidationError(validator.error));
                 return;

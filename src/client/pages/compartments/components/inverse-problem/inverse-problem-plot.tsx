@@ -1,19 +1,18 @@
-import { IIdentifiabilitySolution } from '../../../../../server/modules/solver/identify-solver';
 import { ParametersPlot } from '../plots/ParametersPlot';
+import {IInverseProblemSolution} from '../../../../redux/reducers/solvers/inverse-problem';
 import * as React from 'react';
 
 interface IProps {
-    solution: IIdentifiabilitySolution;
+    solution: IInverseProblemSolution;
 }
 
 interface IState {
 }
 
-export class IdentifiabilityPlot extends React.PureComponent<IProps, IState> {
+export class InverseProblemPlot extends React.PureComponent<IProps, IState> {
     render() {
         return (
             <ParametersPlot solution={this.props.solution}/>
         );
     }
 }
-
