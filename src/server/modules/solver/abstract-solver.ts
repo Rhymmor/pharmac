@@ -1,6 +1,6 @@
 import { IValidationResult, IValidator, validateSchema } from '../validator';
 import { UseKeys } from '../../../lib/utils';
-import { logger } from '../logger';
+import { logger } from '../../../lib/logger';
 import { IModel, IParameters } from '../../../client/redux/reducers/formulas';
 import {generate} from 'shortid';
 import * as path from 'path';
