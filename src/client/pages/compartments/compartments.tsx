@@ -119,12 +119,6 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
             (x: IParameters) => this.props.dispatch(updateModelParameters(x)));
     }
 
-    modifySyntheticParams = (modify: Modifier<IParameters>) => {
-        modifyTarget(modify, 
-            this.props.inverseProblem.options.syntheticParameters,
-            (x: IParameters) => this.props.dispatch(updateInverseProblemParameters(x)));
-    }
-
     handleSelectTab = (selectedKey: number) => {
         this.setState({activeTab: selectedKey});
     }
@@ -177,7 +171,6 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
                 problem={inverseProblem}
                 params={parameters}
                 modifyParams={this.modifyParams}
-                modifySyntheticParams={this.modifySyntheticParams}
             />
         );
     }

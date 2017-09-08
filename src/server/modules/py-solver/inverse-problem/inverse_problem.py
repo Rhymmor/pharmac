@@ -68,7 +68,7 @@ def main():
         synth_data_points_count = 10    #TODO: remove harcode
         synth = get_synth_data(y0, synth_params, synth_data_points_count, space, parser)
 
-        method = 'nelder-mead'  #TODO: remove hardcode
+        method = model['options']['method']
         result = minimize(min_func, params_dict.values(), method=method,  args=(synth, y0, space, params_dict.keys(), parser),
                options={'xtol': 1e-8})
         
