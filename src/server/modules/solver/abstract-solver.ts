@@ -57,6 +57,7 @@ export abstract class AbstractModelSolver {
             });
             shell.end(function (err: any) {
                 if (err) {
+                    logger.error(err);
                     reject(err);
                 }
             });
