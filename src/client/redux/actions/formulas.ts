@@ -1,3 +1,4 @@
+import { updateInverseProblemParameters } from './inverse-problem';
 import { Action, IAction } from './';
 import { IModel, IParameters } from '../reducers/formulas';
 
@@ -15,6 +16,13 @@ interface IUpdateParametersAction extends IAction {
     params: IParameters;
 }
 
-export function updateParameters(params: IParameters): IUpdateParametersAction {
-    return {type: Action.UPDATE_PARAMETERS, params};
+export function updateModelParameters(params: IParameters): IUpdateParametersAction {
+    return {type: Action.UPDATE_MODEL_PARAMETERS, params};
+}
+
+export function updateAllParameters(params: IParameters) {
+    return (dispatch: Function) => {
+        dispatch(updateModelParameters(params));
+        dispatch(updateInverseProblemParameters(params));
+    }
 }

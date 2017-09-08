@@ -7,6 +7,7 @@ import * as _ from 'lodash';
 const MathJax = require('react-mathjax');
 
 interface IParamsBoxProps {
+    label: string
     params: IParameters;
     modifyParams: (modify: Modifier<IParameters>) => void;
 }
@@ -36,10 +37,11 @@ export class ParamsBox extends React.PureComponent<IParamsBoxProps, IParamsBoxSt
     }
 
     render() {
+        const {params, label} = this.props;
         return (
             <div>
-                <span>Parameters</span>
-                {_.map(this.props.params, (val, key) => this.renderParam(key))}
+                <span>{label}</span>
+                {_.map(params, (val, key) => this.renderParam(key))}
             </div>
         );
     }

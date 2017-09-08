@@ -37,7 +37,7 @@ export function model(state: IModelStore = defaultModelStore, action: IModelActi
     switch (action.type) {
         case Action.UPDATE_MODEL:
             return {...state, model: _.cloneDeep(action.model)};
-        case Action.UPDATE_PARAMETERS:
+        case Action.UPDATE_MODEL_PARAMETERS:
             return {...state, parameters: _.cloneDeep(action.params)};
         default:
             return state;

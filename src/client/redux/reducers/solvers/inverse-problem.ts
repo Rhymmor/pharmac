@@ -1,3 +1,4 @@
+import { IParameters } from '../formulas';
 import {
     defaultCommonOptions,
     ICommonOptions,
@@ -15,13 +16,15 @@ export interface IInverseProblemSolution extends ICommonSolution<{[key: string]:
 }
 
 export interface IInverseProblemOptions extends ICommonOptions {
+    syntheticParameters?: IParameters
 }
 
 const defaultOptions: IInverseProblemOptions = {
     ...defaultCommonOptions
 }
 export const schemaIInverseProblemOptionsKeys: UseKeys<IInverseProblemOptions, joi.Schema> = {
-    ...schemaICommonOptionsKeys
+    ...schemaICommonOptionsKeys,
+    syntheticParameters: joi.object().pattern(/^/, joi.number()).optional()
 }
 export const schemaIInverseProblemOptions = joi.object().keys(schemaIInverseProblemOptionsKeys);
 
@@ -43,6 +46,8 @@ export function inverseProblem(state: IInverseProblemStore = defaultStore, actio
             return {...state, options: _.cloneDeep(action.options)};
         case Action.UPDATE_INVERSE_PROBLEM_SOLUTION:
             return {...state, solution: _.cloneDeep(action.solution)};
+        case Action.UPDATE_SYNTHETIC_PARAMETERS:
+            return {...state, options: {...state.options, syntheticParameters: action.params}};
         default:
             return state;
     }

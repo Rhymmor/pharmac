@@ -58,7 +58,7 @@ export class AbstractProblem<S extends ICommonSolution<any>, T extends ICommonOp
                     {
                         !!_.keys(params).length &&
                         <Col xs={6}>
-                            <ParamsBox params={params} modifyParams={modifyParams}/>
+                            <ParamsBox label='Parameters' params={params} modifyParams={modifyParams}/>
                         </Col>
                     }
                 </Row>
