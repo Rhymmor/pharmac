@@ -25,9 +25,11 @@ export class ParamsBox extends React.PureComponent<IParamsBoxProps, IParamsBoxSt
     renderParam = (key: string) => {
         return (
             <Col key={key} xs={3}>
-                <MathJax.Context>
-                    <MathJax.Node inline>{key}</MathJax.Node>
-                </MathJax.Context>
+                <span className='param-span'>
+                    <MathJax.Context>
+                        <MathJax.Node inline>{key}</MathJax.Node>
+                    </MathJax.Context>
+                </span>
                 <StatefulFormControl
                     className='inline-block param-input'
                     value={safeGet(this.props.params, x => x[key])} 

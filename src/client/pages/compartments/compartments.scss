@@ -107,3 +107,9 @@ $input-text-color: #1089d8;
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+
+.param-span {
+    .mjx-chtml {
+        width: 24px;
+    }
+}

@@ -77,7 +77,7 @@ const defaultStore: IInverseProblemStore = {
     loading: false
 }
 
-export function inverseProblem(state: IInverseProblemStore = defaultStore, action: IInverseProblemAction) {
+export function inverseProblem(state: IInverseProblemStore = defaultStore, action: IInverseProblemAction): IInverseProblemStore {
     switch (action.type) {
         case Action.UPDATE_INVERSE_PROBLEM_OPTIONS:
             return {...state, options: _.cloneDeep(action.options)};
@@ -88,7 +88,7 @@ export function inverseProblem(state: IInverseProblemStore = defaultStore, actio
         case Action.UPDATE_IP_LOADING_STATE:
             return {...state, loading: action.loading}
         case Action.UPDATE_SYNTHETIC_PARAMETER_NAMES:
-            const parameters = getModelParameters(state.options.syntheticParameters, action.names);
+            const parameters = getModelParameters(state.options.syntheticParameters || {}, action.names);
             return {
                 ...state, 
                 options: {
