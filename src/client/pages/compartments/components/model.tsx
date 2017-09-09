@@ -9,7 +9,6 @@ import * as _ from 'lodash';
 interface IModelProps {
     model: IModel;
     modifyModel: (modify: (model: IFormula[]) => void) => void;
-    checkNewParams: (formula: string) => void;
 }
 
 interface IModelState {
@@ -51,7 +50,6 @@ export class Model extends React.PureComponent<IModelProps, IModelState> {
                             <Formula key={formula.id}
                                 idx={idx + 1}
                                 formula={formula}
-                                checkNewParams={this.props.checkNewParams}
                                 modifyFormula={this.modifyFormula(formula.id)} 
                             />
                         ))

@@ -17,6 +17,7 @@ import { DirectProblem } from './components/direct-problem/direct-problem';
 import { Model } from './components/model';
 import { generateFormula } from '../../utils/formula-utils';
 import {
+    checkAndUpdateModel,
     updateAllParameters,
     updateAllParametersNames,
     updateModel,
@@ -53,11 +54,6 @@ function mapStateToProps(state: IStore, ownProps: any): Partial<ICompartmentsPro
     }
 }
 
-const PARAMETER_REGEX = /[a-zA-Z]+[_\{\}0-9]*/g;    //TODO: change to more reliable method
-const FUNCTION_REGEX = /x_\{[0-9]+\}/;
-const isFunctionSymbol = (str: string) => FUNCTION_REGEX.test(str);
-const isParameter = (str: string) => !Number(str) && !isFunctionSymbol(str);
-
 enum Tabs {
     DIRECT = 0,
     IDENTIFY,
@@ -75,7 +71,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
     modifyModel = (modify: Modifier<IModel>) => {
         modifyTarget(modify, 
             this.props.modelStore.model,
-            (x: IModel) => this.props.dispatch(updateModel(x)));
+            (x: IModel) => this.props.dispatch(checkAndUpdateModel(x)));
     }
 
     modifyOptions = <T extends ICommonOptions>(options: T, update: Function) => (modify: Modifier<T>) => {
@@ -100,14 +96,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
         model: this.props.modelStore.model,
         options: this.props.inverseProblem.options,
         params: this.props.modelStore.parameters
-    }, callback))
-
-    checkParameters = (formula: string) => {
-        const matches = _.filter(formula.match(PARAMETER_REGEX), isParameter);
-        if (matches) {
-            this.props.dispatch(updateAllParametersNames(matches));
-        }
-    }
+    }, callback));
     
     modifyParams = (modify: Modifier<IParameters>) => {
         modifyTarget(modify, 
@@ -179,7 +168,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
         const {activeTab} = this.state;
         return (
             <div className="page-workzone">
-                <Model modifyModel={this.modifyModel} model={model} checkNewParams={this.checkParameters}/>
+                <Model modifyModel={this.modifyModel} model={model}/>
                 <Nav bsStyle="tabs" activeKey={activeTab} onSelect={(num: any) => this.handleSelectTab(num)} className="compart-nav">
                     <NavItem eventKey={Tabs.DIRECT}>
                         <span>Direct problem</span>

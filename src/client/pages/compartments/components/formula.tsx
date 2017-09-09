@@ -16,7 +16,6 @@ interface IFormulaProps {
     idx: number;
     formula: IFormula;
     modifyFormula: (modify: (formula: IFormula) => void) => void;
-    checkNewParams: (formula: string) => void;
 }
 
 interface IFormulaState {
@@ -33,7 +32,6 @@ export class Formula extends React.PureComponent<IFormulaProps, IFormulaState> {
 
     modifyText = (text: string, e: Event) => {
         this.props.modifyFormula(x => x.text = text );
-        this.props.checkNewParams(text);
         if (e.type === "keypress") {
             this.setState({editable: false});
         }
