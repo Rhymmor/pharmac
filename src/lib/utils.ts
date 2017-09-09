@@ -59,3 +59,7 @@ export function tryParseJSON(text: string, handleError?: Function) {
         handleError(e);
     }
 }
+
+export function isOk<T>(obj: T) {
+    return obj !== undefined && obj !== null;
+}

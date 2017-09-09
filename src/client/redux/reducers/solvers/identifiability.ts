@@ -5,7 +5,7 @@ import {
     ICommonSolution,
     schemaICommonOptionsKeys
 } from './';
-import { IIdentifiabilityAction } from '../../actions/identifiability';
+import { IIdentifiabilityAction } from '../../actions/solvers/identifiability';
 import { UseKeys } from '../../../../lib/utils';
 import * as _ from 'lodash';
 import * as joi from 'joi';
@@ -33,7 +33,8 @@ export interface IIdentifiabilityStore extends ICommonProblemStore<IIdentifiabil
 
 const defaultStore: IIdentifiabilityStore = {
     options: _.cloneDeep(defaultOptions),
-    solution: _.cloneDeep(defaultSolution)
+    solution: _.cloneDeep(defaultSolution),
+    loading: false
 }
 
 export function identifiability(state: IIdentifiabilityStore = defaultStore, action: IIdentifiabilityAction) {
@@ -42,6 +43,8 @@ export function identifiability(state: IIdentifiabilityStore = defaultStore, act
             return {...state, options: _.cloneDeep(action.options)};
         case Action.UPDATE_IDENTIFIABILITY_SOLUTION:
             return {...state, solution: _.cloneDeep(action.solution)};
+        case Action.UPDATE_IDENT_LOADING_STATE:
+            return {...state, loading: action.loading}
         default:
             return state;
     }

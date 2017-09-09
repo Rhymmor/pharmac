@@ -17,9 +17,10 @@ export interface IPlotProps<S extends ICommonSolution<any>, T extends ICommonOpt
 }
 
 export interface IProblemProps<S extends ICommonSolution<any>, T extends ICommonOptions, K extends ICommonProblemStore<T, S>> {
-    solve: () => void;
+    solve: (callback?: Function) => void;
     modifyOptions: (modify: Modifier<T>) => void;
     problem: K;
     params: IParameters;
     modifyParams: (modify: Modifier<IParameters>) => void;
+    dispatch: Function;
 }

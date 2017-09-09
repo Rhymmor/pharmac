@@ -1,3 +1,4 @@
+import { updateInverseProblemLoadingState } from '../../../../redux/actions/solvers/inverse-problem';
 import { Dropzone } from '../../../../components/Dropzone';
 import { FunctionPlot } from '../plots/FunctionPlot';
 import * as classnames from 'classnames';
@@ -26,7 +27,6 @@ import * as _ from 'lodash';
 import './inverse-problem.scss';
 
 interface IInverseProblemProps extends IProblemProps<IInverseProblemSolution, IInverseProblemOptions, IInverseProblemStore> {
-    
 }
 
 interface IInverseProblemState {
@@ -41,7 +41,18 @@ const DataSelectionText: UseStrings<InverseProblemDataSelectionType, string> = {
     Experimental: "Experimental data"
 }
 
+function isSolveBtnEnable(parameters: IParameters): boolean {
+    return !!_.keys(parameters).length;
+}
+
 export class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseProblemState> {
+    setLoadingState = (flag: boolean) => this.props.dispatch(updateInverseProblemLoadingState(flag));
+    finishLoading = () => this.setLoadingState(false);
+
+    solveProblem = () => {
+        this.setLoadingState(true);
+        this.props.solve(this.finishLoading);
+    }
 
     modifyMethod = (value: InverseProblemMethodsType) => this.props.modifyOptions(options => {
         options.method = value;
@@ -106,11 +117,17 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
                 <BoxHeader>Options</BoxHeader>  
                 <div>
                     <ModelOptions 
-                        className='inline-block' 
-                        options={options as any} 
+                        className='inline-block'
+                        options={options as any}
                         modifyOptions={modifyOptions as any}
                     />
-                    <Button onClick={solve} className='inline-block'>Solve</Button>
+                    <Button 
+                        onClick={this.solveProblem} 
+                        className='inline-block' 
+                        disabled={!isSolveBtnEnable(options.syntheticParameters)}
+                    >
+                        Solve
+                    </Button>
                 </div>
             </div>
         );
@@ -158,10 +175,11 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
     }
 
     render() {
-        const {solve, problem: {solution, options}, params, modifyParams, modifyOptions} = this.props;
+        const {solve, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
         //Typescript type bug
         return (
-            <Box className='direct-box'>  
+            <Box className={classnames('direct-box', loading && 'loading-back')}>
+                { loading && <div className='loading-wheel'></div> }
                 {this.renderCommonOptions()}
                 {this.renderInverseOptions(options)}
                 <Row>

@@ -1,5 +1,5 @@
 import { validateSchema } from '../../../../server/modules/validator';
-import { IParameters } from '../formulas';
+import { getModelParameters, IParameters } from '../formulas';
 import {
     defaultCommonOptions,
     ICommonOptions,
@@ -9,7 +9,7 @@ import {
 } from './';
 import { Enum, UseKeys, UseStrings } from '../../../../lib/utils';
 import { Action } from '../../actions';
-import { IInverseProblemAction } from '../../actions/inverse-problem';
+import { IInverseProblemAction } from '../../actions/solvers/inverse-problem';
 import * as _ from 'lodash';
 import * as joi from 'joi';
 
@@ -73,7 +73,8 @@ export interface IInverseProblemStore extends ICommonProblemStore<IInverseProble
 
 const defaultStore: IInverseProblemStore = {
     options: _.cloneDeep(defaultOptions),
-    solution: _.cloneDeep(defaultSolution)
+    solution: _.cloneDeep(defaultSolution),
+    loading: false
 }
 
 export function inverseProblem(state: IInverseProblemStore = defaultStore, action: IInverseProblemAction) {
@@ -84,6 +85,17 @@ export function inverseProblem(state: IInverseProblemStore = defaultStore, actio
             return {...state, solution: _.cloneDeep(action.solution)};
         case Action.UPDATE_SYNTHETIC_PARAMETERS:
             return {...state, options: {...state.options, syntheticParameters: _.cloneDeep(action.params)}};
+        case Action.UPDATE_IP_LOADING_STATE:
+            return {...state, loading: action.loading}
+        case Action.UPDATE_SYNTHETIC_PARAMETER_NAMES:
+            const parameters = getModelParameters(state.options.syntheticParameters, action.names);
+            return {
+                ...state, 
+                options: {
+                    ...state.options, 
+                    syntheticParameters: parameters
+                }
+            };
         default:
             return state;
     }

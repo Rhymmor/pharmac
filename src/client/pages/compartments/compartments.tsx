@@ -4,19 +4,25 @@ import {
     getInverseSolution,
     updateInverseProblemOptions,
     updateInverseProblemParameters
-} from '../../redux/actions/inverse-problem';
+} from '../../redux/actions/solvers/inverse-problem';
 import { InverseProblem } from './components/inverse-problem/inverse-problem';
 import { IInverseProblemStore } from '../../redux/reducers/solvers/inverse-problem';
-import { getIdentifiabilitySolution, updateIdentifiabilityOptions } from '../../redux/actions/identifiability';
+import { getIdentifiabilitySolution, updateIdentifiabilityOptions } from '../../redux/actions/solvers/identifiability';
 import { IdentifiabilityProblem } from './components/identifiability/identifiability';
 import { IIdentifiabilityStore } from '../../redux/reducers/solvers/identifiability';
-import { getDirectSolution, updateDirectProblemOptions } from '../../redux/actions/direct-problem';
+import { getDirectSolution, updateDirectProblemOptions } from '../../redux/actions/solvers/direct-problem';
 import { Modifier, modifyTarget } from '../../utils/utils';
 import { IDirectProblemStore, IDirectProblemOptions, IDirectProblemSolution } from '../../redux/reducers/solvers/direct-problem';
 import { DirectProblem } from './components/direct-problem/direct-problem';
 import { Model } from './components/model';
 import { generateFormula } from '../../utils/formula-utils';
-import { updateAllParameters, updateModel, updateModelParameters } from '../../redux/actions/formulas';
+import {
+    updateAllParameters,
+    updateAllParametersNames,
+    updateModel,
+    updateModelParameterNames,
+    updateModelParameters,
+} from '../../redux/actions/formulas';
 import { IFormula, IModel, IModelStore, IParameters } from '../../redux/reducers/formulas';
 import { IStore } from '../../redux/reducers';
 import * as React from 'react';
@@ -78,38 +84,28 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
             (x: T) => this.props.dispatch(update(x)));
     }
 
-    solveDirectProblem = () => this.props.dispatch(getDirectSolution({
+    solveDirectProblem = (callback?: Function) => this.props.dispatch(getDirectSolution({
         model: this.props.modelStore.model,
         options: this.props.directProblem.options,
         params: this.props.modelStore.parameters
-    }));
+    }, callback));
 
-    solveIdentifyProblem = () => this.props.dispatch(getIdentifiabilitySolution({
+    solveIdentifyProblem = (callback?: Function) => this.props.dispatch(getIdentifiabilitySolution({
         model: this.props.modelStore.model,
         options: this.props.identifyStore.options,
         params: this.props.modelStore.parameters
-    }));
+    }, callback));
 
-    solveInverseProblem = () => this.props.dispatch(getInverseSolution({
+    solveInverseProblem = (callback?: Function) => this.props.dispatch(getInverseSolution({
         model: this.props.modelStore.model,
         options: this.props.inverseProblem.options,
         params: this.props.modelStore.parameters
-    }))
+    }, callback))
 
     checkParameters = (formula: string) => {
         const matches = _.filter(formula.match(PARAMETER_REGEX), isParameter);
-        let isChanged = false;
         if (matches) {
-            const params = _.cloneDeep(this.props.modelStore.parameters);
-            for (const match of matches) {
-                if (!_.isFinite(params[match])) {
-                    params[match] = 0;
-                    isChanged = true;
-                }
-            }
-            if (isChanged) {
-                this.props.dispatch(updateAllParameters(params));
-            }
+            this.props.dispatch(updateAllParametersNames(matches));
         }
     }
     
@@ -137,7 +133,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
     }
 
     renderDirect = () => {
-        const {directProblem, modelStore: {parameters}} = this.props;
+        const {directProblem, modelStore: {parameters}, dispatch} = this.props;
         return (
             <DirectProblem 
                 solve={this.solveDirectProblem}
@@ -145,12 +141,13 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
                 problem={directProblem}
                 params={parameters}
                 modifyParams={this.modifyParams}
+                dispatch={dispatch}
             />
         );
     }
 
     renderIdentify = () => {
-        const {identifyStore, modelStore: {parameters}} = this.props;
+        const {identifyStore, modelStore: {parameters}, dispatch} = this.props;
         return (
             <IdentifiabilityProblem
                 solve={this.solveIdentifyProblem} 
@@ -158,12 +155,13 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
                 problem={identifyStore}
                 params={parameters}
                 modifyParams={this.modifyParams}
+                dispatch={dispatch}
             />
         );
     }
 
     renderInverse = () => {
-        const {inverseProblem, modelStore: {parameters}} = this.props;
+        const {inverseProblem, modelStore: {parameters}, dispatch} = this.props;
         return (
             <InverseProblem
                 solve={this.solveInverseProblem} 
@@ -171,6 +169,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
                 problem={inverseProblem}
                 params={parameters}
                 modifyParams={this.modifyParams}
+                dispatch={dispatch}
             />
         );
     }

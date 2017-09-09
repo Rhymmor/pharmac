@@ -19,6 +19,7 @@ export const defaultCommonOptions: ICommonOptions = {
 export interface ICommonProblemStore<T extends ICommonOptions, K> {
     options: T;
     solution: K;
+    loading: boolean;
 }
 
 export interface ICommonSolution<T> {

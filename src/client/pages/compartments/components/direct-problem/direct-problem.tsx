@@ -1,3 +1,11 @@
+import { updateDirectProblemLoadingState } from '../../../../redux/actions/solvers/direct-problem';
+import { IUpdateLoadingState } from '../../../../redux/actions/solvers';
+import {
+    IDirectProblemOptions,
+    IDirectProblemSolution,
+    IDirectProblemStore
+} from '../../../../redux/reducers/solvers/direct-problem';
+import * as classnames from 'classnames';
 import { BoxHeader } from '../../../../components/layout';
 import { ParamsBox } from '../paramsBox';
 import { safeGet } from '../../../../../lib/utils';
@@ -9,13 +17,22 @@ import * as React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import * as _ from 'lodash';
 
-interface IDirectProblemProps extends IProblemProps<any, any, any> {
+interface IDirectProblemProps extends IProblemProps<IDirectProblemSolution, IDirectProblemOptions, IDirectProblemStore> {
 }
 
 interface IDirectProblemState {
 }
 
 export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDirectProblemState> {
+
+    setLoadingState = (flag: boolean) => this.props.dispatch(updateDirectProblemLoadingState(flag));
+    finishLoading = () => this.setLoadingState(false);
+
+    solveProblem = () => {
+        this.setLoadingState(true);
+        this.props.solve(this.finishLoading);
+    }
+
     renderCommonOptions = () => {
         const {problem: {options}, modifyOptions, solve} = this.props;
         return (
@@ -27,17 +44,18 @@ export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDir
                         options={options as any} 
                         modifyOptions={modifyOptions as any}
                     />
-                    <Button onClick={solve} className='inline-block'>Solve</Button>
+                    <Button onClick={this.solveProblem} className='inline-block'>Solve</Button>
                 </div>
             </div>
         );
     }
 
     render() {
-        const {solve, problem: {solution, options}, params, modifyParams, modifyOptions} = this.props;
+        const {solve, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
         return (
             //TODO: get classname from props
-            <Box className='direct-box'>    
+            <Box className={classnames('direct-box', loading && 'loading-back')}>
+                { loading && <div className='loading-wheel'></div> }
                 {this.renderCommonOptions()}
                 <Row>
                     {

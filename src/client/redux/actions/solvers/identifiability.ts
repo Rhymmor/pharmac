@@ -1,9 +1,12 @@
-import { IIdentifiabilityOptions, IIdentifiabilitySolution } from '../reducers/solvers/identifiability';
-import { IIdentifiabilityRequest } from '../../../server/rest/model/identifiability-rest';
-import { Action, IAction } from './';
+import { IUpdateLoadingState, updateLoadingState } from './';
+import { IIdentifiabilityOptions, IIdentifiabilitySolution } from '../../reducers/solvers/identifiability';
+import { IIdentifiabilityRequest } from '../../../../server/rest/model/identifiability-rest';
+import { Action, IAction } from '../';
 import * as request from 'superagent';
 
-export type IIdentifiabilityAction = IUpdateIdentifiabilityOptionsAction & IUpdateIdentifiabilitySolutionAction;
+export type IIdentifiabilityAction = IUpdateIdentifiabilityOptionsAction 
+    & IUpdateIdentifiabilitySolutionAction
+    & IUpdateLoadingState;
 
 interface IUpdateIdentifiabilityOptionsAction extends IAction {
     options: IIdentifiabilityOptions;
@@ -21,12 +24,15 @@ function updateIdentifiabilitySolution(solution: IIdentifiabilitySolution): IUpd
     return {type: Action.UPDATE_IDENTIFIABILITY_SOLUTION, solution};
 }
 
-export function getIdentifiabilitySolution(body: IIdentifiabilityRequest) {
+export const updateIdentifiabilityLoadingState = updateLoadingState(Action.UPDATE_IDENT_LOADING_STATE);
+
+export function getIdentifiabilitySolution(body: IIdentifiabilityRequest, callback?: Function) {
     return function (dispatch: Function) {
         request
             .post('/api/model/identifiability')
             .send(body)
             .end((err, res) => {
+                callback();
                 if (!err) {
                     dispatch(updateIdentifiabilitySolution(res.body))
                 } else {
