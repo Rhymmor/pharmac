@@ -26,6 +26,7 @@ function modifyBody(body: IInverseProblemRequest) {
     body.options.method = PythonMethodNames[body.options.method] as any;
     if (body.options.dataSelection === InverseProblemDataSelection.Synthetic) {
         body.options.data = undefined;
+        body.options.syntheticParameters = AbstractModelRest.prepareParameters(body.options.syntheticParameters);
     } else if (body.options.dataSelection === InverseProblemDataSelection.Experimental) {
         body.options.syntheticParameters = undefined;
     }

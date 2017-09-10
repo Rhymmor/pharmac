@@ -8,7 +8,7 @@ import { IValidationResult, IValidator, validateSchema } from '../../modules/val
 import { IFormula, IModel, IParameters, schemaIModel, schemaIParameters } from '../../../client/redux/reducers/formulas';
 import {Request, Response} from 'express';
 import * as joi from 'joi';
-import {replace, cloneDeep} from 'lodash';
+import {replace, cloneDeep, mapKeys} from 'lodash';
 
 export interface IModelRequest<T> {
     model: IModel;
@@ -41,13 +41,17 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
         return validateSchema<T>(obj, this.getRequestSchema());
     }
 
-    private prepareFormula(formula: IFormula) {
+    private static prepareText(text: string) {
+        return replace(text, /(\{|\})/g, "");
+    }
+
+    private static prepareFormula(formula: IFormula) {
         const newFormula = cloneDeep(formula);
-        newFormula.text = replace(formula.text, /(\{|\})/g, "");
+        newFormula.text = AbstractModelRest.prepareText(newFormula.text);
         return newFormula;
     }
 
-    private prepareModel(model: IModel) {
+    private static prepareModel(model: IModel) {
         const newModel = [];
         for (const formula of model) {
             newModel.push(this.prepareFormula(formula));
@@ -55,10 +59,15 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
         return newModel;
     }
 
+    public static prepareParameters(params: IParameters) {
+        return mapKeys(params, (val, key) => this.prepareText(key));
+    }
+
     solveModel() {
         return async (req: Request, res: Response) => {
             const validator = this.validateRequest(req.body);
-            validator.obj.model = this.prepareModel(validator.obj.model);
+            validator.obj.model = AbstractModelRest.prepareModel(validator.obj.model);
+            validator.obj.params = AbstractModelRest.prepareParameters(validator.obj.params);
             if (this.modifyBody) {
                 this.modifyBody(validator.obj);
             }
