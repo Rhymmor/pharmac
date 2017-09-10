@@ -34,7 +34,9 @@ interface IInverseProblemState {
 }
 
 const MethodsText: UseStrings<InverseProblemMethodsType, string> = {
-    NelderMead: "Nelder-Mead"
+    NelderMead: "Nelder-Mead",
+    BFGS: "BFGS",
+    Powell: "Powell"
 }
 
 const DataSelectionText: UseStrings<InverseProblemDataSelectionType, string> = {

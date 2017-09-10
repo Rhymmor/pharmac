@@ -68,6 +68,20 @@ def prepare_experimental_data(exp_data):
     data['data'] = prepare_data_values(exp_data)
     return data
 
+def get_options():
+    return {
+        "nelder-mead": {'xtol': 1e-8},
+        "BFGS": {},
+        'Powell': {'xtol': 1e-8}
+    }
+
+def is_array(obj):
+    obj_type = type(obj)
+    return obj_type is list or obj_type is np.ndarray
+
+def prepare_solution(sol):
+    return sol if is_array(sol) else [sol]
+
 def main():
     model = read_in()
     if model is not None:
@@ -83,7 +97,7 @@ def main():
         inverse_data = {}
         if data_selection == 'Synthetic':
             synth_params = options['syntheticParameters']
-            synth_data_points_count = 10    #TODO: remove harcode
+            synth_data_points_count = 10    #TODO: remove hardcode
             inverse_data = get_synth_data(y0, synth_params, synth_data_points_count, space, parser)
         elif data_selection == 'Experimental':
             inverse_data = prepare_experimental_data(options['data'])
@@ -91,11 +105,12 @@ def main():
             raise Exception('Wrong data selection method type')
 
         method = options['method']
+        method_options = get_options()[method]
         result = minimize(min_func, params_dict.values(), method=method,
                           args=(inverse_data, y0, space, params_dict.keys(), parser),
-                          options={'xtol': 1e-8})
+                          options=method_options)
 
-        print json.dumps({'solution': get_dict(params_dict.keys(), result.x)}, cls=NumpyEncoder)
+        print json.dumps({'solution': get_dict(params_dict.keys(), prepare_solution(result.x))}, cls=NumpyEncoder)
 
 if __name__ == '__main__':
     main()
