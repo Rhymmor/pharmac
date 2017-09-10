@@ -36,7 +36,17 @@ interface IInverseProblemState {
 const MethodsText: UseStrings<InverseProblemMethodsType, string> = {
     NelderMead: "Nelder-Mead",
     BFGS: "BFGS",
-    Powell: "Powell"
+    Powell: "Powell",
+    CG: "Conjugate gradient",
+    "L-BFGS-B": "L-BFGS-B"
+}
+
+const MethodsTooltip: UseStrings<InverseProblemMethodsType, string> = {
+    NelderMead: "Nelder-Mead simplex method",
+    BFGS: "Broyden–Fletcher–Goldfarb–Shanno algorithm",
+    Powell: "Powell's conjugate direction method",
+    CG: "Conjugate gradient method",
+    "L-BFGS-B": "Limited-memory Broyden–Fletcher–Goldfarb–Shanno algorithm for bound-constrained optimization"
 }
 
 const DataSelectionText: UseStrings<InverseProblemDataSelectionType, string> = {
@@ -70,11 +80,16 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
     })
 
     renderMethodItems = () => _.map(InverseProblemMethods, (value, key) => (
-        <MenuItem key={key} onClick={() => this.modifyMethod(value)}>{MethodsText[value]}</MenuItem>
+        <MenuItem 
+            key={key}
+            onClick={() => this.modifyMethod(value)}
+        >
+            <span title={MethodsTooltip[value]}>{MethodsText[value]}</span>
+        </MenuItem>
     ))
 
     renderMethodsDropdown = (method: InverseProblemMethodsType) => (
-        <div className={classnames("methods-dropdown", "inline-block")}>
+        <div className={classnames("methods-dropdown", "inline-block")} title={MethodsTooltip[method]}>
             <span>Solution method:</span>
             <DropdownButton
                 id="inverseProblemMethods"

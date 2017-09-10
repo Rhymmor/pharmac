@@ -17,7 +17,9 @@ export interface IInverseProblemRequest extends IModelRequest<IInverseProblemOpt
 const PythonMethodNames: UseStrings<InverseProblemMethodsType, string> = {
     NelderMead: 'nelder-mead',
     BFGS: 'BFGS',
-    Powell: "Powell"
+    "L-BFGS-B": "L-BFGS-B",
+    Powell: "Powell",
+    CG: "CG"
 }
 
 function modifyBody(body: IInverseProblemRequest) {

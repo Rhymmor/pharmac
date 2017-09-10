@@ -72,7 +72,9 @@ def get_options():
     return {
         "nelder-mead": {'xtol': 1e-8},
         "BFGS": {},
-        'Powell': {'xtol': 1e-8}
+        'Powell': {'xtol': 1e-8},
+        'CG': {},
+        'L-BFGS-B': {}
     }
 
 def is_array(obj):
@@ -110,7 +112,7 @@ def main():
                           args=(inverse_data, y0, space, params_dict.keys(), parser),
                           options=method_options)
 
-        print json.dumps({'solution': get_dict(params_dict.keys(), prepare_solution(result.x))}, cls=NumpyEncoder)
+        print json.dumps({'solution': get_dict(params_dict.keys(), prepare_solution(result.x.tolist()))}, cls=NumpyEncoder)
 
 if __name__ == '__main__':
     main()

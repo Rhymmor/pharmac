@@ -8,10 +8,13 @@ def main():
     model = read_in()
     if (model is not None):
         parser = ModelParser(model['model'])
-        points_count = model['options']['points']
-        t = np.linspace(0, model['options']['interval'], points_count)
+        options = model['options']
+        points_count = options['points']
+        linspace = np.linspace(1, options['interval'], points_count)
         params_dict = model['parameters']
-        sol = odeint(model_eval, model['initialValues'], t, args=(params_dict, parser))
+        y0 = model['initialValues']
+        sol = odeint(model_eval, y0, linspace, args=(params_dict, parser))
+
         print json.dumps({'solution': sol}, cls=NumpyEncoder)
 
 if __name__ == '__main__':

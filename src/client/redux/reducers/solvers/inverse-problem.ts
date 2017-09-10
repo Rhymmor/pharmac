@@ -16,11 +16,13 @@ import * as joi from 'joi';
 export interface IInverseProblemSolution extends ICommonSolution<IParameters> {
 }
 
-export type InverseProblemMethodsType = "NelderMead" | "BFGS" | "Powell";
+export type InverseProblemMethodsType = "NelderMead" | "BFGS" | "L-BFGS-B" | "Powell" | "CG";
 export const InverseProblemMethods: Readonly<Enum<InverseProblemMethodsType>> = {
     NelderMead: "NelderMead",
     BFGS: "BFGS",
-    Powell: "Powell"
+    Powell: "Powell",
+    CG: "CG",
+    "L-BFGS-B": "L-BFGS-B"
 }
 
 export type InverseProblemDataSelectionType = "Synthetic" | "Experimental";
