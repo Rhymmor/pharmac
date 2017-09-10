@@ -1,0 +1,13 @@
+$text-color: #1089d8;
+
+.params-table {
+    width: 100%;
+
+    td, th {
+        color: $text-color;
+        padding: 10px 8px;
+    }
+    th {
+        border-bottom: 2px solid $text-color;
+    }
+}

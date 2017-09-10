@@ -1,5 +1,11 @@
+import { updateIdentifiabilityLoadingState } from '../../../../redux/actions/solvers/identifiability';
+import { ParametersTable } from '../table/ParametersTable';
 import { IParameters } from '../../../../redux/reducers/formulas';
-import { IIdentifiabilityOptions } from '../../../../redux/reducers/solvers/identifiability';
+import {
+    IIdentifiabilityOptions,
+    IIdentifiabilitySolution,
+    IIdentifiabilityStore,
+} from '../../../../redux/reducers/solvers/identifiability';
 import { updateDirectProblemLoadingState } from '../../../../redux/actions/solvers/direct-problem';
 import * as classnames from 'classnames';
 import { ModelOptions } from '../ModelOptions';
@@ -11,7 +17,7 @@ import { Row, Col, Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { ParamsBox } from '../paramsBox';
 import * as _ from 'lodash';
 
-interface IIdentifiabilityProps extends IProblemProps<any, any, any> {
+interface IIdentifiabilityProps extends IProblemProps<IIdentifiabilitySolution, IIdentifiabilityOptions, IIdentifiabilityStore> {
 }
 
 interface IIdentifiabilityState {
@@ -23,7 +29,7 @@ function isSolveBtnEnable(parameters: IParameters): boolean {
 
 export class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, IIdentifiabilityState> {
 
-    setLoadingState = (flag: boolean) => this.props.dispatch(updateDirectProblemLoadingState(flag));
+    setLoadingState = (flag: boolean) => this.props.dispatch(updateIdentifiabilityLoadingState(flag));
     finishLoading = () => this.setLoadingState(false);
 
     solveProblem = () => {
@@ -73,6 +79,9 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
                 <Row>
                     <Col xs={6}>
                         <IdentifiabilityPlot solution={solution}/>
+                    </Col>
+                    <Col xs={6}>
+                        <ParametersTable parameters={solution.solution}/>
                     </Col>
                 </Row>
             </Box>

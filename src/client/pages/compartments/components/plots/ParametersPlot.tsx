@@ -37,6 +37,7 @@ function configureChartData(solution: ParameterSolution): ISolution {
     return getDefaultSolution();
 }
 
+const barColor = '#43A8E7';
 
 export class ParametersPlot extends React.PureComponent<IProps, IState> {
     constructor(props: IProps) {
@@ -59,7 +60,7 @@ export class ParametersPlot extends React.PureComponent<IProps, IState> {
                 <YAxis/>
                 <Tooltip/>
                 <Legend />
-                <Bar dataKey="value" fill="#8884d8"/>
+                <Bar dataKey="value" fill={barColor} maxBarSize={100}/>
             </BarChart>
         );
     }
