@@ -1,12 +1,14 @@
+import { logger } from '../../../lib/logger';
 import { Modifier } from '../../../client/utils/utils';
 import { ICommonOptions } from '../../../client/redux/reducers/solvers';
 import { UseKeys } from '../../../lib/utils';
 import { getValidationError } from '../../utils';
 import { ISolverConstructor } from '../../modules/solver/abstract-solver';
 import { IValidationResult, IValidator, validateSchema } from '../../modules/validator';
-import { IModel, IParameters, schemaIModel, schemaIParameters } from '../../../client/redux/reducers/formulas';
+import { IFormula, IModel, IParameters, schemaIModel, schemaIParameters } from '../../../client/redux/reducers/formulas';
 import {Request, Response} from 'express';
 import * as joi from 'joi';
+import {replace, cloneDeep} from 'lodash';
 
 export interface IModelRequest<T> {
     model: IModel;
@@ -39,13 +41,29 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
         return validateSchema<T>(obj, this.getRequestSchema());
     }
 
+    private prepareFormula(formula: IFormula) {
+        const newFormula = cloneDeep(formula);
+        newFormula.text = replace(formula.text, /(\{|\})/g, "");
+        return newFormula;
+    }
+
+    private prepareModel(model: IModel) {
+        const newModel = [];
+        for (const formula of model) {
+            newModel.push(this.prepareFormula(formula));
+        }
+        return newModel;
+    }
+
     solveModel() {
         return async (req: Request, res: Response) => {
             const validator = this.validateRequest(req.body);
+            validator.obj.model = this.prepareModel(validator.obj.model);
             if (this.modifyBody) {
                 this.modifyBody(validator.obj);
             }
             if (!validator.valid) {
+                logger.error(validator.error.message);
                 res.status(400).json(getValidationError(validator.error));
                 return;
             }
@@ -57,6 +75,7 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
                 });
                 res.status(200).json(solution);
             } catch (e) {
+                logger.error(e);
                 res.status(400).json({error: e});
             }
         }
