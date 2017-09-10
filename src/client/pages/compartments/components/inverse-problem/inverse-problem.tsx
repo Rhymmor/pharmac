@@ -169,7 +169,7 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
                     <Button>
                         <Dropzone className="dropzone-button" onDrop={this.loadData}>Load from file</Dropzone>
                     </Button>
-                    <FunctionPlot solution={{solution}} timeLinspace={linspace}/>
+                    <FunctionPlot solution={{solution}} timeLinspace={linspace} dots={true}/>
                 </div>
             );
         }

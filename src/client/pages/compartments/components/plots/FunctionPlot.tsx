@@ -6,7 +6,8 @@ import * as _ from 'lodash';
 const {BarChart, Bar, XAxis, YAxis, Tooltip, Legend, LineChart, Line} = require('recharts');
 
 interface IFunctionPlotProps<T extends ICommonOptions> extends IPlotProps<IFunctionSolution, T> {
-    timeLinspace?: string[]
+    timeLinspace?: string[];
+    dots?: boolean;
 }
 
 interface IFunctionSolution {
@@ -74,13 +75,13 @@ export class FunctionPlot<T extends ICommonOptions> extends React.PureComponent<
     }
 
     render() {
-        const {className, solution} = this.props;
+        const {className, solution, dots} = this.props;
         const {data} = this.state;
         return (
             <div className={className || defaultClassName}>
                 <LineChart width={600} height={300} data={data}>
                     {_.map(safeGet(solution, x=>x.solution[0], [0]), (x, idx) => (
-                        <Line key={idx} type="monotone" dataKey={`${idx + 1}`} stroke={chartsColors[idx]} dot={false}/>
+                        <Line key={idx} type="monotone" dataKey={`${idx + 1}`} stroke={chartsColors[idx]} dot={dots || false}/>
                     ))}
                     <XAxis dataKey="label" />
                     <Tooltip/>
