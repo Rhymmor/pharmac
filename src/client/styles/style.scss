@@ -1,5 +1,4 @@
-$workzone-width: 1366px;
-$font-size: 13px;
+@import "variables.scss";
 
 .tr-string-example{
     background-color: rgba(192,192,192,0.5);
@@ -19,11 +18,6 @@ $font-size: 13px;
 }
 
 .col-hidden { display: none }
-
-.borderless>.react-bs-table-container>.react-bs-table {
-    border-top-style: hidden !important;
-    border: hidden !important;
-}
 
 .header {
     margin-bottom: 10px;
@@ -64,16 +58,16 @@ $font-size: 13px;
     padding: 0px 20px 20px 20px;
     margin-bottom: 0.75rem;
     border-radius: 5px;
-    background-color: #fafaf8;
+    background-color: $box-back-color;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 body {
-    background-color: #f0f2f5;
+    background-color: $page-back-color;
 }
 
 .page {
-    background-color: #f0f2f5;
+    background-color: $page-back-color;
     font-family: 'Open Sans', sans-serif;
     font-size: $font-size;
 }
@@ -86,7 +80,7 @@ body {
 .transp-button {
     background: Transparent no-repeat;
     border: none;
-    cursor:pointer;
+    cursor: pointer;
     overflow: hidden;
     padding: 0px;
     color: #333333;

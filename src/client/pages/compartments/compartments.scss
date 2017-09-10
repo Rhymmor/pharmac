@@ -1,6 +1,5 @@
 @import '../../styles/style.scss';
-
-$input-text-color: #1089d8;
+@import '../../styles/variables.scss';
 
 .formula-text {
     display: inline-block;
@@ -78,7 +77,7 @@ $input-text-color: #1089d8;
     }
     &>li.active {
         >a, >a:hover, >a:focus {
-            background-color: #fafaf8;
+            background-color: $box-back-color;
         }
     }
 }

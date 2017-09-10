@@ -1,13 +1,15 @@
-$text-color: #1089d8;
+@import "../../../../styles/variables.scss";
 
 .params-table {
     width: 100%;
 
     td, th {
-        color: $text-color;
+        color: $input-text-color;
         padding: 10px 8px;
+        border-right: 24px solid $box-back-color;
+        border-left: 24px solid $box-back-color;
     }
     th {
-        border-bottom: 2px solid $text-color;
+        border-bottom: 2px solid $input-text-color;
     }
 }
