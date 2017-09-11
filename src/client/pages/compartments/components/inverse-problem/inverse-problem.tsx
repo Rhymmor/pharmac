@@ -39,7 +39,10 @@ const MethodsText: UseStrings<InverseProblemMethodsType, string> = {
     BFGS: "BFGS",
     Powell: "Powell",
     CG: "Conjugate gradient",
-    "L-BFGS-B": "L-BFGS-B"
+    "L-BFGS-B": "L-BFGS-B",
+    TNC: "Truncated Newton",
+    COBYLA: "COBYLA",
+    SLSQP: "SLSQP"
 }
 
 const MethodsTooltip: UseStrings<InverseProblemMethodsType, string> = {
@@ -47,7 +50,10 @@ const MethodsTooltip: UseStrings<InverseProblemMethodsType, string> = {
     BFGS: "Broyden–Fletcher–Goldfarb–Shanno algorithm",
     Powell: "Powell's conjugate direction method",
     CG: "Conjugate gradient method",
-    "L-BFGS-B": "Limited-memory Broyden–Fletcher–Goldfarb–Shanno algorithm for bound-constrained optimization"
+    "L-BFGS-B": "Limited-memory Broyden–Fletcher–Goldfarb–Shanno algorithm for bound-constrained optimization",
+    TNC: "Truncated Newton (TNC) method",
+    COBYLA: "Constrained optimization by linear approximation",
+    SLSQP: "Sequential quadratic programming"
 }
 
 const DataSelectionText: UseStrings<InverseProblemDataSelectionType, string> = {

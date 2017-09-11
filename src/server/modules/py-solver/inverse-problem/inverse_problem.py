@@ -74,7 +74,12 @@ def get_options():
         "BFGS": {},
         'Powell': {'xtol': 1e-8},
         'CG': {},
-        'L-BFGS-B': {}
+        'L-BFGS-B': {},
+        'TNC': {},
+        'COBYLA': {},
+        'SLSQP': {},
+        'dogleg': {},
+        'trust-ncg': {}
     }
 
 def is_array(obj):

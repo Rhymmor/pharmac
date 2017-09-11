@@ -19,7 +19,10 @@ const PythonMethodNames: UseStrings<InverseProblemMethodsType, string> = {
     BFGS: 'BFGS',
     "L-BFGS-B": "L-BFGS-B",
     Powell: "Powell",
-    CG: "CG"
+    CG: "CG",
+    TNC: "TNC",
+    COBYLA: "COBYLA",
+    SLSQP: "SLSQP"
 }
 
 function modifyBody(body: IInverseProblemRequest) {
