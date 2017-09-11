@@ -1,3 +1,4 @@
+import { SolutionResults } from '../SolutionResults';
 import { ParametersPlot, PlotType } from '../plots/ParametersPlot';
 import { updateIdentifiabilityLoadingState } from '../../../../redux/actions/solvers/identifiability';
 import { ParametersTable } from '../table/ParametersTable';
@@ -79,14 +80,11 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
                 }
                 </Row>
                 <BoxHeader>Result</BoxHeader>
-                <Row>
-                    <Col xs={6}>
-                        <IdentifiabilityPlot solution={solution}/>
-                    </Col>
-                    <Col xs={6}>
-                        <ParametersTable parameters={solution.solution}/>
-                    </Col>
-                </Row>
+                <SolutionResults labels={["Bar plot", "Results value table", "Pie plot"]}>
+                    <IdentifiabilityPlot solution={solution}/>
+                    <ParametersTable parameters={solution.solution}/>
+                    {this.renderPiePlot(solution)}
+                </SolutionResults>
             </Box>
         );
     }

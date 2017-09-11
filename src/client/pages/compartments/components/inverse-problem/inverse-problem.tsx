@@ -1,3 +1,4 @@
+import { SolutionResults } from '../SolutionResults';
 import { ParametersTable } from '../table/ParametersTable';
 import { updateInverseProblemLoadingState } from '../../../../redux/actions/solvers/inverse-problem';
 import { Dropzone } from '../../../../components/Dropzone';
@@ -212,14 +213,10 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
                 </Col>
                 </Row>
                 <BoxHeader>Result</BoxHeader>
-                <Row>
-                    <Col xs={6}>
+                <SolutionResults labels={["Bar plot", "Results value table"]}>
                         <InverseProblemPlot solution={solution}/>
-                    </Col>
-                    <Col xs={6}>
                         <ParametersTable parameters={solution.solution}/>
-                    </Col>
-                </Row>
+                </SolutionResults>
             </Box>
         );
     }

@@ -1,3 +1,4 @@
+import { SolutionResults } from '../SolutionResults';
 import { updateDirectProblemLoadingState } from '../../../../redux/actions/solvers/direct-problem';
 import { IUpdateLoadingState } from '../../../../redux/actions/solvers';
 import {
@@ -66,9 +67,12 @@ export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDir
                     }
                 </Row>
                 <BoxHeader>Result</BoxHeader>
+                <SolutionResults labels={["Bar plot"]}>
+                    <DirectProblemPlot solution={solution} options={options}/>
+                </SolutionResults>
                 <Row>
                     <Col xs={6}>
-                        <DirectProblemPlot solution={solution} options={options}/>
+                        
                     </Col>
                 </Row>
             </Box>
