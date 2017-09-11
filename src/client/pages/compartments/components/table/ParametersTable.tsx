@@ -31,17 +31,19 @@ export class ParametersTable extends React.Component<IParametersTableProps, IPar
     render() {
         const {parameters} = this.props;
         return (
-            <table className='params-table'>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Value</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {this.renderBody(parameters)}
-                </tbody>
-            </table>
+            <div className='param-table-div'>
+                <table className='params-table'>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {this.renderBody(parameters)}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 }
