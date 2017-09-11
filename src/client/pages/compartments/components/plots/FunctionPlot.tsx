@@ -20,8 +20,8 @@ interface IFunctionPlotState {
     data: FunctionData;
 }
 
-const chartsColors = ["#FF6384", "#00CC88", "#36A2EB", "#CB9BCC", "#FFCE56", 'rgb(128, 128, 128)'];
-const defaultClassName = 'chart-box';
+export const chartsColors = ["#FF6384", "#00CC88", "#36A2EB", "#CB9BCC", "#FFCE56", 'rgb(128, 128, 128)'];
+export const defaultClassName = 'chart-box';
 
 const getLabel = (interval: number, length: number, idx: number) => String(idx * interval / (length - 1));
 

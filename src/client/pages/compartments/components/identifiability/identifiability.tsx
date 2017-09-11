@@ -1,3 +1,4 @@
+import { ParametersPlot, PlotType } from '../plots/ParametersPlot';
 import { updateIdentifiabilityLoadingState } from '../../../../redux/actions/solvers/identifiability';
 import { ParametersTable } from '../table/ParametersTable';
 import { IParameters } from '../../../../redux/reducers/formulas';
@@ -59,6 +60,8 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
             </div>
         );
     }
+
+    renderPiePlot = (solution: IIdentifiabilitySolution) => <ParametersPlot solution={solution} type={PlotType.pie}/>
 
     render() {
         const {solve, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
