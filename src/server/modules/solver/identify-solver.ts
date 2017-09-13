@@ -1,5 +1,5 @@
 import { IIdentifiabilityOptions } from '../../../client/redux/reducers/solvers/identifiability';
-import { validateSchema } from '../validator';
+import { IValidationResult, validateSchema } from '../validator';
 import { UseKeys } from '../../../lib/utils';
 import { IModel, IParameters } from '../../../client/redux/reducers/formulas';
 import { AbstractModelSolver } from './abstract-solver';
@@ -11,7 +11,7 @@ export interface IIdentifiabilitySolution {
 const schemaISolutionKeys: UseKeys<IIdentifiabilitySolution, joi.Schema> = {
     solution: joi.object().pattern(/^/, joi.number())
 }
-function validateSolution(obj: any) {
+function validateSolution(obj: any): IValidationResult<any> {
     return validateSchema<IIdentifiabilitySolution>(obj, joi.object().keys(schemaISolutionKeys));
 }
 
