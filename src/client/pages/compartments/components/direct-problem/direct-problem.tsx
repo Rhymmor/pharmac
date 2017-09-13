@@ -34,30 +34,17 @@ export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDir
         this.props.solve(this.finishLoading);
     }
 
-    renderCommonOptions = () => {
-        const {problem: {options}, modifyOptions, solve} = this.props;
-        return (
-            <div>
-                <BoxHeader>Options</BoxHeader>  
-                <div>
-                    <ModelOptions 
-                        className='inline-block' 
-                        options={options as any} 
-                        modifyOptions={modifyOptions as any}
-                    />
-                    <Button onClick={this.solveProblem} className='inline-block'>Solve</Button>
-                </div>
-            </div>
-        );
-    }
-
     render() {
         const {solve, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
         return (
             //TODO: get classname from props
             <Box className={classnames('direct-box', loading && 'loading-back')}>
                 { loading && <div className='loading-wheel'></div> }
-                {this.renderCommonOptions()}
+                <ModelOptions 
+                    options={options as any} 
+                    modifyOptions={modifyOptions as any}
+                    solve={this.solveProblem}
+                />
                 <Row>
                     {
                         !!_.keys(params).length &&

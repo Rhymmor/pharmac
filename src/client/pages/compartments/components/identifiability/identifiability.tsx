@@ -39,29 +39,6 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
         this.props.solve(this.finishLoading);
     }
 
-    renderCommonOptions = () => {
-        const {problem: {options}, modifyOptions, solve, params} = this.props;
-        return (
-            <div>
-                <BoxHeader>Options</BoxHeader>  
-                <div>
-                    <ModelOptions 
-                        className='inline-block'
-                        options={options as any}
-                        modifyOptions={modifyOptions as any}
-                    />
-                    <Button 
-                        onClick={this.solveProblem} 
-                        className='inline-block' 
-                        disabled={!isSolveBtnEnable(params)}
-                    >
-                        Solve
-                    </Button>
-                </div>
-            </div>
-        );
-    }
-
     renderPiePlot = (solution: IIdentifiabilitySolution) => <ParametersPlot solution={solution} type={PlotType.pie}/>
 
     render() {
@@ -70,7 +47,12 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
         return (
             <Box className={classnames('direct-box', loading && 'loading-back')}>
                 { loading && <div className='loading-wheel'></div> }
-                {this.renderCommonOptions()}
+                <ModelOptions 
+                    options={options as any} 
+                    modifyOptions={modifyOptions as any}
+                    solve={this.solveProblem}
+                    isSolveBtnEnable={isSolveBtnEnable(params)}
+                />
                 <Row>
                 {
                     !!_.keys(params).length &&

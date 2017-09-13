@@ -1,16 +1,19 @@
+import { BoxHeader } from '../../../components/layout';
 import * as classnames from 'classnames';
 import { StatefulFormControl } from '../../../components/statefulInput';
-import { safeGet } from '../../../../lib/utils';
+import { isOk, safeGet } from '../../../../lib/utils';
 import { IParameters } from '../../../redux/reducers/formulas';
 import { Modifier } from '../../../utils/utils';
 import { ICommonOptions } from '../../../redux/reducers/solvers';
 import * as React from 'react';
 import * as _ from 'lodash';
+import { Button } from 'react-bootstrap';
 
 interface IModelOptionsProps<T> {
     modifyOptions: (modify: Modifier<T>) => void;
     options: T;
-    className?: string;
+    solve: () => void;
+    isSolveBtnEnable?: boolean;
 }
 
 interface IModelOptionsState {
@@ -23,6 +26,7 @@ export class ModelOptions<T extends ICommonOptions> extends React.Component<IMod
             this.props.modifyOptions((options) => {
                 options[key] = value > 0 && _.isInteger(value) ? value : null
             });
+            
         }
     }
 
@@ -36,12 +40,25 @@ export class ModelOptions<T extends ICommonOptions> extends React.Component<IMod
     )
 
     render() {
+        const {options, solve, isSolveBtnEnable} = this.props;
         return (
-            <div className={classnames(this.props.className)}>
-                <span>Interval:</span>
-                {this.renderInput('interval')}
-                <span>Points number:</span>
-                {this.renderInput('points')}
+            <div>
+                <BoxHeader>Common options</BoxHeader>
+                <div>
+                    <div className='inline-block'>
+                        <span>Interval:</span>
+                        {this.renderInput('interval')}
+                        <span>Points number:</span>
+                        {this.renderInput('points')}
+                    </div>
+                    <Button 
+                        onClick={solve} 
+                        className='inline-block' 
+                        disabled={!isOk(isSolveBtnEnable) || !isSolveBtnEnable}
+                    >
+                        Solve
+                    </Button>
+                </div>
             </div>
         );
     }

@@ -1,3 +1,4 @@
+import { InverseProblemOptions } from './InverseProblemOptions';
 import { SolutionResults } from '../SolutionResults';
 import { KeyValueTable } from '../table/KeyValueTable';
 import { updateInverseProblemLoadingState } from '../../../../redux/actions/solvers/inverse-problem';
@@ -35,33 +36,6 @@ interface IInverseProblemProps extends IProblemProps<IInverseProblemSolution, II
 interface IInverseProblemState {
 }
 
-const MethodsText: UseStrings<InverseProblemMethodsType, string> = {
-    NelderMead: "Nelder-Mead",
-    BFGS: "BFGS",
-    Powell: "Powell",
-    CG: "Conjugate gradient",
-    "L-BFGS-B": "L-BFGS-B",
-    TNC: "Truncated Newton",
-    COBYLA: "COBYLA",
-    SLSQP: "SLSQP"
-}
-
-const MethodsTooltip: UseStrings<InverseProblemMethodsType, string> = {
-    NelderMead: "Nelder-Mead simplex method",
-    BFGS: "Broyden–Fletcher–Goldfarb–Shanno algorithm",
-    Powell: "Powell's conjugate direction method",
-    CG: "Conjugate gradient method",
-    "L-BFGS-B": "Limited-memory Broyden–Fletcher–Goldfarb–Shanno algorithm for bound-constrained optimization",
-    TNC: "Truncated Newton (TNC) method",
-    COBYLA: "Constrained optimization by linear approximation",
-    SLSQP: "Sequential quadratic programming"
-}
-
-const DataSelectionText: UseStrings<InverseProblemDataSelectionType, string> = {
-    Synthetic: "Synthetic data",
-    Experimental: "Experimental data"
-}
-
 const SolutionParametersText: UseKeys<IInverseProblemSolutionParameters, string> = {
     fun: 'Value of objective function',
     nfev: 'Number of evaluations of the objective function',
@@ -88,89 +62,9 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
         this.props.solve(this.finishLoading);
     }
 
-    modifyMethod = (value: InverseProblemMethodsType) => this.props.modifyOptions(options => {
-        options.method = value;
-    })
-
-    modifyDataSelection = (value: InverseProblemDataSelectionType) => this.props.modifyOptions(options => {
-        options.dataSelection = value;
-    })
-
     modifySyntheticParams = (modify: Modifier<IParameters>) => this.props.modifyOptions(options => {
         modify(options.syntheticParameters);
     })
-
-    renderMethodItems = () => _.map(InverseProblemMethods, (value, key) => (
-        <MenuItem 
-            key={key}
-            onClick={() => this.modifyMethod(value)}
-        >
-            <span title={MethodsTooltip[value]}>{MethodsText[value]}</span>
-        </MenuItem>
-    ))
-
-    renderMethodsDropdown = (method: InverseProblemMethodsType) => (
-        <div className={classnames("methods-dropdown", "inline-block")} title={MethodsTooltip[method]}>
-            <span>Solution method:</span>
-            <DropdownButton
-                id="inverseProblemMethods"
-                title={MethodsText[method]}
-                className={classnames("methods-dropdown-button", "direct-problem-input")}
-            >
-                {this.renderMethodItems()}
-            </DropdownButton>
-        </div>
-    )
-
-    renderDataSelectionItems = () => _.map(InverseProblemDataSelection, (value, key) => (
-        <MenuItem key={key} onClick={() => this.modifyDataSelection(value)}>{DataSelectionText[value]}</MenuItem>
-    ))
-
-    renderDataSelectionDropdown = (type: InverseProblemDataSelectionType) => (
-        <div className={classnames("methods-dropdown", "inline-block")}>
-            <span>Data selection method:</span>
-            <DropdownButton
-                id="dataSelectionMethods"
-                title={DataSelectionText[type]}
-                className={classnames("methods-dropdown-button", "direct-problem-input")}
-            >
-                {this.renderDataSelectionItems()}
-            </DropdownButton>
-        </div>
-    )
-
-    renderInverseOptions = (options: IInverseProblemOptions) => (
-        <div>
-            <BoxHeader>Inverse Problem options</BoxHeader>
-            <div>
-                {this.renderMethodsDropdown(options.method)}
-                {this.renderDataSelectionDropdown(options.dataSelection)}
-            </div>
-        </div>
-    )
-
-    renderCommonOptions = () => {
-        const {problem: {options}, modifyOptions, solve} = this.props;
-        return (
-            <div>
-                <BoxHeader>Options</BoxHeader>  
-                <div>
-                    <ModelOptions 
-                        className='inline-block'
-                        options={options as any}
-                        modifyOptions={modifyOptions as any}
-                    />
-                    <Button 
-                        onClick={this.solveProblem} 
-                        className='inline-block' 
-                        disabled={!isSolveBtnEnable(options.syntheticParameters)}
-                    >
-                        Solve
-                    </Button>
-                </div>
-            </div>
-        );
-    }
 
     loadData = (files: File[]) => {
         const fr = new FileReader();
@@ -219,18 +113,23 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
         return (
             <Box className={classnames('direct-box', loading && 'loading-back')}>
                 { loading && <div className='loading-wheel'></div> }
-                {this.renderCommonOptions()}
-                {this.renderInverseOptions(options)}
+                <ModelOptions 
+                    options={options as any} 
+                    modifyOptions={modifyOptions as any}
+                    solve={this.solveProblem}
+                    isSolveBtnEnable={isSolveBtnEnable(options.syntheticParameters)}
+                />
+                <InverseProblemOptions options={options} modifyOptions={modifyOptions}/>
                 <Row>
-                {
-                    !!_.keys(params).length &&
+                    {
+                        !!_.keys(params).length &&
+                        <Col xs={6}>
+                            <ParamsBox label='Initial parameters' params={params} modifyParams={modifyParams}/>
+                        </Col>
+                    }
                     <Col xs={6}>
-                        <ParamsBox label='Initial parameters' params={params} modifyParams={modifyParams}/>
+                        {this.renderDataSelectionSettings(options)}
                     </Col>
-                }
-                <Col xs={6}>
-                    {this.renderDataSelectionSettings(options)}
-                </Col>
                 </Row>
                 <BoxHeader>Result</BoxHeader>
                 <SolutionResults labels={["Bar plot", "Solution values", "Solution parameters"]}>
