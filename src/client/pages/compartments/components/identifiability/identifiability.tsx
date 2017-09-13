@@ -1,7 +1,7 @@
 import { SolutionResults } from '../SolutionResults';
 import { ParametersPlot, PlotType } from '../plots/ParametersPlot';
 import { updateIdentifiabilityLoadingState } from '../../../../redux/actions/solvers/identifiability';
-import { ParametersTable } from '../table/ParametersTable';
+import { KeyValueTable } from '../table/KeyValueTable';
 import { IParameters } from '../../../../redux/reducers/formulas';
 import {
     IIdentifiabilityOptions,
@@ -82,7 +82,10 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
                 <BoxHeader>Result</BoxHeader>
                 <SolutionResults labels={["Bar plot", "Results value table", "Pie plot"]}>
                     <IdentifiabilityPlot solution={solution}/>
-                    <ParametersTable parameters={solution.solution}/>
+                    <KeyValueTable 
+                        parameters={_.map(solution.solution, (value, key) => ({key, value}))}
+                        mathJax={true}
+                    />
                     {this.renderPiePlot(solution)}
                 </SolutionResults>
             </Box>

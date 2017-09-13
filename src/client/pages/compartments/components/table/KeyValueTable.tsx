@@ -1,31 +1,47 @@
+import { isOk } from '../../../../../lib/utils';
 import { IParameters } from '../../../../redux/reducers/formulas';
 import * as React from 'react';
 import * as _ from 'lodash';
 const MathJax = require('react-mathjax');
 import './ParametersTable.scss';
 
+type KeyValueType = {
+    key: string,
+    value: number | string
+};
+
 interface IParametersTableProps {
-    parameters: IParameters;
+    parameters: KeyValueType[];
+    mathJax?: boolean;
 }
 
 interface IParametersTableState {
 }
 
-export class ParametersTable extends React.Component<IParametersTableProps, IParametersTableState> {
+export class KeyValueTable extends React.Component<IParametersTableProps, IParametersTableState> {
 
-    renderRow = (name: string, value: number) => (
-        <tr key={name}>
-            <td>
+    renderName = (name: string) => {
+        if (this.props.mathJax) {
+            return (
                 <MathJax.Context>
                     <MathJax.Node inline>{name}</MathJax.Node>
                 </MathJax.Context>
+            );
+        }
+        return <span>{name}</span>;
+    }
+
+    renderRow = (name: string, value: number | string) => (
+        <tr key={name}>
+            <td>
+                {this.renderName(name)}
             </td>
-            <td>{value}</td>
+            <td>{isOk(value) ? value : '-'}</td>
         </tr>
     )
 
-    renderBody = (parameters: IParameters) => {
-        return _.map(parameters, (value, name) => this.renderRow(name, value));
+    renderBody = (parameters: KeyValueType[]) => {
+        return _.map(parameters, pair => this.renderRow(pair.key, pair.value));
     }
 
     render() {

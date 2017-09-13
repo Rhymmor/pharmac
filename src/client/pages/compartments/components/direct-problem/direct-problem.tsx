@@ -67,7 +67,7 @@ export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDir
                     }
                 </Row>
                 <BoxHeader>Result</BoxHeader>
-                <SolutionResults labels={["Bar plot"]}>
+                <SolutionResults labels={["Functions plot"]}>
                     <DirectProblemPlot solution={solution} options={options}/>
                 </SolutionResults>
                 <Row>

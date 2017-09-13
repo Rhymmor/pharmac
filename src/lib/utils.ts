@@ -5,6 +5,19 @@ export function helloWorld() {
     console.log("Hello!");
 }
 
+export function cutFraction(value: number, count = 3) {
+    const parts = String(value).split('.');
+    if (parts.length < 2) {
+        return value;
+    }
+    const fractionParts = parts[1].split('e');
+    if (fractionParts.length < 2) {
+        return value;
+    }
+    fractionParts[0] = fractionParts[0].slice(0, count);
+    return parseFloat(parts[0] + '.' + fractionParts.join('e'));
+}
+
 export function round(value: number, precision: number) {
     if (_.isFinite(value) && _.isInteger(precision)) {
         return Number(Math.round(+(value+'e'+precision))+'e'+(-precision));

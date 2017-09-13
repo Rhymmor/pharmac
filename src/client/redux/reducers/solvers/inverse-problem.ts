@@ -13,7 +13,15 @@ import { IInverseProblemAction } from '../../actions/solvers/inverse-problem';
 import * as _ from 'lodash';
 import * as joi from 'joi';
 
+export interface IInverseProblemSolutionParameters {
+    fun: number     // Values of objective function
+    nfev: number;   // Number of evaluations of the objective functions
+    nit?: number;   // Number of iterations
+    time: number;   // Execution time (seconds)
+}
+
 export interface IInverseProblemSolution extends ICommonSolution<IParameters> {
+    parameters: IInverseProblemSolutionParameters;
 }
 
 export type InverseProblemMethodsType = "NelderMead" | "BFGS" | "L-BFGS-B" | "Powell"
@@ -73,7 +81,13 @@ export const schemaIInverseProblemOptionsKeys: UseKeys<IInverseProblemOptions, j
 export const schemaIInverseProblemOptions = joi.object().keys(schemaIInverseProblemOptionsKeys);
 
 const defaultSolution: IInverseProblemSolution = {
-    solution: {}
+    solution: {},
+    parameters: {
+        fun: undefined,
+        nfev: undefined,
+        nit: undefined,
+        time: undefined
+    }
 }
 
 export interface IInverseProblemStore extends ICommonProblemStore<IInverseProblemOptions, IInverseProblemSolution> {

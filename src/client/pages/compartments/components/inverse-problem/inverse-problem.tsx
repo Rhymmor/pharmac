@@ -1,5 +1,5 @@
 import { SolutionResults } from '../SolutionResults';
-import { ParametersTable } from '../table/ParametersTable';
+import { KeyValueTable } from '../table/KeyValueTable';
 import { updateInverseProblemLoadingState } from '../../../../redux/actions/solvers/inverse-problem';
 import { Dropzone } from '../../../../components/Dropzone';
 import { FunctionPlot } from '../plots/FunctionPlot';
@@ -8,17 +8,18 @@ import { BoxHeader } from '../../../../components/layout';
 import {
     IInverseProblemOptions,
     IInverseProblemSolution,
+    IInverseProblemSolutionParameters,
     IInverseProblemStore,
     InverseProblemDataSelection,
     InverseProblemDataSelectionType,
     InverseProblemMethods,
     InverseProblemMethodsType,
-    validateInverseProblemData
+    validateInverseProblemData,
 } from '../../../../redux/reducers/solvers/inverse-problem';
 import { IParameters } from '../../../../redux/reducers/formulas';
 import { Modifier } from '../../../../utils/utils';
 import { ParamsBox } from '../paramsBox';
-import { safeGet, tryParseJSON, UseStrings } from '../../../../../lib/utils';
+import { cutFraction, safeGet, tryParseJSON, UseKeys, UseStrings } from '../../../../../lib/utils';
 import { ModelOptions } from '../ModelOptions';
 import { Box } from '../../../../components';
 import { InverseProblemPlot } from './inverse-problem-plot';
@@ -61,8 +62,21 @@ const DataSelectionText: UseStrings<InverseProblemDataSelectionType, string> = {
     Experimental: "Experimental data"
 }
 
+const SolutionParametersText: UseKeys<IInverseProblemSolutionParameters, string> = {
+    fun: 'Value of objective function',
+    nfev: 'Number of evaluations of the objective function',
+    nit: 'Number of iterations',
+    time: 'Execution time (sec)'
+}
+
 function isSolveBtnEnable(parameters: IParameters): boolean {
     return !!_.keys(parameters).length;
+}
+
+function prepareSolutionParameters(parameters: IInverseProblemSolutionParameters) {
+    return _.map(Object.keys(parameters), (key: keyof IInverseProblemSolutionParameters) => (
+        {key: SolutionParametersText[key], value: cutFraction(parameters[key])}
+    ));
 }
 
 export class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseProblemState> {
@@ -219,9 +233,13 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
                 </Col>
                 </Row>
                 <BoxHeader>Result</BoxHeader>
-                <SolutionResults labels={["Bar plot", "Results value table"]}>
+                <SolutionResults labels={["Bar plot", "Solution values", "Solution parameters"]}>
                         <InverseProblemPlot solution={solution}/>
-                        <ParametersTable parameters={solution.solution}/>
+                        <KeyValueTable 
+                            parameters={_.map(solution.solution, (value, key) => ({key, value}))} 
+                            mathJax={true}
+                        />
+                         <KeyValueTable parameters={prepareSolutionParameters(solution.parameters)}/>
                 </SolutionResults>
             </Box>
         );

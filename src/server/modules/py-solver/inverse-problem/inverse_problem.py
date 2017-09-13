@@ -3,6 +3,7 @@ from scipy.optimize import minimize
 import numpy as np
 import numpy.linalg as ln
 from scipy.integrate import odeint
+import time
 # hack to allow relative exports
 if __name__ == '__main__':
     if __package__ is None:
@@ -10,10 +11,10 @@ if __name__ == '__main__':
         from os import path
         sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
         from model_parser import ModelParser
-        from utils import read_in, model_eval, NumpyEncoder
+        from utils import read_in, model_eval, NumpyEncoder, safe_get
     else:
         from ..model_parser import ModelParser
-        from ...utils import read_in, model_eval, NumpyEncoder
+        from ...utils import read_in, model_eval, NumpyEncoder, safe_get
 
 def get_dict(keys, values):
     dictionary = {}
@@ -92,6 +93,8 @@ def prepare_solution(sol):
 def main():
     model = read_in()
     if model is not None:
+        start_time = time.time()
+
         parser = ModelParser(model['model'])
         options = model['options']
         points_count = options['points']
@@ -117,7 +120,16 @@ def main():
                           args=(inverse_data, y0, space, params_dict.keys(), parser),
                           options=method_options)
 
-        print json.dumps({'solution': get_dict(params_dict.keys(), prepare_solution(result.x.tolist()))}, cls=NumpyEncoder)
+        # print result
+        print json.dumps({
+            'solution': get_dict(params_dict.keys(), prepare_solution(result.x.tolist())),
+            'parameters': {
+                'nfev': safe_get(result, lambda x: x['nfev']),
+                'nit': safe_get(result, lambda x: x['nit']),
+                'fun': safe_get(result, lambda x: x['fun']),
+                'time': time.time() - start_time
+            }
+        }, cls=NumpyEncoder)
 
 if __name__ == '__main__':
     main()

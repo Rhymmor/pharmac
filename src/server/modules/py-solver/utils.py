@@ -1,6 +1,12 @@
 import sys, json
 import numpy as np
 
+def safe_get(obj, func, default=None):
+    try:
+        return func(obj)
+    except:
+        return default
+
 def read_in():
     model = sys.stdin.readlines()
     return json.loads(model[0])
