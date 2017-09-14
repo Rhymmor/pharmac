@@ -10,25 +10,20 @@ var frontend = {
         app: "./src/client/main.tsx",
         vendor: [
             // ui
-            "chart.js",
             "react",
             "react-dom",
             "react-dropzone",
             "react-router",
-            "react-chartjs-2",
             "react-bootstrap",
-            "react-bootstrap-table",
             // utils
             "lodash", "jquery",
             "redux", "redux-thunk", "react-redux",
-            "core-decorators",
             "classnames",
             // dependencies - we don't explicitly use them in web
             "tether",
             "history",
             "moment",
             "joi",
-            "lodash.merge",
             "sprintf-js",
             "bootstrap",
             "toastr",

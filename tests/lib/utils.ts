@@ -1,5 +1,5 @@
 import {expect, dbInit} from '../helper';
-import {round, formatBytes} from '../../src/lib/utils'
+import {round} from '../../src/lib/utils'
 
 describe('Utils functions', ()=>{
     before(dbInit);
@@ -17,20 +17,5 @@ describe('Utils functions', ()=>{
         expect(round(NaN, 2)).to.equals(null);
         expect(round(null, 2)).to.equals(null);
         expect(round(undefined, 2)).to.equals(null);
-    })
-
-    it("should format bytes", () => {
-        expect(formatBytes(1)).to.equals('1 B');
-        expect(formatBytes(1023)).to.equals('1023 B');
-        expect(formatBytes(1024)).to.equals('1 kB');
-        expect(formatBytes(1024 * 1024)).to.equals('1 MB');
-        expect(formatBytes(1024 * 1.5)).to.equals('1.5 kB');
-    })
-
-    it("shouldn't format bytes", () => {
-        expect(formatBytes(undefined)).to.be.null;
-        expect(formatBytes(null)).to.be.null;
-        expect(formatBytes(NaN)).to.be.null;
-        expect(formatBytes(Infinity)).to.be.null;
     })
 });

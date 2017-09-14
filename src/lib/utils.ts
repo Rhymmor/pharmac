@@ -1,5 +1,4 @@
-import * as _ from 'lodash'
-import * as bytes from 'bytes'
+import * as _ from 'lodash';
 
 export function helloWorld() {
     console.log("Hello!");
@@ -23,10 +22,6 @@ export function round(value: number, precision: number) {
         return Number(Math.round(+(value+'e'+precision))+'e'+(-precision));
     }
     return null;
-}
-
-export function formatBytes(amount: number) {
-    return bytes.format(amount, {unitSeparator: " "})
 }
 
 export function withCapital(str: string) {
@@ -62,8 +57,6 @@ export type UseStrings<K extends string, T> = {
 export type Enum<S extends string> = {
     readonly [key in S]: key;
 }
-
-export {bytes}
 
 export function tryParseJSON(text: string, handleError?: Function) {
     try {
