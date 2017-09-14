@@ -109,7 +109,7 @@ def main():
         inverse_data = {}
         if data_selection == 'Synthetic':
             synth_params = options['syntheticParameters']
-            synth_data_points_count = 10    #TODO: remove hardcode
+            synth_data_points_count = data_opt['dataPoints']
             inverse_data = get_synth_data(y0, synth_params, synth_data_points_count, space, parser)
         elif data_selection == 'Experimental':
             inverse_data = prepare_experimental_data(data_opt['data'])

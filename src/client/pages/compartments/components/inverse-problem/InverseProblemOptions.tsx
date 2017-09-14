@@ -1,6 +1,7 @@
+import { StatefulFormControl } from '../../../../components/statefulInput';
 import { Dropdown } from '../../../../components/Dropdown';
 import { Modifier } from '../../../../utils/utils';
-import { UseStrings } from '../../../../../lib/utils';
+import { safeGet, UseStrings } from '../../../../../lib/utils';
 import { BoxHeader } from '../../../../components/layout';
 import * as React from 'react';
 import {
@@ -56,30 +57,42 @@ export class InverseProblemOptions extends React.Component<IProps, IState> {
     modifyDataSelection = (value: InverseProblemDataSelectionType) => this.props.modifyOptions(options => {
         options.dataOptions.dataSelection = value;
     });
+    modifyPoints = (value: number) => this.props.modifyOptions(options => {
+        options.dataOptions.dataPoints = value;
+    })
 
-    renderSyntheticPoints = () => {
-
-    }
+    renderSyntheticPoints = () => (
+        <div className='inline-block'>
+            <span>Number of data points:</span>
+            <StatefulFormControl
+                className='inline-block direct-problem-input'   //TODO: get classname from props
+                value={safeGet(this.props.options, x => x.dataOptions.dataPoints)} 
+                parser={Number}
+                onSubmit={this.modifyPoints}
+            />
+        </div>
+    );
 
     render() {
-        const {options} = this.props;
+        const {options: {method, dataOptions: {dataSelection}}} = this.props;
         return (
             <div>
                 <BoxHeader>Inverse problem options</BoxHeader>
                 <div>
                     <Dropdown 
-                        value={options.method}
+                        value={method}
                         names={MethodsText}
                         tooltips={MethodsTooltip}
                         modify={this.modifyMethod}
                         label='Solution method:'
                     />
                     <Dropdown 
-                        value={options.dataOptions.dataSelection}
+                        value={dataSelection}
                         names={DataSelectionText}
                         modify={this.modifyDataSelection}
                         label='Data selection method:'
                     />
+                    { dataSelection === InverseProblemDataSelection.Synthetic && this.renderSyntheticPoints()}
                 </div>
             </div>
         );

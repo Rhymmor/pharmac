@@ -33,6 +33,7 @@ function modifyBody(body: IInverseProblemRequest) {
         body.options.syntheticParameters = AbstractModelRest.prepareParameters(syntheticParameters);
     } else if (dataOptions.dataSelection === InverseProblemDataSelection.Experimental) {
         body.options.syntheticParameters = undefined;
+        dataOptions.dataPoints = undefined;
     }
 }
 

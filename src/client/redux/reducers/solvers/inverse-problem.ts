@@ -60,12 +60,12 @@ export function validateInverseProblemData(obj: any) {
 interface IInverseProblemDataOptions {
     dataSelection: InverseProblemDataSelectionType;
     data?: InverseProblemData;
-    points?: number;
+    dataPoints?: number;
 }
 const schemaIInverseProblemDataOptionsKeys: UseKeys<IInverseProblemDataOptions, joi.Schema> = {
     dataSelection: joi.string().allow(_.values(InverseProblemDataSelection)),
     data: schemaInverseProblemData.optional(),
-    points: joi.number().integer().greater(0).optional()
+    dataPoints: joi.number().integer().greater(0).optional()
 }
 
 export interface IInverseProblemOptions extends ICommonOptions {
@@ -78,7 +78,8 @@ const defaultOptions: IInverseProblemOptions = {
     ...defaultCommonOptions,
     method: InverseProblemMethods.NelderMead,
     dataOptions: {
-        dataSelection: InverseProblemDataSelection.Synthetic
+        dataSelection: InverseProblemDataSelection.Synthetic,
+        dataPoints: 10
     }
 }
 
