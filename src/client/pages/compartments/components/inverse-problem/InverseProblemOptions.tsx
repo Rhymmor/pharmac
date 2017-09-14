@@ -1,9 +1,8 @@
+import { Dropdown } from '../../../../components/Dropdown';
 import { Modifier } from '../../../../utils/utils';
 import { UseStrings } from '../../../../../lib/utils';
 import { BoxHeader } from '../../../../components/layout';
-import { DropdownButton, MenuItem } from 'react-bootstrap';
 import * as React from 'react';
-import * as classnames from 'classnames';
 import {
     IInverseProblemOptions,
     IInverseProblemSolution,
@@ -12,10 +11,8 @@ import {
     InverseProblemDataSelection,
     InverseProblemDataSelectionType,
     InverseProblemMethods,
-    InverseProblemMethodsType,
-    validateInverseProblemData,
+    InverseProblemMethodsType
 } from '../../../../redux/reducers/solvers/inverse-problem';
-import * as _ from 'lodash';
 
 interface IProps {
     options: IInverseProblemOptions;
@@ -59,45 +56,8 @@ export class InverseProblemOptions extends React.Component<IProps, IState> {
     modifyDataSelection = (value: InverseProblemDataSelectionType) => this.props.modifyOptions(options => {
         options.dataSelection = value;
     });
-    
-    renderMethodItems = () => _.map(InverseProblemMethods, (value, key) => (
-        <MenuItem 
-            key={key}
-            onClick={() => this.modifyMethod(value)}
-        >
-            <span title={MethodsTooltip[value]}>{MethodsText[value]}</span>
-        </MenuItem>
-    ));
 
-    renderMethodsDropdown = (method: InverseProblemMethodsType) => (
-        <div className={classnames("methods-dropdown", "inline-block")} title={MethodsTooltip[method]}>
-            <span>Solution method:</span>
-            <DropdownButton
-                id="inverseProblemMethods"
-                title={MethodsText[method]}
-                className={classnames("methods-dropdown-button", "direct-problem-input")}
-            >
-                {this.renderMethodItems()}
-            </DropdownButton>
-        </div>
-    )
 
-    renderDataSelectionItems = () => _.map(InverseProblemDataSelection, (value, key) => (
-        <MenuItem key={key} onClick={() => this.modifyDataSelection(value)}>{DataSelectionText[value]}</MenuItem>
-    ));
-
-    renderDataSelectionDropdown = (type: InverseProblemDataSelectionType) => (
-        <div className={classnames("methods-dropdown", "inline-block")}>
-            <span>Data selection method:</span>
-            <DropdownButton
-                id="dataSelectionMethods"
-                title={DataSelectionText[type]}
-                className={classnames("methods-dropdown-button", "direct-problem-input")}
-            >
-                {this.renderDataSelectionItems()}
-            </DropdownButton>
-        </div>
-    );
 
     render() {
         const {options} = this.props;
@@ -105,8 +65,19 @@ export class InverseProblemOptions extends React.Component<IProps, IState> {
             <div>
                 <BoxHeader>Inverse problem options</BoxHeader>
                 <div>
-                    {this.renderMethodsDropdown(options.method)}
-                    {this.renderDataSelectionDropdown(options.dataSelection)}
+                    <Dropdown 
+                        value={options.method}
+                        names={MethodsText}
+                        tooltips={MethodsTooltip}
+                        modify={this.modifyMethod}
+                        label='Solution method:'
+                    />
+                    <Dropdown 
+                        value={options.dataOptions.dataSelection}
+                        names={DataSelectionText}
+                        modify={this.modifyDataSelection}
+                        label='Data selection method:'
+                    />
                 </div>
             </div>
         );
