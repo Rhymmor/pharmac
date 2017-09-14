@@ -54,10 +54,12 @@ export class InverseProblemOptions extends React.Component<IProps, IState> {
         options.method = value;
     });
     modifyDataSelection = (value: InverseProblemDataSelectionType) => this.props.modifyOptions(options => {
-        options.dataSelection = value;
+        options.dataOptions.dataSelection = value;
     });
 
+    renderSyntheticPoints = () => {
 
+    }
 
     render() {
         const {options} = this.props;

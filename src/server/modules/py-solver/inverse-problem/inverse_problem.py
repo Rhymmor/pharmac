@@ -97,20 +97,22 @@ def main():
 
         parser = ModelParser(model['model'])
         options = model['options']
+        data_opt = options['dataOptions']
+
         points_count = options['points']
         interval = options['interval']
-        space = np.linspace(0, interval, points_count)
         y0 = model['initialValues']
         params_dict = model['parameters']
-        data_selection = options['dataSelection']
+        data_selection = data_opt['dataSelection']
 
+        space = np.linspace(0, interval, points_count)
         inverse_data = {}
         if data_selection == 'Synthetic':
             synth_params = options['syntheticParameters']
             synth_data_points_count = 10    #TODO: remove hardcode
             inverse_data = get_synth_data(y0, synth_params, synth_data_points_count, space, parser)
         elif data_selection == 'Experimental':
-            inverse_data = prepare_experimental_data(options['data'])
+            inverse_data = prepare_experimental_data(data_opt['data'])
         else:
             raise Exception('Wrong data selection method type')
 

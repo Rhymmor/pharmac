@@ -26,11 +26,12 @@ const PythonMethodNames: UseStrings<InverseProblemMethodsType, string> = {
 }
 
 function modifyBody(body: IInverseProblemRequest) {
-    body.options.method = PythonMethodNames[body.options.method] as any;
-    if (body.options.dataSelection === InverseProblemDataSelection.Synthetic) {
-        body.options.data = undefined;
-        body.options.syntheticParameters = AbstractModelRest.prepareParameters(body.options.syntheticParameters);
-    } else if (body.options.dataSelection === InverseProblemDataSelection.Experimental) {
+    const {dataOptions, syntheticParameters, method} = body.options;
+    body.options.method = PythonMethodNames[method] as any;
+    if (dataOptions.dataSelection === InverseProblemDataSelection.Synthetic) {
+        dataOptions.data = undefined;
+        body.options.syntheticParameters = AbstractModelRest.prepareParameters(syntheticParameters);
+    } else if (dataOptions.dataSelection === InverseProblemDataSelection.Experimental) {
         body.options.syntheticParameters = undefined;
     }
 }

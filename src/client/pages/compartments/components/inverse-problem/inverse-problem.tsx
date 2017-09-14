@@ -74,7 +74,7 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
             const data = tryParseJSON(fr.result);
             const validator = validateInverseProblemData(data);
             if (validator.valid) {
-                this.props.modifyOptions(options => options.data = data);
+                this.props.modifyOptions(options => options.dataOptions.data = data);
             } else {
                 
             }
@@ -82,19 +82,20 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
     }
 
     renderDataSelectionSettings = (options: IInverseProblemOptions) => {
-        if (options.dataSelection === InverseProblemDataSelection.Synthetic) {
-            if (!!_.keys(options.syntheticParameters).length) {
+        const {dataOptions: {dataSelection, data}, syntheticParameters} = options;
+        if (dataSelection === InverseProblemDataSelection.Synthetic) {
+            if (!!_.keys(syntheticParameters).length) {
                 return (
                     <ParamsBox 
                         label='Synthetic parameters' 
-                        params={options.syntheticParameters} 
+                        params={syntheticParameters} 
                         modifyParams={this.modifySyntheticParams}
                     />
                 );
             }
-        } else if (options.dataSelection === InverseProblemDataSelection.Experimental) {
-            const solution = _.map(options.data, point => point.value);
-            const linspace = _.map(options.data, point => String(point.time));
+        } else if (dataSelection === InverseProblemDataSelection.Experimental) {
+            const solution = _.map(data, point => point.value);
+            const linspace = _.map(data, point => String(point.time));
             return (
                 <div>
                     <BoxHeader>Experimental data</BoxHeader>

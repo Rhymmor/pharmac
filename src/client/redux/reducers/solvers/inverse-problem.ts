@@ -57,26 +57,36 @@ export function validateInverseProblemData(obj: any) {
     return validateSchema<InverseProblemData>(obj, schemaInverseProblemData);
 }
 
+interface IInverseProblemDataOptions {
+    dataSelection: InverseProblemDataSelectionType;
+    data?: InverseProblemData;
+    points?: number;
+}
+const schemaIInverseProblemDataOptionsKeys: UseKeys<IInverseProblemDataOptions, joi.Schema> = {
+    dataSelection: joi.string().allow(_.values(InverseProblemDataSelection)),
+    data: schemaInverseProblemData.optional(),
+    points: joi.number().integer().greater(0).optional()
+}
+
 export interface IInverseProblemOptions extends ICommonOptions {
     syntheticParameters?: IParameters;
     method: InverseProblemMethodsType;
-    dataSelection: InverseProblemDataSelectionType;
-    data?: InverseProblemData;
+    dataOptions: IInverseProblemDataOptions;
 }
 
 const defaultOptions: IInverseProblemOptions = {
     ...defaultCommonOptions,
     method: InverseProblemMethods.NelderMead,
-    dataSelection: InverseProblemDataSelection.Synthetic
+    dataOptions: {
+        dataSelection: InverseProblemDataSelection.Synthetic
+    }
 }
-
 
 export const schemaIInverseProblemOptionsKeys: UseKeys<IInverseProblemOptions, joi.Schema> = {
     ...schemaICommonOptionsKeys,
     syntheticParameters: joi.object().pattern(/^/, joi.number()).optional(),
     method: joi.string().allow(_.values(InverseProblemMethods)),
-    dataSelection: joi.string().allow(_.values(InverseProblemDataSelection)),
-    data: schemaInverseProblemData
+    dataOptions: joi.object().keys(schemaIInverseProblemDataOptionsKeys).required()
 }
 export const schemaIInverseProblemOptions = joi.object().keys(schemaIInverseProblemOptionsKeys);
 
