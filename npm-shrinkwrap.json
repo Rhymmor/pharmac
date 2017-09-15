@@ -159,6 +159,24 @@
         "@types/react": "15.6.2"
       }
     },
+    "@types/react-dnd": {
+      "version": "2.0.33",
+      "resolved": "https://registry.npmjs.org/@types/react-dnd/-/react-dnd-2.0.33.tgz",
+      "integrity": "sha512-CgCXr4O5kl/XNV9D3f98c79aoaxPEllAiFbTxkFMWS1hdbtN1RJQWSgcQCYx7pHP/czw8F9qHs1466LfhMnElQ==",
+      "dev": true,
+      "requires": {
+        "@types/react": "15.6.2"
+      }
+    },
+    "@types/react-dnd-html5-backend": {
+      "version": "2.1.8",
+      "resolved": "https://registry.npmjs.org/@types/react-dnd-html5-backend/-/react-dnd-html5-backend-2.1.8.tgz",
+      "integrity": "sha512-cIoW1QxetsT02s5n0J2VFdnTI2FUc0R0Djy48kbyXQ3oi5ukt+974zrj2Ruiv/ALUaO9xOvOvJsspKR43byYlA==",
+      "dev": true,
+      "requires": {
+        "@types/react-dnd": "2.0.33"
+      }
+    },
     "@types/react-dom": {
       "version": "0.14.23",
       "resolved": "https://registry.npmjs.org/@types/react-dom/-/react-dom-0.14.23.tgz",
@@ -2956,6 +2974,22 @@
         "bn.js": "4.11.8",
         "miller-rabin": "4.0.0",
         "randombytes": "2.0.5"
+      }
+    },
+    "disposables": {
+      "version": "1.0.1",
+      "resolved": "https://registry.npmjs.org/disposables/-/disposables-1.0.1.tgz",
+      "integrity": "sha1-BkcnoltU9QK9griaot+4358bOeM="
+    },
+    "dnd-core": {
+      "version": "2.5.1",
+      "resolved": "https://registry.npmjs.org/dnd-core/-/dnd-core-2.5.1.tgz",
+      "integrity": "sha1-F49a1lJs4C3VlQjxFVNfe/wM6U4=",
+      "requires": {
+        "asap": "2.0.6",
+        "invariant": "2.2.2",
+        "lodash": "4.17.4",
+        "redux": "3.7.2"
       }
     },
     "dns-equal": {
@@ -7621,6 +7655,27 @@
         "react-prop-types": "0.4.0",
         "uncontrollable": "4.1.0",
         "warning": "3.0.0"
+      }
+    },
+    "react-dnd": {
+      "version": "2.5.1",
+      "resolved": "https://registry.npmjs.org/react-dnd/-/react-dnd-2.5.1.tgz",
+      "integrity": "sha1-7O8dnYR4y3av1Zdc1RI+98O+v+U=",
+      "requires": {
+        "disposables": "1.0.1",
+        "dnd-core": "2.5.1",
+        "hoist-non-react-statics": "2.3.1",
+        "invariant": "2.2.2",
+        "lodash": "4.17.4",
+        "prop-types": "15.5.10"
+      }
+    },
+    "react-dnd-html5-backend": {
+      "version": "2.5.1",
+      "resolved": "https://registry.npmjs.org/react-dnd-html5-backend/-/react-dnd-html5-backend-2.5.1.tgz",
+      "integrity": "sha1-02VuUUsMRpkCpIX/+nX4aE4hx3c=",
+      "requires": {
+        "lodash": "4.17.4"
       }
     },
     "react-dom": {

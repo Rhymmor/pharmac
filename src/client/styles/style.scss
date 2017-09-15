@@ -114,3 +114,13 @@ body {
     cursor: pointer;
     overflow: hidden;
 }
+
+.draggable {
+    &:hover {
+        // box-shadow: 0 0px 2px 0 $input-text-color, 0 0px 2px 0 $input-text-color;
+        cursor: pointer;
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;    
+    }
+}
