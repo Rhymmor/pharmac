@@ -14,7 +14,7 @@ import { getDirectSolution, updateDirectProblemOptions } from '../../redux/actio
 import { Modifier, modifyTarget } from '../../utils/utils';
 import { IDirectProblemStore, IDirectProblemOptions, IDirectProblemSolution } from '../../redux/reducers/solvers/direct-problem';
 import { DirectProblem } from './components/direct-problem/direct-problem';
-import { Model } from './components/model';
+import Model from './components/model';
 import { generateFormula } from '../../utils/formula-utils';
 import {
     checkAndUpdateModel,

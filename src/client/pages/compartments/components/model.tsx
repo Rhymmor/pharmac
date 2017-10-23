@@ -1,3 +1,5 @@
+import { Translate } from '../../../utils/utils';
+import { IStore } from '../../../redux/reducers';
 import { BoxHeader } from '../../../components/layout';
 import { Box } from '../../../components';
 import { Formula } from './formula';
@@ -5,17 +7,27 @@ import { generateFormula, getDefaultFormula } from '../../../utils/formula-utils
 import { IFormula, IModel } from '../../../redux/reducers/formulas';
 import * as React from 'react';
 import * as _ from 'lodash';
+import { getTranslate, getActiveLanguage } from 'react-localize-redux';
+import {connect} from 'react-redux';
 
 interface IModelProps {
+    translate?: Translate;
+    currentLanguage?: string;
     model: IModel;
     modifyModel: (modify: (model: IFormula[]) => void) => void;
 }
 
 interface IModelState {
-
 }
 
-export class Model extends React.PureComponent<IModelProps, IModelState> {
+function mapStateToProps(state: IStore): Partial<IModelProps> {
+    return {
+        translate: getTranslate(state.locale) as any,
+        currentLanguage: getActiveLanguage(state.locale).code
+    };
+}
+
+class Model extends React.PureComponent<IModelProps, IModelState> {
     
     modifyFormula = (id: string) => (modify: (formula: IFormula) => void) => {
         this.props.modifyModel((model: IModel) => {
@@ -42,7 +54,7 @@ export class Model extends React.PureComponent<IModelProps, IModelState> {
         return (
             <Box>
                 <BoxHeader>
-                    Model
+                    {this.props.translate('title.model')}
                 </BoxHeader>
                 <div className='model-body'>
                     {
@@ -62,3 +74,5 @@ export class Model extends React.PureComponent<IModelProps, IModelState> {
         );
     }
 }
+
+export default connect<Partial<IModelProps>, any, IModelProps>(mapStateToProps)(Model as any);
