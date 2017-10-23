@@ -54,7 +54,7 @@ export class ModelOptions<T extends ICommonOptions> extends React.Component<IMod
                     <Button 
                         onClick={solve} 
                         className='inline-block' 
-                        disabled={!isOk(isSolveBtnEnable) || !isSolveBtnEnable}
+                        disabled={isOk(isSolveBtnEnable) && !isSolveBtnEnable}
                     >
                         Solve
                     </Button>
