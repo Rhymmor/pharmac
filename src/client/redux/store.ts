@@ -2,7 +2,8 @@ import { createStore, applyMiddleware, compose } from 'redux';
 const thunk = require('redux-thunk').default
 
 import { rootReducer } from './reducers';
-
+import { initialize, addTranslation } from 'react-localize-redux';
+const localeJson = require('../localization/global.json');
 /* Redux store with middleware
  *
  * you can use Redux DevTools Chrome/FF extensions to view contents and dispatched actions
@@ -21,3 +22,6 @@ export let store = createStore(
     middleware
 );
 
+const languages = ['en', 'ru'];
+store.dispatch(initialize(languages, {defaultLanguage: languages[0]}));
+store.dispatch(addTranslation(localeJson));

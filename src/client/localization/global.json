@@ -1,0 +1,37 @@
+{
+    "title": {
+        "model": ["Model", "Модель"],
+        "commonOptions": ["Common options", "Общие настройки"],
+        "result": ["Result", "Результат"],
+        "directProblem": ["Direct problem", "Прямая задача"],
+        "inverseProblem": ["Inverse problem", "Обратная задача"],
+        "identifiability": ["Identifiability", "Идентифицируемость"]
+    },
+    "problem": {
+        "common": {
+            "interval": ["Interval", "Интервал"],
+            "points": ["Points number", "Число точек"],
+            "solveAction": ["Solve", "Решить"]
+        },
+        "direct": {
+            "functionsPlot": ["Functions plot", "График функций"]
+        },
+        "identifiability": {
+            "barChart": ["Bar chart", "Гистограмма"],
+            "resultTable": ["Results value table", "Таблица значений"],
+            "pieChart": ["Pie chart", "Круговая диаграмма"]
+        },
+        "inverse": {
+            "options": ["Inverse problem options", "Настройки обратной задачи"],
+            "barChart": ["Bar chart", "Гистограмма"],
+            "solutionValues": ["Solution values", "Значения параметров"],
+            "solutionParameters": {
+                "title": ["Solution parameters", "Характеристики решения"],
+                "objFunctionValue": ["Value of objective function", "Значение целевого функционала"],
+                "objFunctionEvals": ["Number of evaluations of the objective function", "Количество вычислений целевого функционала"],
+                "iters": ["Number of iterations", "Число итераций"],
+                "runtime": ["Execution time", "Время исполнения"]
+            }
+        }
+    }
+}
