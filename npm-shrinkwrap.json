@@ -3525,6 +3525,14 @@
         "pinkie-promise": "2.0.1"
       }
     },
+    "flat": {
+      "version": "2.0.1",
+      "resolved": "https://registry.npmjs.org/flat/-/flat-2.0.1.tgz",
+      "integrity": "sha1-cOKRiKdL4MPIlAnu0fqVd5B64y8=",
+      "requires": {
+        "is-buffer": "1.1.5"
+      }
+    },
     "flatten": {
       "version": "1.0.2",
       "resolved": "https://registry.npmjs.org/flatten/-/flatten-1.0.2.tgz",
@@ -7697,6 +7705,15 @@
         "attr-accept": "1.1.0"
       }
     },
+    "react-localize-redux": {
+      "version": "2.12.0",
+      "resolved": "https://registry.npmjs.org/react-localize-redux/-/react-localize-redux-2.12.0.tgz",
+      "integrity": "sha512-OAb5hUjAY4+mMPMoMspVMVR1Wo5d4/ie0U1ei6qGvByiflBk7w1YY5wm1DBYsxFytvWFCGQCgouScplbGYIelQ==",
+      "requires": {
+        "flat": "2.0.1",
+        "reselect": "3.0.1"
+      }
+    },
     "react-mathjax": {
       "version": "0.1.1",
       "resolved": "https://registry.npmjs.org/react-mathjax/-/react-mathjax-0.1.1.tgz",
@@ -8145,6 +8162,11 @@
       "resolved": "https://registry.npmjs.org/requires-port/-/requires-port-1.0.0.tgz",
       "integrity": "sha1-kl0mAdOaxIXgkc8NpcbmlNw9yv8=",
       "dev": true
+    },
+    "reselect": {
+      "version": "3.0.1",
+      "resolved": "https://registry.npmjs.org/reselect/-/reselect-3.0.1.tgz",
+      "integrity": "sha1-79qpjqdFEyTQkrKyFjpqHXqaIUc="
     },
     "resolve": {
       "version": "1.4.0",
