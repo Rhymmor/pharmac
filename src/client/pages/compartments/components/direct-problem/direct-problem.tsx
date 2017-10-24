@@ -1,3 +1,4 @@
+import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { SolutionResults } from '../SolutionResults';
 import { updateDirectProblemLoadingState } from '../../../../redux/actions/solvers/direct-problem';
 import { IUpdateLoadingState } from '../../../../redux/actions/solvers';
@@ -18,15 +19,15 @@ import * as React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import * as _ from 'lodash';
 
-interface IDirectProblemProps extends IProblemProps<IDirectProblemSolution, IDirectProblemOptions, IDirectProblemStore> {
+interface IDirectProblemProps extends IProblemProps<IDirectProblemSolution, IDirectProblemOptions, IDirectProblemStore>, WithLocale {
 }
 
 interface IDirectProblemState {
 }
 
-export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDirectProblemState> {
+class DirectProblemImpl extends React.PureComponent<IDirectProblemProps, IDirectProblemState> {
 
-    setLoadingState = (flag: boolean) => this.props.dispatch(updateDirectProblemLoadingState(flag));
+    private setLoadingState = (flag: boolean) => this.props.dispatch(updateDirectProblemLoadingState(flag));
     finishLoading = () => this.setLoadingState(false);
 
     solveProblem = () => {
@@ -35,7 +36,7 @@ export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDir
     }
 
     render() {
-        const {solve, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
+        const {solve, translate, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
         return (
             //TODO: get classname from props
             <Box className={classnames('direct-box', loading && 'loading-back')}>
@@ -49,12 +50,12 @@ export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDir
                     {
                         !!_.keys(params).length &&
                         <Col xs={12}>
-                            <ParamsBox label='Parameters' params={params} modifyParams={modifyParams}/>
+                            <ParamsBox label={translate('problem.common.parameters')} params={params} modifyParams={modifyParams}/>
                         </Col>
                     }
                 </Row>
-                <BoxHeader>Result</BoxHeader>
-                <SolutionResults labels={["Functions plot"]}>
+                <BoxHeader>{translate('title.result')}</BoxHeader>
+                <SolutionResults labels={[translate('problem.direct.functionsPlot')]}>
                     <DirectProblemPlot solution={solution} options={options}/>
                 </SolutionResults>
                 <Row>
@@ -66,3 +67,5 @@ export class DirectProblem extends React.PureComponent<IDirectProblemProps, IDir
         );
     }
 }
+
+export default connectLocale(DirectProblemImpl);

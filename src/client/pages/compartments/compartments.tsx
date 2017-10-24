@@ -13,7 +13,7 @@ import { IIdentifiabilityStore } from '../../redux/reducers/solvers/identifiabil
 import { getDirectSolution, updateDirectProblemOptions } from '../../redux/actions/solvers/direct-problem';
 import { Modifier, modifyTarget } from '../../utils/utils';
 import { IDirectProblemStore, IDirectProblemOptions, IDirectProblemSolution } from '../../redux/reducers/solvers/direct-problem';
-import { DirectProblem } from './components/direct-problem/direct-problem';
+import DirectProblem from './components/direct-problem/direct-problem';
 import Model from './components/model';
 import { generateFormula } from '../../utils/formula-utils';
 import {

@@ -1,9 +1,9 @@
-import { TranslateValue, TranslatePlaceholderData, Options, LocalizedElement, LocalizedElementMap } from 'react-localize-redux';
+import { TranslateValue, TranslatePlaceholderData, Options } from 'react-localize-redux';
 import * as _ from 'lodash';
 
 
 export type Selector<S, R> = (state: S) => R;
-export type Translate = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => LocalizedElement|LocalizedElementMap;
+export type Translate = (value: TranslateValue, data?: TranslatePlaceholderData, options?: Options) => string;
 
 export type ReactChildren = React.ReactElement<any> | React.ReactElement<any>[];
 
