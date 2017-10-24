@@ -1,3 +1,4 @@
+import { Languages } from '../redux/store';
 import { Translate } from '../utils/utils';
 import { IStore } from '../redux/reducers';
 import { getTranslate, getActiveLanguage } from 'react-localize-redux';
@@ -6,7 +7,7 @@ import {connect} from 'react-redux';
 
 export interface WithLocale {
     translate?: Translate;
-    currentLanguage?: string;
+    currentLanguage?: Languages;
 }
 
 function mapStateToProps<T extends WithLocale>(state: IStore): Partial<T> {
@@ -16,6 +17,11 @@ function mapStateToProps<T extends WithLocale>(state: IStore): Partial<T> {
     } as any) as Partial<T>;
 }
 
-export function connectLocale<T extends WithLocale>(reactClass: React.ComponentType<T>): React.ComponentClass<T> {
-    return connect<Partial<T>, any, Partial<T>>(mapStateToProps)(reactClass) as any;
+type MapDispatchToPropsObject = {[name: string]: any}
+
+export function connectLocale<T extends WithLocale>(
+    reactClass: React.ComponentType<T>, 
+    mapDispatchToProps?: MapDispatchToPropsObject
+): React.ComponentClass<T> {
+    return connect<Partial<T>, any, Partial<T>>(mapStateToProps, mapDispatchToProps)(reactClass) as any;
 }

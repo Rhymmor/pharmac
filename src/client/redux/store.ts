@@ -1,3 +1,4 @@
+import { Enum, UseStrings } from '../../lib/utils';
 import { createStore, applyMiddleware, compose } from 'redux';
 const thunk = require('redux-thunk').default
 
@@ -22,6 +23,12 @@ export let store = createStore(
     middleware
 );
 
-const languages = ['en', 'ru'];
+export type Languages = 'en' | 'ru';
+export const Languages: Enum<Languages> = {
+    en: 'en',
+    ru: 'ru'
+}
+
+const languages = Object.keys(Languages);
 store.dispatch(initialize(languages, {defaultLanguage: languages[0]}));
 store.dispatch(addTranslation(localeJson));
