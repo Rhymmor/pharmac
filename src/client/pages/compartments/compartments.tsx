@@ -1,3 +1,4 @@
+import LanguageSelector from '../../components/LanguageSelector/LanguageSelector';
 import { ICommonOptions } from '../../redux/reducers/solvers';
 import { ModelOptions } from './components/ModelOptions';
 import {
@@ -168,6 +169,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
         const {activeTab} = this.state;
         return (
             <div className="page-workzone">
+                <LanguageSelector/>
                 <Model modifyModel={this.modifyModel} model={model}/>
                 <Nav bsStyle="tabs" activeKey={activeTab} onSelect={(num: any) => this.handleSelectTab(num)} className="compart-nav">
                     <NavItem eventKey={Tabs.DIRECT}>

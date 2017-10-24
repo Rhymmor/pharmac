@@ -1,0 +1,11 @@
+@import "../../styles/variables.scss";
+
+.language-selector {
+    box-shadow: $card-box-shadow;
+    background-color: $box-back-color;
+    margin: 8px 0;
+    button.dropdown-toggle.btn.btn-default {
+        color: $title-color;
+        margin: 0px;
+    }
+}

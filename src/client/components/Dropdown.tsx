@@ -10,9 +10,10 @@ interface IDropdownProps {
     value: string;
     tooltips?: ObjectType;
     names: ObjectType;
-    label: string;
+    label?: string;
     modify: (value: string) => void;
     id?: string;
+    className?: string;
 }
 
 interface IDropdownState {
@@ -33,10 +34,10 @@ export class Dropdown extends React.Component<IDropdownProps, IDropdownState> {
     }
 
     render() {
-        const {value, label, tooltips, names, id} = this.props;
+        const {value, label, tooltips, names, id, className} = this.props;
         return (
-            <div className={classnames("methods-dropdown", "inline-block")} title={tooltips && tooltips[value]}>
-                <span>{label}</span>
+            <div className={classnames("methods-dropdown", "inline-block", className)} title={tooltips && tooltips[value]}>
+                { label && <span>{label}</span> }
                 <DropdownButton
                     id={id || generate()}
                     title={names[value]}
