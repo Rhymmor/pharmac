@@ -11,7 +11,8 @@
         "common": {
             "interval": ["Interval", "Интервал"],
             "points": ["Points number", "Число точек"],
-            "solveAction": ["Solve", "Решить"]
+            "solveAction": ["Solve", "Решить"],
+            "parameters": ["Parameters", "Параметры"]
         },
         "direct": {
             "functionsPlot": ["Functions plot", "График функций"]
