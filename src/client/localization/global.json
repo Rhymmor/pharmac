@@ -23,6 +23,23 @@
             "pieChart": ["Pie chart", "Круговая диаграмма"]
         },
         "inverse": {
+            "parameters": ["Synthetic parameters", "Синтетические параметры"],
+            "method": {
+                "title": ["Solution method", "Метод решения"],
+                "NelderMead": ["Nelder-Mead", "Нелдер-Мид"],
+                "BFGS": ["BFGS", "BFGS"],
+                "Powell": ["Powell", "Сопряженные направления"],
+                "CG": ["Conjugate gradient", "Сопряженные градиенты"],
+                "L_BFGS_B": ["L-BFGS-B", "L-BFGS-B"],
+                "TNC": ["Truncated Newton method", "Усеченный метод Ньютона"],
+                "COBYLA": ["COBYLA", "COBYLA"],
+                "SLSQP": ["SLSQP", "Метод наименьших квадратов"]
+            },
+            "dataSelection": {
+                "title": ["Data selection method", "Метод получения данных"],
+                "synthetic": ["Synthetic data", "Синтетические данные"],
+                "experimental": ["Experimental data", "Экпериментальные данные"]
+            },
             "options": ["Inverse problem options", "Настройки обратной задачи"],
             "barChart": ["Bar chart", "Гистограмма"],
             "solutionValues": ["Solution values", "Значения параметров"],

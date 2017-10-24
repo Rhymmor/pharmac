@@ -1,3 +1,4 @@
+import { connectLocale, WithLocale } from '../../../components/connectLocale';
 import { BoxHeader } from '../../../components/layout';
 import * as classnames from 'classnames';
 import { StatefulFormControl } from '../../../components/statefulInput';
@@ -9,7 +10,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { Button } from 'react-bootstrap';
 
-interface IModelOptionsProps<T> {
+interface IModelOptionsProps<T> extends WithLocale {
     modifyOptions: (modify: Modifier<T>) => void;
     options: T;
     solve: () => void;
@@ -19,7 +20,7 @@ interface IModelOptionsProps<T> {
 interface IModelOptionsState {
 }
 
-export class ModelOptions<T extends ICommonOptions> extends React.Component<IModelOptionsProps<T>, IModelOptionsState> {
+class ModelOptions<T extends ICommonOptions> extends React.Component<IModelOptionsProps<T>, IModelOptionsState> {
 
     modifyOptionKey = (key: keyof T) => {
         return (value: any) => {    //TODO: Typescript bug
@@ -40,15 +41,15 @@ export class ModelOptions<T extends ICommonOptions> extends React.Component<IMod
     )
 
     render() {
-        const {options, solve, isSolveBtnEnable} = this.props;
+        const {options, solve, isSolveBtnEnable, translate} = this.props;
         return (
             <div>
-                <BoxHeader>Common options</BoxHeader>
+                <BoxHeader>{translate('title.commonOptions')}</BoxHeader>
                 <div>
                     <div className='inline-block'>
-                        <span>Interval:</span>
+                        <span>{translate('problem.common.interval')}:</span>
                         {this.renderInput('interval')}
-                        <span>Points number:</span>
+                        <span>{translate('problem.common.points')}:</span>
                         {this.renderInput('points')}
                     </div>
                     <Button 
@@ -56,10 +57,12 @@ export class ModelOptions<T extends ICommonOptions> extends React.Component<IMod
                         className='inline-block' 
                         disabled={isOk(isSolveBtnEnable) && !isSolveBtnEnable}
                     >
-                        Solve
+                        {translate('problem.common.solveAction')}
                     </Button>
                 </div>
             </div>
         );
     }
 }
+
+export default connectLocale(ModelOptions)

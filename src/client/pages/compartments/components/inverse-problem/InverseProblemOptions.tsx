@@ -1,6 +1,6 @@
 import { StatefulFormControl } from '../../../../components/statefulInput';
 import { Dropdown } from '../../../../components/Dropdown';
-import { Modifier } from '../../../../utils/utils';
+import { Modifier, Translate } from '../../../../utils/utils';
 import { safeGet, UseStrings } from '../../../../../lib/utils';
 import { BoxHeader } from '../../../../components/layout';
 import * as React from 'react';
@@ -18,25 +18,30 @@ import {
 interface IProps {
     options: IInverseProblemOptions;
     modifyOptions: (modify: Modifier<IInverseProblemOptions>) => void;
+    translate: Translate;
 }
 
 interface IState {
 }
 
-const DataSelectionText: UseStrings<InverseProblemDataSelectionType, string> = {
-    Synthetic: "Synthetic data",
-    Experimental: "Experimental data"
+function getDataSelectionText(translate: Translate): UseStrings<InverseProblemDataSelectionType, string> {
+    return {
+        Synthetic: translate('problem.inverse.dataSelection.synthetic'),
+        Experimental: translate('problem.inverse.dataSelection.experimental'),
+    }
 };
 
-const MethodsText: UseStrings<InverseProblemMethodsType, string> = {
-    NelderMead: "Nelder-Mead",
-    BFGS: "BFGS",
-    Powell: "Powell",
-    CG: "Conjugate gradient",
-    "L-BFGS-B": "L-BFGS-B",
-    TNC: "Truncated Newton",
-    COBYLA: "COBYLA",
-    SLSQP: "SLSQP"
+function getMethodsText(translate: Translate): UseStrings<InverseProblemMethodsType, string> {
+    return {
+        NelderMead: translate('problem.inverse.method.NelderMead'),
+        BFGS: translate('problem.inverse.method.BFGS'),
+        Powell: translate('problem.inverse.method.Powell'),
+        CG: translate('problem.inverse.method.CG'),
+        "L-BFGS-B": translate('problem.inverse.method.L_BFGS_B'),
+        TNC: translate('problem.inverse.method.TNC'),
+        COBYLA: translate('problem.inverse.method.COBYLA'),
+        SLSQP: translate('problem.inverse.method.SLSQP'),
+    };
 };
 
 const MethodsTooltip: UseStrings<InverseProblemMethodsType, string> = {
@@ -74,23 +79,23 @@ export class InverseProblemOptions extends React.Component<IProps, IState> {
     );
 
     render() {
-        const {options: {method, dataOptions: {dataSelection}}} = this.props;
+        const {options: {method, dataOptions: {dataSelection}}, translate} = this.props;
         return (
             <div>
-                <BoxHeader>Inverse problem options</BoxHeader>
+                <BoxHeader>{translate('problem.inverse.options')}</BoxHeader>
                 <div>
                     <Dropdown 
                         value={method}
-                        names={MethodsText}
+                        names={getMethodsText(translate)}
                         tooltips={MethodsTooltip}
                         modify={this.modifyMethod}
-                        label='Solution method:'
+                        label={`${translate('problem.inverse.method.title')}:`}
                     />
                     <Dropdown 
                         value={dataSelection}
-                        names={DataSelectionText}
+                        names={getDataSelectionText(translate)}
                         modify={this.modifyDataSelection}
-                        label='Data selection method:'
+                        label={`${translate('problem.inverse.dataSelection.title')}:`}
                     />
                     { dataSelection === InverseProblemDataSelection.Synthetic && this.renderSyntheticPoints()}
                 </div>

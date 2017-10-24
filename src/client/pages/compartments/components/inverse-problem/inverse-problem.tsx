@@ -1,3 +1,4 @@
+import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { InverseProblemOptions } from './InverseProblemOptions';
 import { SolutionResults } from '../SolutionResults';
 import { KeyValueTable } from '../table/KeyValueTable';
@@ -18,10 +19,10 @@ import {
     validateInverseProblemData,
 } from '../../../../redux/reducers/solvers/inverse-problem';
 import { IParameters } from '../../../../redux/reducers/formulas';
-import { Modifier } from '../../../../utils/utils';
+import { Modifier, Translate } from '../../../../utils/utils';
 import { ParamsBox } from '../paramsBox';
 import { cutFraction, safeGet, tryParseJSON, UseKeys, UseStrings } from '../../../../../lib/utils';
-import { ModelOptions } from '../ModelOptions';
+import ModelOptions from '../ModelOptions';
 import { Box } from '../../../../components';
 import { InverseProblemPlot } from './inverse-problem-plot';
 import { IProblemProps } from '../abstract-problem';
@@ -30,30 +31,36 @@ import { Row, Col, Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import * as _ from 'lodash';
 import './inverse-problem.scss';
 
-interface IInverseProblemProps extends IProblemProps<IInverseProblemSolution, IInverseProblemOptions, IInverseProblemStore> {
-}
+interface IInverseProblemProps extends IProblemProps<
+    IInverseProblemSolution,
+    IInverseProblemOptions,
+    IInverseProblemStore
+>, WithLocale {}
 
 interface IInverseProblemState {
 }
 
-const SolutionParametersText: UseKeys<IInverseProblemSolutionParameters, string> = {
-    fun: 'Value of objective function',
-    nfev: 'Number of evaluations of the objective function',
-    nit: 'Number of iterations',
-    time: 'Execution time (sec)'
+function getSolutionParametersText(translate: Translate): UseKeys<IInverseProblemSolutionParameters, string> {
+    return {
+        fun: translate('problem.inverse.solutionParameters.objFunctionValue'),
+        nfev: translate('problem.inverse.solutionParameters.objFunctionEvals'),
+        nit: translate('problem.inverse.solutionParameters.iters'),
+        time: translate('problem.inverse.solutionParameters.runtime'),
+    };
 }
 
 function isSolveBtnEnable(parameters: IParameters): boolean {
     return !!_.keys(parameters).length;
 }
 
-function prepareSolutionParameters(parameters: IInverseProblemSolutionParameters) {
+function prepareSolutionParameters(translate: Translate, parameters: IInverseProblemSolutionParameters) {
+    const SolutionParametersText = getSolutionParametersText(translate);
     return _.map(Object.keys(parameters), (key: keyof IInverseProblemSolutionParameters) => (
         {key: SolutionParametersText[key], value: cutFraction(parameters[key])}
     ));
 }
 
-export class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseProblemState> {
+class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseProblemState> {
     setLoadingState = (flag: boolean) => this.props.dispatch(updateInverseProblemLoadingState(flag));
     finishLoading = () => this.setLoadingState(false);
 
@@ -76,7 +83,7 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
             if (validator.valid) {
                 this.props.modifyOptions(options => options.dataOptions.data = data);
             } else {
-                
+
             }
         }
     }
@@ -86,9 +93,9 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
         if (dataSelection === InverseProblemDataSelection.Synthetic) {
             if (!!_.keys(syntheticParameters).length) {
                 return (
-                    <ParamsBox 
-                        label='Synthetic parameters' 
-                        params={syntheticParameters} 
+                    <ParamsBox
+                        label={this.props.translate('problem.inverse.parameters')}
+                        params={syntheticParameters}
                         modifyParams={this.modifySyntheticParams}
                     />
                 );
@@ -108,40 +115,55 @@ export class InverseProblem extends React.PureComponent<IInverseProblemProps, II
         }
     }
 
+    private getResultLabels = () => {
+        const {translate} = this.props;
+        return [
+            translate('problem.inverse.barChart'),
+            translate('problem.inverse.solutionValues'),
+            translate('problem.inverse.solutionParameters.title'),
+        ];
+    }
+
     render() {
-        const {solve, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
+        const {solve, problem: {solution, options, loading}, params, modifyParams, modifyOptions, translate} = this.props;
         //Typescript type bug
         return (
             <Box className={classnames('direct-box', loading && 'loading-back')}>
                 { loading && <div className='loading-wheel'></div> }
-                <ModelOptions 
-                    options={options as any} 
+                <ModelOptions
+                    options={options as any}
                     modifyOptions={modifyOptions as any}
                     solve={this.solveProblem}
                     isSolveBtnEnable={isSolveBtnEnable(options.syntheticParameters)}
                 />
-                <InverseProblemOptions options={options} modifyOptions={modifyOptions}/>
+                <InverseProblemOptions options={options} modifyOptions={modifyOptions} translate={translate}/>
                 <Row>
                     {
                         !!_.keys(params).length &&
                         <Col xs={6}>
-                            <ParamsBox label='Initial parameters' params={params} modifyParams={modifyParams}/>
+                            <ParamsBox
+                                label={translate('problem.common.parameters')}
+                                params={params}
+                                modifyParams={modifyParams}
+                            />
                         </Col>
                     }
                     <Col xs={6}>
                         {this.renderDataSelectionSettings(options)}
                     </Col>
                 </Row>
-                <BoxHeader>Result</BoxHeader>
-                <SolutionResults labels={["Bar plot", "Solution values", "Solution parameters"]}>
+                <BoxHeader>{translate('title.result')}</BoxHeader>
+                <SolutionResults labels={this.getResultLabels()}>
                         <InverseProblemPlot solution={solution}/>
-                        <KeyValueTable 
-                            parameters={_.map(solution.solution, (value, key) => ({key, value}))} 
+                        <KeyValueTable
+                            parameters={_.map(solution.solution, (value, key) => ({key, value}))}
                             mathJax={true}
                         />
-                         <KeyValueTable parameters={prepareSolutionParameters(solution.parameters)}/>
+                         <KeyValueTable parameters={prepareSolutionParameters(translate, solution.parameters)}/>
                 </SolutionResults>
             </Box>
         );
     }
 }
+
+export default connectLocale(InverseProblem);

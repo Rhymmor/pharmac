@@ -1,3 +1,4 @@
+import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { SolutionResults } from '../SolutionResults';
 import { ParametersPlot, PlotType } from '../plots/ParametersPlot';
 import { updateIdentifiabilityLoadingState } from '../../../../redux/actions/solvers/identifiability';
@@ -10,7 +11,7 @@ import {
 } from '../../../../redux/reducers/solvers/identifiability';
 import { updateDirectProblemLoadingState } from '../../../../redux/actions/solvers/direct-problem';
 import * as classnames from 'classnames';
-import { ModelOptions } from '../ModelOptions';
+import ModelOptions from '../ModelOptions';
 import { Box, BoxHeader } from '../../../../components';
 import { IProblemProps } from '../abstract-problem';
 import { IdentifiabilityPlot } from './identifiability-plot';
@@ -19,8 +20,11 @@ import { Row, Col, Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { ParamsBox } from '../paramsBox';
 import * as _ from 'lodash';
 
-interface IIdentifiabilityProps extends IProblemProps<IIdentifiabilitySolution, IIdentifiabilityOptions, IIdentifiabilityStore> {
-}
+interface IIdentifiabilityProps extends IProblemProps<
+    IIdentifiabilitySolution, 
+    IIdentifiabilityOptions, 
+    IIdentifiabilityStore
+>, WithLocale {}
 
 interface IIdentifiabilityState {
 }
@@ -29,7 +33,7 @@ function isSolveBtnEnable(parameters: IParameters): boolean {
     return !!_.keys(parameters).length;
 }
 
-export class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, IIdentifiabilityState> {
+class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, IIdentifiabilityState> {
 
     setLoadingState = (flag: boolean) => this.props.dispatch(updateIdentifiabilityLoadingState(flag));
     finishLoading = () => this.setLoadingState(false);
@@ -39,10 +43,19 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
         this.props.solve(this.finishLoading);
     }
 
+    private getResultLabels = () => {
+        const {translate} = this.props;
+        return [
+            translate('problem.identifiability.barChart'),
+            translate('problem.identifiability.resultTable'),
+            translate('problem.identifiability.pieChart')
+        ];
+    }
+
     renderPiePlot = (solution: IIdentifiabilitySolution) => <ParametersPlot solution={solution} type={PlotType.pie}/>
 
     render() {
-        const {solve, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
+        const {solve, translate, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
         //Typescript type bug
         return (
             <Box className={classnames('direct-box', loading && 'loading-back')}>
@@ -61,8 +74,8 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
                     </Col>
                 }
                 </Row>
-                <BoxHeader>Result</BoxHeader>
-                <SolutionResults labels={["Bar plot", "Results value table", "Pie plot"]}>
+                <BoxHeader>{translate('title.result')}</BoxHeader>
+                <SolutionResults labels={this.getResultLabels()}>
                     <IdentifiabilityPlot solution={solution}/>
                     <KeyValueTable 
                         parameters={_.map(solution.solution, (value, key) => ({key, value}))}
@@ -74,3 +87,5 @@ export class IdentifiabilityProblem extends React.PureComponent<IIdentifiability
         );
     }
 }
+
+export default connectLocale(IdentifiabilityProblem);

@@ -1,15 +1,17 @@
+import { Languages } from '../../redux/store';
+import { WithLocale } from '../../components/connectLocale';
 import LanguageSelector from '../../components/LanguageSelector/LanguageSelector';
 import { ICommonOptions } from '../../redux/reducers/solvers';
-import { ModelOptions } from './components/ModelOptions';
+import ModelOptions from './components/ModelOptions';
 import {
     getInverseSolution,
     updateInverseProblemOptions,
     updateInverseProblemParameters
 } from '../../redux/actions/solvers/inverse-problem';
-import { InverseProblem } from './components/inverse-problem/inverse-problem';
+import InverseProblem from './components/inverse-problem/inverse-problem';
 import { IInverseProblemStore } from '../../redux/reducers/solvers/inverse-problem';
 import { getIdentifiabilitySolution, updateIdentifiabilityOptions } from '../../redux/actions/solvers/identifiability';
-import { IdentifiabilityProblem } from './components/identifiability/identifiability';
+import IdentifiabilityProblem from './components/identifiability/identifiability';
 import { IIdentifiabilityStore } from '../../redux/reducers/solvers/identifiability';
 import { getDirectSolution, updateDirectProblemOptions } from '../../redux/actions/solvers/direct-problem';
 import { Modifier, modifyTarget } from '../../utils/utils';
@@ -32,9 +34,10 @@ import {Box, BoxHeader} from '../../components';
 import {connect} from 'react-redux';
 import * as _ from 'lodash';
 import {Nav, NavItem} from 'react-bootstrap';
+import { getTranslate, getActiveLanguage } from 'react-localize-redux';
 import './compartments.scss';
 
-interface ICompartmentsProps {
+interface ICompartmentsProps extends WithLocale {
     dispatch: Function;
     modelStore: IModelStore;
     directProblem: IDirectProblemStore;
@@ -51,7 +54,9 @@ function mapStateToProps(state: IStore, ownProps: any): Partial<ICompartmentsPro
         modelStore: state.model,
         directProblem: state.directProblem,
         identifyStore: state.identifiability,
-        inverseProblem: state.inverseProblem
+        inverseProblem: state.inverseProblem,
+        translate: getTranslate(state.locale) as any,
+        currentLanguage: getActiveLanguage(state.locale).code as Languages
     }
 }
 
@@ -165,7 +170,7 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
     }
 
     render() {
-        const {modelStore: {model}, directProblem} = this.props;
+        const {modelStore: {model}, directProblem, translate} = this.props;
         const {activeTab} = this.state;
         return (
             <div className="page-workzone">
@@ -173,13 +178,13 @@ class CompartmentsImpl extends React.PureComponent<ICompartmentsProps, ICompartm
                 <Model modifyModel={this.modifyModel} model={model}/>
                 <Nav bsStyle="tabs" activeKey={activeTab} onSelect={(num: any) => this.handleSelectTab(num)} className="compart-nav">
                     <NavItem eventKey={Tabs.DIRECT}>
-                        <span>Direct problem</span>
+                        <span>{translate('title.directProblem')}</span>
                     </NavItem>
                     <NavItem eventKey={Tabs.IDENTIFY}>
-                        <span>Identifiability</span>
+                        <span>{translate('title.identifiability')}</span>
                     </NavItem>
                     <NavItem eventKey={Tabs.INVERSE}>
-                        <span>Inverse problem</span>
+                        <span>{translate('title.inverseProblem')}</span>
                     </NavItem>
                 </Nav>
                 {this.renderTab(activeTab)}

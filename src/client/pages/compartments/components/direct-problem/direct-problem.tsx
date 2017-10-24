@@ -11,7 +11,7 @@ import * as classnames from 'classnames';
 import { BoxHeader } from '../../../../components/layout';
 import { ParamsBox } from '../paramsBox';
 import { safeGet } from '../../../../../lib/utils';
-import { ModelOptions } from '../ModelOptions';
+import ModelOptions from '../ModelOptions';
 import { Box } from '../../../../components';
 import { IProblemProps } from '../abstract-problem';
 import { DirectProblemPlot } from './direct-problem-plot';
