@@ -14,6 +14,7 @@ import {
     InverseProblemMethods,
     InverseProblemMethodsType
 } from '../../../../redux/reducers/solvers/inverse-problem';
+import {Row, Col} from 'react-bootstrap';
 
 interface IProps {
     options: IInverseProblemOptions;
@@ -86,20 +87,29 @@ export class InverseProblemOptions extends React.Component<IProps, IState> {
             <div>
                 <BoxHeader>{translate('problem.inverse.options')}</BoxHeader>
                 <div>
-                    <Dropdown 
-                        value={method}
-                        names={getMethodsText(translate)}
-                        tooltips={getMethodsTooltip(translate)}
-                        modify={this.modifyMethod}
-                        label={`${translate('problem.inverse.method.title')}:`}
-                    />
-                    <Dropdown 
-                        value={dataSelection}
-                        names={getDataSelectionText(translate)}
-                        modify={this.modifyDataSelection}
-                        label={`${translate('problem.inverse.dataSelection.title')}:`}
-                    />
-                    { dataSelection === InverseProblemDataSelection.Synthetic && this.renderSyntheticPoints()}
+                    <div>
+                        <Dropdown
+                            value={method}
+                            names={getMethodsText(translate)}
+                            tooltips={getMethodsTooltip(translate)}
+                            modify={this.modifyMethod}
+                            label={`${translate('problem.inverse.method.title')}:`}
+                        />
+                    </div>
+                    <Row>
+                        <Col xs={4}>
+                            <Dropdown 
+                                value={dataSelection}
+                                names={getDataSelectionText(translate)}
+                                modify={this.modifyDataSelection}
+                                label={`${translate('problem.inverse.dataSelection.title')}:`}
+                                className='data-selection-method__dropdown'
+                            />
+                        </Col>
+                        <Col xs={8}>
+                            { dataSelection === InverseProblemDataSelection.Synthetic && this.renderSyntheticPoints()}
+                        </Col>
+                    </Row>
                 </div>
             </div>
         );
