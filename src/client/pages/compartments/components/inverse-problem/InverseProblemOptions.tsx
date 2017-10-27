@@ -33,26 +33,28 @@ function getDataSelectionText(translate: Translate): UseStrings<InverseProblemDa
 
 function getMethodsText(translate: Translate): UseStrings<InverseProblemMethodsType, string> {
     return {
-        NelderMead: translate('problem.inverse.method.NelderMead'),
-        BFGS: translate('problem.inverse.method.BFGS'),
-        Powell: translate('problem.inverse.method.Powell'),
-        CG: translate('problem.inverse.method.CG'),
-        "L-BFGS-B": translate('problem.inverse.method.L_BFGS_B'),
-        TNC: translate('problem.inverse.method.TNC'),
-        COBYLA: translate('problem.inverse.method.COBYLA'),
-        SLSQP: translate('problem.inverse.method.SLSQP'),
+        NelderMead: translate('problem.inverse.method.NelderMead.name'),
+        BFGS: translate('problem.inverse.method.BFGS.name'),
+        Powell: translate('problem.inverse.method.Powell.name'),
+        CG: translate('problem.inverse.method.CG.name'),
+        "L-BFGS-B": translate('problem.inverse.method.L_BFGS_B.name'),
+        TNC: translate('problem.inverse.method.TNC.name'),
+        COBYLA: translate('problem.inverse.method.COBYLA.name'),
+        SLSQP: translate('problem.inverse.method.SLSQP.name'),
     };
 };
 
-const MethodsTooltip: UseStrings<InverseProblemMethodsType, string> = {
-    NelderMead: "Nelder-Mead simplex method",
-    BFGS: "Broyden–Fletcher–Goldfarb–Shanno algorithm",
-    Powell: "Powell's conjugate direction method",
-    CG: "Conjugate gradient method",
-    "L-BFGS-B": "Limited-memory Broyden–Fletcher–Goldfarb–Shanno algorithm for bound-constrained optimization",
-    TNC: "Truncated Newton (TNC) method",
-    COBYLA: "Constrained optimization by linear approximation",
-    SLSQP: "Sequential quadratic programming"
+function getMethodsTooltip(translate: Translate): UseStrings<InverseProblemMethodsType, string> {
+    return {
+        NelderMead: translate('problem.inverse.method.NelderMead.tooltip'),
+        BFGS: translate('problem.inverse.method.BFGS.tooltip'),
+        Powell: translate('problem.inverse.method.Powell.tooltip'),
+        CG: translate('problem.inverse.method.CG.tooltip'),
+        "L-BFGS-B": translate('problem.inverse.method.L_BFGS_B.tooltip'),
+        TNC: translate('problem.inverse.method.TNC.tooltip'),
+        COBYLA: translate('problem.inverse.method.COBYLA.tooltip'),
+        SLSQP: translate('problem.inverse.method.SLSQP.tooltip'),
+    }
 };
 
 export class InverseProblemOptions extends React.Component<IProps, IState> {
@@ -87,7 +89,7 @@ export class InverseProblemOptions extends React.Component<IProps, IState> {
                     <Dropdown 
                         value={method}
                         names={getMethodsText(translate)}
-                        tooltips={MethodsTooltip}
+                        tooltips={getMethodsTooltip(translate)}
                         modify={this.modifyMethod}
                         label={`${translate('problem.inverse.method.title')}:`}
                     />

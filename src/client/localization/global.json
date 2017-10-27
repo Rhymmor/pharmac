@@ -26,14 +26,41 @@
             "parameters": ["Synthetic parameters", "Синтетические параметры"],
             "method": {
                 "title": ["Solution method", "Метод решения"],
-                "NelderMead": ["Nelder-Mead", "Нелдер-Мид"],
-                "BFGS": ["BFGS", "BFGS"],
-                "Powell": ["Powell", "Сопряженные направления"],
-                "CG": ["Conjugate gradient", "Сопряженные градиенты"],
-                "L_BFGS_B": ["L-BFGS-B", "L-BFGS-B"],
-                "TNC": ["Truncated Newton method", "Усеченный метод Ньютона"],
-                "COBYLA": ["COBYLA", "COBYLA"],
-                "SLSQP": ["SLSQP", "Метод наименьших квадратов"]
+                "NelderMead": {
+                    "name": ["Nelder-Mead", "Нелдер-Мид"],
+                    "tooltip": ["Nelder-Mead simplex method", "Симплекс метод Нелдер-Мида"]
+                },
+                "BFGS": {
+                    "name": ["BFGS", "BFGS"],
+                    "tooltip": ["Broyden–Fletcher–Goldfarb–Shanno algorithm", "Алгоритм Бройдена — Флетчера — Гольдфарба — Шанно"]
+                },
+                "Powell": {
+                    "name": ["Powell", "Сопряженные направления"],
+                    "tooltip": ["Powell's conjugate direction method", "Метод сопряженных направлений Пауэлла"]
+                },
+                "CG": {
+                    "name": ["Conjugate gradient", "Сопряженные градиенты"],
+                    "tooltip": ["Conjugate gradient method", "Метод сопряженных градиентов"]
+                },
+                "L_BFGS_B": {
+                    "name": ["L-BFGS-B", "L-BFGS-B"],
+                    "tooltip": [
+                        "Limited-memory Broyden–Fletcher–Goldfarb–Shanno algorithm for bound-constrained optimization", 
+                        "Алгоритм Бройдена — Флетчера — Гольдфарба — Шанно c ограниченной памятью для условной оптимизации"
+                    ]
+                },
+                "TNC": {
+                    "name": ["Truncated Newton method", "Усеченный метод Ньютона"],
+                    "tooltip": ["Truncated Newton (TNC) method", "Усеченный метод Ньютона"]
+                },
+                "COBYLA": {
+                    "name": ["COBYLA", "COBYLA"],
+                    "tooltip": ["Constrained optimization by linear approximation", "Условная оптимизация с помощью линейной аппроксимации"]
+                },
+                "SLSQP": {
+                    "name": ["SLSQP", "Метод наименьших квадратов"],
+                    "tooltip": ["Sequential quadratic programming", "Последовательное квадратичное программирование"]
+                }
             },
             "dataSelection": {
                 "title": ["Data selection method", "Метод получения данных"],
