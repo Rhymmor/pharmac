@@ -280,15 +280,6 @@
         "@types/node": "8.0.28"
       }
     },
-    "@types/toastr": {
-      "version": "2.1.35",
-      "resolved": "https://registry.npmjs.org/@types/toastr/-/toastr-2.1.35.tgz",
-      "integrity": "sha512-NSPsNyBRxopghpNQLPqMLGK4oDIey5prT6RTkExljOfRrid0bkTr5v9NXYntBOwhEMmHjrmdsxY/g2/eKAJZpg==",
-      "dev": true,
-      "requires": {
-        "@types/jquery": "2.0.48"
-      }
-    },
     "@types/umzug": {
       "version": "1.8.33",
       "resolved": "https://registry.npmjs.org/@types/umzug/-/umzug-1.8.33.tgz",
@@ -9987,11 +9978,6 @@
       "version": "1.0.3",
       "resolved": "https://registry.npmjs.org/to-fast-properties/-/to-fast-properties-1.0.3.tgz",
       "integrity": "sha1-uDVx+k2MJbguIxsG46MFXeTKGkc="
-    },
-    "toastr": {
-      "version": "2.1.2",
-      "resolved": "https://registry.npmjs.org/toastr/-/toastr-2.1.2.tgz",
-      "integrity": "sha1-/WkGaudXilszV3JfycfDNem2gd8="
     },
     "topo": {
       "version": "2.0.2",
