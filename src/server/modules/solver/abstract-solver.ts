@@ -44,7 +44,6 @@ export abstract class AbstractModelSolver {
             }
             shell.send(JSON.stringify(data));
             shell.on('message', (message: string) => {
-                console.log(message)
                 try {
                     const validator = this.validator<T>(JSON.parse(message));
                     if (validator.valid) {

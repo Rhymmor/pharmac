@@ -1,9 +1,5 @@
 import * as _ from 'lodash';
 
-export function helloWorld() {
-    console.log("Hello!");
-}
-
 export function cutFraction(value: number, count = 3) {
     const parts = String(value).split('.');
     if (parts.length < 2) {
