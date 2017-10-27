@@ -1,4 +1,4 @@
-import { ModelOptions } from './ModelOptions';
+import ModelOptions from './ModelOptions';
 import { ParamsBox } from './paramsBox';
 import { Box } from '../../../components';
 import { StatefulFormControl } from '../../../components/statefulInput';
