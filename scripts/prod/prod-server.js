@@ -1,7 +1,7 @@
 "use strict";
 const cluster = require('cluster');
 const run_master = require('./master');
-const run_fork = require('./master');
+const run_fork = require('./fork');
 
 process.env.NODE_ENV = 'production';
 
