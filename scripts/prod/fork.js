@@ -10,7 +10,7 @@ function run_fork() {
     
     app.use(compression());
     
-    const projectPath = path.dirname(__dirname);
+    const projectPath = path.dirname(path.dirname(__dirname));
     const staticPath = path.join(projectPath, 'browser-bundle');
     app.use(express.static(staticPath));
     app.use('/api', proxy({target: 'http://localhost:3000'}));
