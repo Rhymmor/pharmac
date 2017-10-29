@@ -1,3 +1,4 @@
+import { ResultCard } from '../ResultCard';
 import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { SolutionResults } from '../SolutionResults';
 import { updateDirectProblemLoadingState } from '../../../../redux/actions/solvers/direct-problem';
@@ -55,8 +56,10 @@ class DirectProblemImpl extends React.PureComponent<IDirectProblemProps, IDirect
                     }
                 </Row>
                 <BoxHeader>{translate('title.result')}</BoxHeader>
-                <SolutionResults labels={[translate('problem.direct.functionsPlot')]}>
-                    <DirectProblemPlot solution={solution} options={options}/>
+                <SolutionResults>
+                    <ResultCard label={translate('problem.direct.functionsPlot')}>
+                        <DirectProblemPlot solution={solution} options={options}/>
+                    </ResultCard>
                 </SolutionResults>
                 <Row>
                     <Col xs={6}>

@@ -1,3 +1,4 @@
+import { ResultCard } from '../ResultCard';
 import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { InverseProblemOptions } from './InverseProblemOptions';
 import { SolutionResults } from '../SolutionResults';
@@ -153,13 +154,19 @@ class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseP
                     </Col>
                 </Row>
                 <BoxHeader>{translate('title.result')}</BoxHeader>
-                <SolutionResults labels={this.getResultLabels()}>
-                        <InverseProblemPlot solution={solution}/>
-                        <KeyValueTable
-                            parameters={_.map(solution.solution, (value, key) => ({key, value}))}
-                            mathJax={true}
-                        />
-                         <KeyValueTable parameters={prepareSolutionParameters(translate, solution.parameters)}/>
+                <SolutionResults>
+                        <ResultCard label={translate('problem.inverse.barChart')}>
+                            <InverseProblemPlot solution={solution}/>
+                        </ResultCard>
+                        <ResultCard label={translate('problem.inverse.solutionValues')}>
+                            <KeyValueTable
+                                parameters={_.map(solution.solution, (value, key) => ({key, value}))}
+                                mathJax={true}
+                            />
+                        </ResultCard>
+                        <ResultCard label={translate('problem.inverse.solutionParameters.title')}>
+                            <KeyValueTable parameters={prepareSolutionParameters(translate, solution.parameters)}/>
+                        </ResultCard>
                 </SolutionResults>
             </Box>
         );

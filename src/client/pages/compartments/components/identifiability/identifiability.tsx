@@ -1,3 +1,4 @@
+import { ResultCard } from '../ResultCard';
 import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { SolutionResults } from '../SolutionResults';
 import { ParametersPlot, PlotType } from '../plots/ParametersPlot';
@@ -75,13 +76,19 @@ class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, 
                 }
                 </Row>
                 <BoxHeader>{translate('title.result')}</BoxHeader>
-                <SolutionResults labels={this.getResultLabels()}>
-                    <IdentifiabilityPlot solution={solution}/>
-                    <KeyValueTable 
-                        parameters={_.map(solution.solution, (value, key) => ({key, value}))}
-                        mathJax={true}
-                    />
-                    {this.renderPiePlot(solution)}
+                <SolutionResults>
+                    <ResultCard label={translate('problem.identifiability.barChart')}>
+                        <IdentifiabilityPlot solution={solution}/>
+                    </ResultCard>
+                    <ResultCard label={translate('problem.identifiability.resultTable')}>
+                        <KeyValueTable 
+                            parameters={_.map(solution.solution, (value, key) => ({key, value}))}
+                            mathJax={true}
+                        />
+                    </ResultCard>
+                    <ResultCard label={translate('problem.identifiability.pieChart')}>
+                        {this.renderPiePlot(solution)}
+                    </ResultCard>
                 </SolutionResults>
             </Box>
         );

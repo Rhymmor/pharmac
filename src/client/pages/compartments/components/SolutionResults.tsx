@@ -10,23 +10,15 @@ import HTML5Backend from 'react-dnd-html5-backend';
 
 interface IProps {
     children: ReactChildren;
-    labels: string[];
 }
 
 interface IState {
     order?: number[];
 }
 
-function checkLength(children: IProps["children"], labels: IProps["labels"]) {
-    return checkArraysLength(children, labels) || labels.length === 1;
-}
-
 class SolutionResultsImpl extends React.Component<IProps, IState> {
     constructor(props: IProps) {
         super(props);
-        if (_.isArray(props.children) && (props.children.length !== props.labels.length)) {
-            throw "The list of labels length should be equal to the list of components length";
-        }
         this.state = {
             order: _.isArray(props.children) ? _.map(props.children, (x, i) => i) : [0]
         }
@@ -37,7 +29,7 @@ class SolutionResultsImpl extends React.Component<IProps, IState> {
     }
 
     render() {
-        const {children, labels} = this.props;
+        const {children} = this.props;
         const {order} = this.state;
         return (
             <Row>
@@ -45,25 +37,18 @@ class SolutionResultsImpl extends React.Component<IProps, IState> {
                     _.isArray(children)
                     ? (
                         _.map(order, (idx, i) => (
-                                <Col xs={6} key={i}>
-                                    <Draggable moveCard={this.moveCard} index={i}>
-                                        <Box>
-                                            <BoxHeader>{labels[idx] || ""}</BoxHeader>
-                                            {children[idx]}
-                                        </Box>
-                                    </Draggable>
-                                </Col>
+                            <Col xs={6} key={i}>
+                                <Draggable moveCard={this.moveCard} index={i}>
+                                {children[idx]}
+                                </Draggable>
+                            </Col>
                         ))
                     )
                     : (
                         <Col xs={6}>
-                            <Box>
-                                <BoxHeader>{labels[0] || ""}</BoxHeader>
-                                {children}
-                            </Box>
+                            {children}
                         </Col>
                     )
-                    
                 }
             </Row>
         );
