@@ -5,7 +5,7 @@ import * as _ from 'lodash';
 const MathJax = require('react-mathjax');
 import './ParametersTable.scss';
 
-type KeyValueType = {
+export type KeyValueType = {
     key: string,
     value: number | string
 };

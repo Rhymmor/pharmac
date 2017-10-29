@@ -131,6 +131,8 @@ class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseP
 
     render() {
         const {solve, problem: {solution, options, loading}, params, modifyParams, modifyOptions, translate} = this.props;
+        const parameters = _.map(solution.solution, (value, key) => ({key, value}));
+        const solutionOptions = prepareSolutionParameters(translate, solution.parameters);
         //Typescript type bug
         return (
             <Box className={classnames('direct-box', loading && 'loading-back')}>
@@ -168,14 +170,21 @@ class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseP
                                 id={InverseProblem.BAR_CHART}
                             />
                         </PlotResultCard>
+                        <TableResultCard 
+                            label={translate('problem.inverse.solutionValues')}
+                            parameters={parameters}
+                        >
                             <KeyValueTable
-                                parameters={_.map(solution.solution, (value, key) => ({key, value}))}
+                                parameters={parameters}
                                 mathJax={true}
                             />
-                        </ResultCard>
-                        <ResultCard label={translate('problem.inverse.solutionParameters.title')}>
-                            <KeyValueTable parameters={prepareSolutionParameters(translate, solution.parameters)}/>
-                        </ResultCard>
+                        </TableResultCard>
+                        <TableResultCard 
+                            label={translate('problem.inverse.solutionParameters.title')}
+                            parameters={solutionOptions}
+                        >
+                            <KeyValueTable parameters={solutionOptions}/>
+                        </TableResultCard>
                 </SolutionResults>
             </Box>
         );

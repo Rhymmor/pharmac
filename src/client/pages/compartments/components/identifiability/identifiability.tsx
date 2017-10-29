@@ -67,6 +67,7 @@ class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, 
 
     render() {
         const {solve, translate, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
+        const parameters = _.map(solution.solution, (value, key) => ({key, value}));
         //Typescript type bug
         return (
             <Box className={classnames('direct-box', loading && 'loading-back')}>
@@ -96,11 +97,15 @@ class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, 
                             id={IdentifiabilityProblem.BAR_PLOT_ID}
                         />
                     </PlotResultCard>
+                    <TableResultCard 
+                        label={translate('problem.identifiability.resultTable')}
+                        parameters={parameters}
+                    >
                         <KeyValueTable 
-                            parameters={_.map(solution.solution, (value, key) => ({key, value}))}
+                            parameters={parameters}
                             mathJax={true}
                         />
-                    </ResultCard>
+                    </TableResultCard>
                     <PlotResultCard 
                         label={translate('problem.identifiability.pieChart')}
                         id={IdentifiabilityProblem.PIE_PLOT_ID}
