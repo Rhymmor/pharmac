@@ -1,4 +1,6 @@
 import { ResultCard } from '../result-cards/ResultCard';
+import { PlotResultCard } from '../result-cards/PlotResultCard';
+import { TableResultCard } from '../result-cards/TableResultCard';
 import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { InverseProblemOptions } from './InverseProblemOptions';
 import { SolutionResults } from '../SolutionResults';
@@ -62,6 +64,8 @@ function prepareSolutionParameters(translate: Translate, parameters: IInversePro
 }
 
 class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseProblemState> {
+    private static BAR_CHART = 'inverse-problem-bar-chart';
+
     setLoadingState = (flag: boolean) => this.props.dispatch(updateInverseProblemLoadingState(flag));
     finishLoading = () => this.setLoadingState(false);
 
@@ -155,10 +159,15 @@ class InverseProblem extends React.PureComponent<IInverseProblemProps, IInverseP
                 </Row>
                 <BoxHeader>{translate('title.result')}</BoxHeader>
                 <SolutionResults>
-                        <ResultCard label={translate('problem.inverse.barChart')}>
-                            <InverseProblemPlot solution={solution}/>
-                        </ResultCard>
-                        <ResultCard label={translate('problem.inverse.solutionValues')}>
+                        <PlotResultCard 
+                            label={translate('problem.inverse.barChart')}
+                            id={InverseProblem.BAR_CHART}
+                        >
+                            <InverseProblemPlot 
+                                solution={solution}
+                                id={InverseProblem.BAR_CHART}
+                            />
+                        </PlotResultCard>
                             <KeyValueTable
                                 parameters={_.map(solution.solution, (value, key) => ({key, value}))}
                                 mathJax={true}

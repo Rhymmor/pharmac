@@ -4,6 +4,7 @@ import * as React from 'react';
 
 interface IProps {
     solution: IIdentifiabilitySolution;
+    id: string;
 }
 
 interface IState {
@@ -11,8 +12,9 @@ interface IState {
 
 export class IdentifiabilityPlot extends React.PureComponent<IProps, IState> {
     render() {
+        const {solution, id} = this.props;
         return (
-            <ParametersPlot solution={this.props.solution} type={PlotType.bar}/>
+            <ParametersPlot solution={solution} type={PlotType.bar} id={id}/>
         );
     }
 }

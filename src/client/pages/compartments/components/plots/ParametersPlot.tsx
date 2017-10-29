@@ -98,7 +98,7 @@ export class ParametersPlot extends React.PureComponent<IProps, IState> {
 
     render() {
         return (
-            <div className={this.props.className || defaultClassName}>
+            <div className={this.props.className || defaultClassName} id={this.props.id}>
                 {this.renderPlot(this.props.type, this.state.data)}
             </div>
         )

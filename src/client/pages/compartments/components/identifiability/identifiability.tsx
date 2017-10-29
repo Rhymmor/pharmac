@@ -1,4 +1,6 @@
 import { ResultCard } from '../result-cards/ResultCard';
+import { PlotResultCard } from '../result-cards/PlotResultCard';
+import { TableResultCard } from '../result-cards/TableResultCard';
 import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { SolutionResults } from '../SolutionResults';
 import { ParametersPlot, PlotType } from '../plots/ParametersPlot';
@@ -35,6 +37,8 @@ function isSolveBtnEnable(parameters: IParameters): boolean {
 }
 
 class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, IIdentifiabilityState> {
+    private static BAR_PLOT_ID = 'identifiability-bar-plot';
+    private static PIE_PLOT_ID = 'identifiability-bar-plot';
 
     setLoadingState = (flag: boolean) => this.props.dispatch(updateIdentifiabilityLoadingState(flag));
     finishLoading = () => this.setLoadingState(false);
@@ -53,7 +57,13 @@ class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, 
         ];
     }
 
-    renderPiePlot = (solution: IIdentifiabilitySolution) => <ParametersPlot solution={solution} type={PlotType.pie}/>
+    renderPiePlot = (solution: IIdentifiabilitySolution) => (
+        <ParametersPlot 
+            solution={solution} 
+            type={PlotType.pie}
+            id={IdentifiabilityProblem.PIE_PLOT_ID}
+        />
+    )
 
     render() {
         const {solve, translate, problem: {solution, options, loading}, params, modifyParams, modifyOptions} = this.props;
@@ -77,18 +87,26 @@ class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, 
                 </Row>
                 <BoxHeader>{translate('title.result')}</BoxHeader>
                 <SolutionResults>
-                    <ResultCard label={translate('problem.identifiability.barChart')}>
-                        <IdentifiabilityPlot solution={solution}/>
-                    </ResultCard>
-                    <ResultCard label={translate('problem.identifiability.resultTable')}>
+                    <PlotResultCard 
+                        label={translate('problem.identifiability.barChart')}
+                        id={IdentifiabilityProblem.BAR_PLOT_ID}
+                    >
+                        <IdentifiabilityPlot 
+                            solution={solution}
+                            id={IdentifiabilityProblem.BAR_PLOT_ID}
+                        />
+                    </PlotResultCard>
                         <KeyValueTable 
                             parameters={_.map(solution.solution, (value, key) => ({key, value}))}
                             mathJax={true}
                         />
                     </ResultCard>
-                    <ResultCard label={translate('problem.identifiability.pieChart')}>
+                    <PlotResultCard 
+                        label={translate('problem.identifiability.pieChart')}
+                        id={IdentifiabilityProblem.PIE_PLOT_ID}
+                    >
                         {this.renderPiePlot(solution)}
-                    </ResultCard>
+                    </PlotResultCard>
                 </SolutionResults>
             </Box>
         );

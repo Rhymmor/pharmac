@@ -1,3 +1,4 @@
+import { PlotResultCard } from '../result-cards/PlotResultCard';
 import { ImageSave } from '../save-results/ImageSave';
 import { ResultCard } from '../result-cards/ResultCard';
 import { connectLocale, WithLocale } from '../../../../components/connectLocale';
@@ -59,16 +60,16 @@ class DirectProblemImpl extends React.PureComponent<IDirectProblemProps, IDirect
                 </Row>
                 <BoxHeader>{translate('title.result')}</BoxHeader>
                 <SolutionResults>
-                    <ResultCard 
+                    <PlotResultCard
                         label={translate('problem.direct.functionsPlot')}
-                        SaveButton={<ImageSave parentId={DirectProblemImpl.FUNCTIONS_PLOT_ID}/>}
+                        id={DirectProblemImpl.FUNCTIONS_PLOT_ID}
                     >
                         <DirectProblemPlot 
                             solution={solution} 
                             options={options}
                             id={DirectProblemImpl.FUNCTIONS_PLOT_ID}
                         />
-                    </ResultCard>
+                    </PlotResultCard>
                 </SolutionResults>
                 <Row>
                     <Col xs={6}>

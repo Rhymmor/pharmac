@@ -4,6 +4,7 @@ import * as React from 'react';
 
 interface IProps {
     solution: IInverseProblemSolution;
+    id: string;
 }
 
 interface IState {
@@ -11,8 +12,9 @@ interface IState {
 
 export class InverseProblemPlot extends React.PureComponent<IProps, IState> {
     render() {
+        const {id, solution} = this.props;
         return (
-            <ParametersPlot solution={this.props.solution} type={PlotType.bar}/>
+            <ParametersPlot solution={solution} type={PlotType.bar} id={id}/>
         );
     }
 }
