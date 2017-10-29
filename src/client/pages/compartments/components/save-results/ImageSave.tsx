@@ -73,6 +73,7 @@ export class ImageSave extends React.PureComponent<IProps, IState> {
             <DropdownButton 
                 id={this.state.id}
                 title={<span className='fa fa-save'/> as any}
+                className='transp-button'
             >
                 <MenuItem onClick={this.saveAsPng}>Save as png</MenuItem>
                 <MenuItem onClick={this.saveAsSvg}>Save as svg</MenuItem>
