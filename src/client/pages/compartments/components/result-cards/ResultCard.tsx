@@ -1,4 +1,4 @@
-import { Box, BoxHeader } from '../../../components';
+import { Box, BoxHeader } from '../../../../components';
 import * as React from 'react';
 
 interface IProps {

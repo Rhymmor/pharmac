@@ -14,6 +14,7 @@ export interface IPlotProps<S extends ICommonSolution<any>, T extends ICommonOpt
     className?: string
     solution: S;
     options?: T;
+    id?: string;
 }
 
 export interface IProblemProps<S extends ICommonSolution<any>, T extends ICommonOptions, K extends ICommonProblemStore<T, S>> {

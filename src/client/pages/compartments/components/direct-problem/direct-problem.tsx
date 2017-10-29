@@ -1,4 +1,5 @@
-import { ResultCard } from '../ResultCard';
+import { ImageSave } from '../save-results/ImageSave';
+import { ResultCard } from '../result-cards/ResultCard';
 import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { SolutionResults } from '../SolutionResults';
 import { updateDirectProblemLoadingState } from '../../../../redux/actions/solvers/direct-problem';
@@ -27,6 +28,7 @@ interface IDirectProblemState {
 }
 
 class DirectProblemImpl extends React.PureComponent<IDirectProblemProps, IDirectProblemState> {
+    private static FUNCTIONS_PLOT_ID = 'direct-problem-functions-plot';
 
     private setLoadingState = (flag: boolean) => this.props.dispatch(updateDirectProblemLoadingState(flag));
     finishLoading = () => this.setLoadingState(false);
@@ -57,8 +59,15 @@ class DirectProblemImpl extends React.PureComponent<IDirectProblemProps, IDirect
                 </Row>
                 <BoxHeader>{translate('title.result')}</BoxHeader>
                 <SolutionResults>
-                    <ResultCard label={translate('problem.direct.functionsPlot')}>
-                        <DirectProblemPlot solution={solution} options={options}/>
+                    <ResultCard 
+                        label={translate('problem.direct.functionsPlot')}
+                        SaveButton={<ImageSave parentId={DirectProblemImpl.FUNCTIONS_PLOT_ID}/>}
+                    >
+                        <DirectProblemPlot 
+                            solution={solution} 
+                            options={options}
+                            id={DirectProblemImpl.FUNCTIONS_PLOT_ID}
+                        />
                     </ResultCard>
                 </SolutionResults>
                 <Row>

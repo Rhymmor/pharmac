@@ -75,10 +75,10 @@ export class FunctionPlot<T extends ICommonOptions> extends React.PureComponent<
     }
 
     render() {
-        const {className, solution, dots} = this.props;
+        const {className, solution, dots, id} = this.props;
         const {data} = this.state;
         return (
-            <div className={className || defaultClassName}>
+            <div className={className || defaultClassName} id={id}>
                 <LineChart width={600} height={300} data={data}>
                     {_.map(safeGet(solution, x=>x.solution[0], [0]), (x, idx) => (
                         <Line key={idx} type="monotone" dataKey={`${idx + 1}`} stroke={chartsColors[idx]} dot={dots || false}/>

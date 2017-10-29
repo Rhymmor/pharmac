@@ -1,4 +1,4 @@
-import { ResultCard } from '../ResultCard';
+import { ResultCard } from '../result-cards/ResultCard';
 import { connectLocale, WithLocale } from '../../../../components/connectLocale';
 import { InverseProblemOptions } from './InverseProblemOptions';
 import { SolutionResults } from '../SolutionResults';
