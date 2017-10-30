@@ -27,3 +27,20 @@ https://pharmac-app.herokuapp.com/
     * [react-bootstrap](https://github.com/react-bootstrap/react-bootstrap) as UI kit
     * [recharts](https://github.com/recharts/recharts) for plots
     * [SCSS](https://github.com/sass/sass) as CSS extension
+
+
+## Local setup
+
+### Requirements
+
+* Python 2.7 (with libs from requirements.txt file)
+* Node v6.x.x
+
+### Building
+
+- Install the dependencies with `npm install`
+- Run in the development mode with `npm run dev` and go to `localhost:8080`
+- For run in the production:
+    * Bundle sources with `npm run compile`
+    * Start with `npm start`
+    * Open `localhost:5000` in the browser
