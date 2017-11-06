@@ -4,17 +4,11 @@ import express = require('express');
 import * as path from 'path';
 const bodyParser = require('body-parser');
 const compression = require('compression');
-
-import { synchronize, migrate } from './database/database';
 import { router } from "./rest/router";
 
 async function main() {
 
     setGlobalLogger(backendLogger);
-    // Synchronize DB
-    await synchronize();
-    // Migrate DB
-    await migrate();
     const app = express();
 
     const project_root = process.cwd();

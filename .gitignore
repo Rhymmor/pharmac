@@ -11,3 +11,4 @@ app/
 .vscode/
 *.pyc
 browser-bundle/
+mongodb/

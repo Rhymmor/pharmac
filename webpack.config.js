@@ -26,7 +26,6 @@ var frontend = {
             "joi",
             "sprintf-js",
             "bootstrap",
-            "validator",
         ],
     },
     output: {
