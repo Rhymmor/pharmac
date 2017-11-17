@@ -1,3 +1,4 @@
+import { ConnectionOptions } from 'typeorm/connection/ConnectionOptions';
 import { logger, setGlobalLogger } from '../lib/logger';
 import { backendLogger } from './modules/backend-logger';
 import express = require('express');
@@ -5,6 +6,19 @@ import * as path from 'path';
 const bodyParser = require('body-parser');
 const compression = require('compression');
 import { router } from "./rest/router";
+const connectionConfig: ConnectionOptions = {
+    "type": "mongodb",
+    "host": "localhost",
+    "database": "test",
+    "synchronize": true,
+    "logging": false,
+    entities: [
+        `${__dirname}/database/entity/*`
+    ],
+    "cli": {
+      "entitiesDir": "src/server/database/entity"
+    }
+}
 
 async function main() {
 
