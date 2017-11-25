@@ -1,26 +1,11 @@
+import time
 import json
 from scipy.optimize import minimize
 import numpy as np
 import numpy.linalg as ln
 from scipy.integrate import odeint
-import time
-# hack to allow relative exports
-if __name__ == '__main__':
-    if __package__ is None:
-        import sys
-        from os import path
-        sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
-        from model_parser import ModelParser
-        from utils import read_in, model_eval, NumpyEncoder, safe_get
-    else:
-        from ..model_parser import ModelParser
-        from ...utils import read_in, model_eval, NumpyEncoder, safe_get
-
-def get_dict(keys, values):
-    dictionary = {}
-    for key, value in zip(keys, values):
-        dictionary[key] = value
-    return dictionary
+from ..model_parser import ModelParser
+from ..utils import read_in, model_eval, NumpyEncoder, safe_get, get_dict, min_func
 
 def get_solution_subspace(sol, count, space):
     if sol is None or len(sol) == 0:
@@ -40,16 +25,6 @@ def get_solution_subspace(sol, count, space):
 def get_synth_data(y0, params, points_count, space, parser):
     sol = odeint(model_eval, y0, space, args=(params, parser))
     return get_solution_subspace(sol, points_count, space)
-
-def min_func(q, data, y0, space, param_keys, parser):
-    res = 0.0
-    params_dict = get_dict(param_keys, q)
-    sol = odeint(model_eval, y0, space, args=(params_dict, parser))
-    step = (len(space) - 1) / float(space[-1])
-    for  points, idx in zip(data['data'], range(len(data['data']))):
-        for time, point in zip(data['t'], points):
-            res += (point - sol[int(time * step), idx]) ** 2
-    return res
 
 def prepare_data_values(exp_data):
     values = []
@@ -90,9 +65,7 @@ def is_array(obj):
 def prepare_solution(sol):
     return sol if is_array(sol) else [sol]
 
-def main():
-    model = read_in()
-    if model is not None:
+def solve_inverse(model):
         start_time = time.time()
 
         parser = ModelParser(model['model'])
@@ -123,7 +96,7 @@ def main():
                           options=method_options)
 
         # print result
-        print json.dumps({
+        return {
             'solution': get_dict(params_dict.keys(), prepare_solution(result.x.tolist())),
             'parameters': {
                 'nfev': safe_get(result, lambda x: x['nfev']),
@@ -131,7 +104,4 @@ def main():
                 'fun': safe_get(result, lambda x: x['fun']),
                 'time': time.time() - start_time
             }
-        }, cls=NumpyEncoder)
-
-if __name__ == '__main__':
-    main()
+        }
