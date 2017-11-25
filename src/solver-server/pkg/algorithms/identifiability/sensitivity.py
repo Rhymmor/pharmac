@@ -1,17 +1,7 @@
 import json
 import numpy as np
 from scipy.integrate import odeint
-# hack to allow relative exports
-if __name__ == '__main__':
-    if __package__ is None:
-        import sys
-        from os import path
-        sys.path.append( path.dirname( path.dirname( path.abspath(__file__) ) ) )
-        from model_parser import ModelParser
-        from utils import read_in, model_eval, NumpyEncoder
-    else:
-        from ..model_parser import ModelParser
-        from ...utils import read_in, model_eval, NumpyEncoder
+from ..utils import model_eval, NumpyEncoder
 
 def sens_value(sol, par, delta_x, delta_y):
     if sol != 0 and delta_x != 0:
@@ -19,7 +9,7 @@ def sens_value(sol, par, delta_x, delta_y):
     else:
         return float('Inf')
 
-def sensitivity(funcs, y0, t, params, delta, parser):
+def find_sensitivity(funcs, y0, t, params, delta, parser):
     sol = odeint(funcs, y0, t, args=(params, parser))
     sens_list = {}
     for key, value in params.iteritems():
@@ -41,16 +31,11 @@ def sensitivity(funcs, y0, t, params, delta, parser):
         sens_list[key] = sens_param
     return sens_list
 
-def main():
-    model = read_in()
-    if model is not None:
-        parser = ModelParser(model['model'])
-        points_count = model['options']['points']
-        t = np.linspace(0, model['options']['interval'], points_count)
-        params_dict = model['parameters']
-        delta = 0.00001     #TODO: remove hardcode
-        result = sensitivity(model_eval, model['initialValues'], t, params_dict, delta, parser)
-        print json.dumps({'solution': result}, cls=NumpyEncoder)
-
-if __name__ == '__main__':
-    main()
+def solve_sensitivity(model, ModelParser):
+    parser = ModelParser(model['model'])
+    points_count = model['options']['points']
+    t = np.linspace(0, model['options']['interval'], points_count)
+    params_dict = model['parameters']
+    delta = 0.00001     #TODO: remove hardcode
+    result = find_sensitivity(model_eval, model['initialValues'], t, params_dict, delta, parser)
+    return {'solution': result}
