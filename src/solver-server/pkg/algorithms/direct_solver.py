@@ -14,4 +14,4 @@ def direct_solver(model):
     sol = odeint(model_eval, y0, linspace, args=(params_dict, parser))
 
     # print json.dumps({'solution': sol}, cls=NumpyEncoder)
-    return sol
+    return {'solution': sol}
