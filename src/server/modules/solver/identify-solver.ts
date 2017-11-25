@@ -22,7 +22,7 @@ export interface IIdentifiabilityParameters {
 
 export class IdentifiabilityModelSolver extends AbstractModelSolver {
     constructor(model: IModel) {
-        super(model, validateSolution, 'sensitivity.py', 'identifiability');
+        super(model, validateSolution, 'methods.py', 'identifiability');
     }
 
     public solve<IIdentifiabilitySolution>(params: IIdentifiabilityParameters) {

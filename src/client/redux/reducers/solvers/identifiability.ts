@@ -11,13 +11,21 @@ import * as _ from 'lodash';
 import * as joi from 'joi';
 import { Action } from '../../actions';
 
+export enum IdentifiabilityMethods {
+    Sensitivity = 'Sensitivity',
+    MonteCarlo = 'MonteCarlo'
+}
+
 export interface IIdentifiabilityOptions extends ICommonOptions {
+    method: IdentifiabilityMethods;
 }
 const defaultOptions: IIdentifiabilityOptions = {
-    ...defaultCommonOptions
+    ...defaultCommonOptions,
+    method: IdentifiabilityMethods.Sensitivity
 }
 export const schemaIIdentifyabilityOptionsKeys: UseKeys<IIdentifiabilityOptions, joi.Schema> = {
-    ...schemaICommonOptionsKeys
+    ...schemaICommonOptionsKeys,
+    method: joi.string().allow(_.values(IdentifiabilityMethods))
 }
 export const schemaIIdentifiabilityOptions = joi.object().keys(schemaIIdentifyabilityOptionsKeys);
 

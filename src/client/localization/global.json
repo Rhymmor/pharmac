@@ -20,7 +20,19 @@
         "identifiability": {
             "barChart": ["Bar chart", "Гистограмма"],
             "resultTable": ["Results value table", "Таблица значений"],
-            "pieChart": ["Pie chart", "Круговая диаграмма"]
+            "pieChart": ["Pie chart", "Круговая диаграмма"],
+            "options": ["Identifiability options", "Опции идентифицируемости"],
+            "method": {
+                "title": ["Solution method", "Метод решения"],
+                "Sensitivity": {
+                    "name": ["Sensitivity", "Определение чувствительности"],
+                    "tooltip": ["Method of sensitivity defining", "Метод определения чувствительности"]
+                },
+                "MonteCarlo": {
+                    "name": ["Monte Carlo", "Монте-Карло"],
+                    "tooltip": ["Monte Carlo Simulation", "Метод Монте-Карло"]
+                }
+            }
         },
         "inverse": {
             "parameters": ["Synthetic parameters", "Синтетические параметры"],
@@ -67,7 +79,7 @@
                 "synthetic": ["Synthetic data", "Синтетические данные"],
                 "experimental": ["Experimental data", "Экпериментальные данные"]
             },
-            "options": ["Inverse problem options", "Настройки обратной задачи"],
+            "options": ["Inverse problem options", "Опции обратной задачи"],
             "barChart": ["Bar chart", "Гистограмма"],
             "solutionValues": ["Solution values", "Значения параметров"],
             "solutionParameters": {

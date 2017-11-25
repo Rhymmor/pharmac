@@ -22,6 +22,7 @@ import * as React from 'react';
 import { Row, Col, Button, DropdownButton, MenuItem } from 'react-bootstrap';
 import { ParamsBox } from '../paramsBox';
 import * as _ from 'lodash';
+import { IdentifiabilityOptions } from './IdentifiabilityOptions';
 
 interface IIdentifiabilityProps extends IProblemProps<
     IIdentifiabilitySolution, 
@@ -73,11 +74,12 @@ class IdentifiabilityProblem extends React.PureComponent<IIdentifiabilityProps, 
             <Box className={classnames('direct-box', loading && 'loading-back')}>
                 { loading && <div className='loading-wheel'></div> }
                 <ModelOptions 
-                    options={options as any} 
-                    modifyOptions={modifyOptions as any}
+                    options={options} 
+                    modifyOptions={modifyOptions}
                     solve={this.solveProblem}
                     isSolveBtnEnable={isSolveBtnEnable(params)}
                 />
+                <IdentifiabilityOptions options={options} modifyOptions={modifyOptions} translate={translate}/>
                 <Row>
                 {
                     !!_.keys(params).length &&
