@@ -1,15 +1,31 @@
 import { UseKeys, UseStrings } from '../../../lib/utils';
 import { schemaIModel, schemaIParameters } from '../../../client/redux/reducers/formulas';
 import { IValidationResult, validateSchema } from '../../modules/validator';
-import { InverseModelSolver } from '../../modules/solver/inverse-solver';
 import {
     IInverseProblemOptions,
     InverseProblemDataSelection,
     InverseProblemMethodsType,
-    schemaIInverseProblemOptionsKeys
+    schemaIInverseProblemOptionsKeys,
+    IInverseProblemSolutionParameters,
+    IInverseProblemSolution
 } from '../../../client/redux/reducers/solvers/inverse-problem';
 import { AbstractModelRest, IModelRequest } from './abstract-model-rest';
 import * as joi from 'joi';
+
+const schemaISolutionParametersKeys: UseKeys<IInverseProblemSolutionParameters, joi.Schema> = { 
+    nfev: joi.number().required(), 
+    nit: joi.number().required().allow(null), 
+    fun: joi.number().required(), 
+    time: joi.number().required() 
+} 
+ 
+const schemaISolutionKeys: UseKeys<IInverseProblemSolution, joi.Schema> = { 
+    solution: joi.object().pattern(/^/, joi.number()), 
+    parameters: joi.object().keys(schemaISolutionParametersKeys) 
+} 
+function validateSolution(obj: any): IValidationResult<any> { 
+    return validateSchema<IInverseProblemSolution>(obj, joi.object().keys(schemaISolutionKeys)); 
+} 
 
 export interface IInverseProblemRequest extends IModelRequest<IInverseProblemOptions> {
 }
@@ -39,6 +55,6 @@ function modifyBody(body: IInverseProblemRequest) {
 
 export class InverseProblemRest extends AbstractModelRest<IInverseProblemOptions, IInverseProblemRequest> {
     constructor() {
-        super(InverseModelSolver, schemaIInverseProblemOptionsKeys, modifyBody);
+        super('/api/inverse-problem/solve', schemaIInverseProblemOptionsKeys, validateSolution, modifyBody);
     }
 }

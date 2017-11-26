@@ -1,5 +1,4 @@
-import { validateSchema } from '../../modules/validator';
-import { IdentifiabilityModelSolver } from '../../modules/solver/identify-solver';
+import { validateSchema, IValidationResult } from '../../modules/validator';
 import { schemaIModel, schemaIParameters } from '../../../client/redux/reducers/formulas';
 import { UseKeys, UseStrings } from '../../../lib/utils';
 import {
@@ -9,6 +8,16 @@ import {
 } from '../../../client/redux/reducers/solvers/identifiability';
 import { AbstractModelRest, IModelRequest } from './abstract-model-rest';
 import * as joi from 'joi';
+
+export interface IIdentifiabilitySolution { 
+    solution: {[key: string]: number} 
+} 
+const schemaISolutionKeys: UseKeys<IIdentifiabilitySolution, joi.Schema> = { 
+    solution: joi.object().pattern(/^/, joi.number()) 
+} 
+function validateSolution(obj: any): IValidationResult<any> { 
+    return validateSchema<IIdentifiabilitySolution>(obj, joi.object().keys(schemaISolutionKeys)); 
+} 
 
 export interface IIdentifiabilityRequest extends IModelRequest<IIdentifiabilityOptions> {
 }
@@ -24,6 +33,6 @@ function modifyBody(body: IIdentifiabilityRequest) {
 
 export class IdentifiabilityRest extends AbstractModelRest<IIdentifiabilityOptions, IIdentifiabilityRequest> {
     constructor() {
-        super(IdentifiabilityModelSolver, schemaIIdentifyabilityOptionsKeys, modifyBody);
+        super('/api/identifiability-problem/solve', schemaIIdentifyabilityOptionsKeys, validateSolution, modifyBody);
     }
 }

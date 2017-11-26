@@ -1,6 +1,6 @@
-import { IIdentifiabilitySolution } from '../../../../../server/modules/solver/identify-solver';
 import { ParametersPlot, PlotType } from '../plots/ParametersPlot';
 import * as React from 'react';
+import { IIdentifiabilitySolution } from '../../../../redux/reducers/solvers/identifiability';
 
 interface IProps {
     solution: IIdentifiabilitySolution;
