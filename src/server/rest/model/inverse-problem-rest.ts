@@ -16,7 +16,7 @@ const schemaISolutionParametersKeys: UseKeys<IInverseProblemSolutionParameters, 
     nfev: joi.number().required(), 
     nit: joi.number().required().allow(null), 
     fun: joi.number().required(), 
-    time: joi.number().required() 
+    time: joi.number().required()
 } 
  
 const schemaISolutionKeys: UseKeys<IInverseProblemSolution, joi.Schema> = { 

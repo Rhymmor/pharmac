@@ -11,7 +11,7 @@ import {replace, cloneDeep, mapKeys} from 'lodash';
 import * as _ from 'lodash';
 import * as request from 'superagent';
 
-const solverPort = process.env.SOLVER_SERVER_PORT;
+const solverPort = process.env.SOLVER_SERVER_PORT || 5555;
 const solverUrl = `http://localhost:${solverPort}`;
 
 export interface IModelRequest<T> {
@@ -88,8 +88,8 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
         return {
             model: _.map(validator.obj.model, x => x.text),
             initialValues: _.map(validator.obj.model, x => x.initialValue),
-            options: validator.obj.params.options,
-            parameters: validator.obj.params.params
+            options: validator.obj.options,
+            parameters: validator.obj.params
         };
     }
 
@@ -97,8 +97,8 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
         return async (req: Request, res: Response) => {
             try {
                 const body = this.prepareBody(req.body);
-                const solutionRes = await request.post(solverUrl + this.url);
-                const validator = this.responseValidator(solutionRes);
+                const solutionRes = await request.post(solverUrl + this.url).send(body);
+                const validator = this.responseValidator(solutionRes.body);
                 if (!validator.valid) {
                     return res.status(400).json({message: `Solution validation error. ${validator.error.message}`})
                 }

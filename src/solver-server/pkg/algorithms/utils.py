@@ -1,5 +1,6 @@
 import sys, json
 import numpy as np
+from scipy.integrate import odeint
 
 def safe_get(obj, func, default=None):
     try:

@@ -12,7 +12,7 @@ def sens_value(sol, par, delta_x, delta_y):
 def find_sensitivity(funcs, y0, t, params, delta, parser):
     sol = odeint(funcs, y0, t, args=(params, parser))
     sens_list = {}
-    for key, value in params.iteritems():
+    for key, value in params.items():
         params_delta_p = params.copy()
         params_delta_m = params.copy()
         params_delta_p[key] = value + delta

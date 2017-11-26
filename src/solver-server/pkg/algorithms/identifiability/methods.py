@@ -7,6 +7,6 @@ from ..utils import read_in
 def solve_identifiability(model):
     method = model['options']['method']
     if method == 'sensitivity':
-        solve_sensitivity(model, ModelParser)
+        return solve_sensitivity(model, ModelParser)
     elif method == 'monte_carlo':
-        solve_monte_carlo(model)
+        return solve_monte_carlo(model)
