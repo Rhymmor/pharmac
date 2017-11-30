@@ -2,7 +2,6 @@ from .sensitivity import solve_sensitivity
 from .monte_carlo import solve_monte_carlo
 
 from ..model_parser import ModelParser
-from ..utils import read_in
 
 def solve_identifiability(model):
     method = model['options']['method']

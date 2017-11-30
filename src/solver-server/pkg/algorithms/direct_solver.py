@@ -1,7 +1,7 @@
 import json
 from scipy.integrate import odeint
 import numpy as np
-from .utils import read_in, model_eval, NumpyEncoder
+from .utils import model_eval, NumpyEncoder
 from .model_parser import ModelParser
 
 def direct_solver(model):

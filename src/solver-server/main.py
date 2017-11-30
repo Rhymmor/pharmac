@@ -1,5 +1,4 @@
 from aiohttp import web
-from pkg.algorithms.utils import safe_get
 from pkg.router.direct import handle_direct_problem
 from pkg.router.inverse import handle_inverse_problem
 from pkg.router.identifiability import handle_identifiability_problem

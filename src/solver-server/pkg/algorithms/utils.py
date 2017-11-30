@@ -2,15 +2,15 @@ import sys, json
 import numpy as np
 from scipy.integrate import odeint
 
+def is_array(obj):
+    obj_type = type(obj)
+    return obj_type is list or obj_type is np.ndarray
+
 def safe_get(obj, func, default=None):
     try:
         return func(obj)
     except:
         return default
-
-def read_in():
-    model = sys.stdin.readlines()
-    return json.loads(model[0])
 
 def model_eval(funcs, t, params_dict, parser):
     return parser.eval(funcs, params_dict)

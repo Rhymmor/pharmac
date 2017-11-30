@@ -3,7 +3,7 @@ from scipy.integrate import odeint
 from scipy.optimize import minimize
 import numpy as np
 from ..model_parser import ModelParser
-from ..utils import model_eval, safe_get, get_dict, min_func
+from ..utils import model_eval, safe_get, get_dict, min_func, is_array
 
 def get_solution_subspace(sol, count, space):
     if sol is None or len(sol) == 0:
@@ -56,10 +56,6 @@ def get_options():
         'trust-ncg': {}
     }
 
-def is_array(obj):
-    obj_type = type(obj)
-    return obj_type is list or obj_type is np.ndarray
-
 def prepare_solution(sol):
     return sol if is_array(sol) else [sol]
 
@@ -93,7 +89,6 @@ def solve_inverse(model):
                         args=(inverse_data, y0, space, params_dict.keys(), parser),
                         options=method_options)
 
-    # print result
     return {
         'solution': get_dict(params_dict.keys(), prepare_solution(result.x.tolist())),
         'parameters': {
