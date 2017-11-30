@@ -31,7 +31,6 @@
     "mocha-jsdom": "^1.1.0",
     "mongodb": "^2.2.33",
     "pm2": "^2.8.0",
-    "python-shell": "^0.4.0",
     "react": "^15.6.1",
     "react-bootstrap": "0.30.7",
     "react-dnd": "^2.5.1",
@@ -50,7 +49,6 @@
     "shortid": "^2.2.6",
     "sqlite3": "^3.1.8",
     "superagent": "^3.5.2",
-    "tether": "^1.3.7",
     "typeorm": "^0.1.2",
     "umzug": "^1.11.0",
     "winston": "^2.3.0"
@@ -86,8 +84,13 @@
     "babel-cli": "^6.22.2",
     "babel-core": "^6.22.1",
     "babel-loader": "^6.2.10",
+    "babel-minify-webpack-plugin": "^0.2.0",
+    "babel-plugin-minify-constant-folding": "^0.2.0",
+    "babel-plugin-minify-dead-code-elimination": "^0.2.0",
+    "babel-plugin-minify-mangle-names": "^0.2.0",
     "babel-polyfill": "^6.22.0",
     "babel-preset-es2015": "^6.22.0",
+    "babel-preset-minify": "^0.2.0",
     "babel-preset-stage-0": "^6.22.0",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
@@ -111,12 +114,10 @@
     "ts-loader": "^3.1.1",
     "ts-node": "^3.3.0",
     "typescript": "^2.6.1",
-    "uglifyjs": "^2.4.10",
     "url-loader": "^0.5.8",
     "webpack": "^2.2.0",
     "webpack-bundle-analyzer": "^2.2.1",
     "webpack-dev-server": "^2.1.0-beta.12",
-    "webpack-hot-middleware": "^2.13.2",
-    "webpack-shell-plugin": "^0.5.0"
+    "webpack-hot-middleware": "^2.13.2"
   }
 }
