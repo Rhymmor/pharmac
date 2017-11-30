@@ -5,7 +5,8 @@ var path = require('path');
 
 var node_modules = path.resolve(path.join(__dirname, 'node_modules'));
 let babelOptions = {
-    "presets": ["es2015", "stage-0"]
+    "presets": ["es2015", "stage-0"],
+    "plugins": ["lodash"]
 };
 
 var frontend = {
@@ -58,7 +59,6 @@ var frontend = {
                 test: /\.ts(x?)$/,
                 exclude: /node_modules/,
                 use: [
-                    { loader: 'babel-loader', options: babelOptions },
                     { loader: 'ts-loader' }
                 ]
             }, 
