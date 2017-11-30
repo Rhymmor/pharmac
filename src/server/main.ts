@@ -15,7 +15,7 @@ import {join} from 'path';
 
 const connectionConfig: ConnectionOptions = {
     "type": "mongodb",
-    "host": "localhost",
+    "host": process.env.MONGODB_URI || "localhost",
     "database": "test",
     "synchronize": true,
     "logging": false,

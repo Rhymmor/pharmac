@@ -12,3 +12,4 @@ deploy:
   app: pharmac-app
   skip_cleanup: true
   on: master
+  run: "npm run start"
