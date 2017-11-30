@@ -6,7 +6,7 @@ var path = require('path');
 var node_modules = path.resolve(path.join(__dirname, 'node_modules'));
 let babelOptions = {
     "presets": ["es2015", "stage-0"],
-    "plugins": ["lodash"]
+    "plugins": ["lodash", 'recharts']
 };
 
 var frontend = {
@@ -122,6 +122,7 @@ var frontend = {
         new HtmlWebpackPlugin({
             template: 'src/client/index.html'
         }),
+        new webpack.optimize.ModuleConcatenationPlugin()        
     ]
 };
 
