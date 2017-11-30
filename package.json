@@ -10,7 +10,7 @@
     "dev-webpack": "node scripts/dev-server.js",
     "dev-backend": "nodemon --watch 'src/**/*.ts' --ignore src/client --exec 'ts-node' src/server/main.ts",
     "dev": "concurrently -p name -c bgBlue,bgMagenta --kill-others -n DB,API,WEB 'npm run start-db' 'npm run dev-backend' 'npm run dev-webpack'",
-    "backend": "nodemon --exec 'ts-node' src/server/main.ts",
+    "backend": "ts-node src/server/main.ts",
     "frontend": "node scripts/prod/prod-server.js",
     "solver": "python3 src/solver-server/main.py",
     "compile": "sh ./scripts/compile-prod.sh",

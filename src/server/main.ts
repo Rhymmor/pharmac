@@ -13,9 +13,12 @@ import { router } from "./rest/router";
 import {createConnection} from "typeorm";
 import {join} from 'path';
 
+const dbUrl = process.env.MONGODB_URI;
+
 const connectionConfig: ConnectionOptions = {
     "type": "mongodb",
-    "host": process.env.MONGODB_URI || "localhost",
+    "url": dbUrl,
+    "host": !dbUrl ? "localhost" : undefined,
     "database": "test",
     "synchronize": true,
     "logging": false,
