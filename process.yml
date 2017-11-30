@@ -1,0 +1,24 @@
+apps:
+  - name    : MONGODB
+    script  : ./scripts/start-db.sh
+
+  - name    : BACKEND
+    script  : ./src/server/main.ts
+    env    :
+      NODE_ENV: development
+      SOLVER_SERVER_PORT: 5555
+    env_production:
+      NODE_ENV: production
+
+  - name   : FRONTEND
+    script : ./scripts/prod/prod-server.js
+    env    :
+      NODE_ENV: development
+    env_production:
+      NODE_ENV: production
+
+  - name        : SOLVER-SERVER
+    script      : src/solver-server/main.py
+    interpreter : python3
+    env         :
+      SOLVER_SERVER_PORT: 5555

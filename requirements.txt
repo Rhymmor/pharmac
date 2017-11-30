@@ -2,3 +2,4 @@
 numpy
 scipy
 py_expression_eval
+aiohttp

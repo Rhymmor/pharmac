@@ -4,6 +4,10 @@ var HtmlWebpackPlugin = require('html-webpack-plugin');
 var path = require('path');
 
 var node_modules = path.resolve(path.join(__dirname, 'node_modules'));
+let babelOptions = {
+    "presets": ["es2015", "stage-0"],
+    "plugins": ["lodash"]
+};
 
 var frontend = {
     entry: {
@@ -20,9 +24,7 @@ var frontend = {
             "redux", "redux-thunk", "react-redux",
             "classnames",
             // dependencies - we don't explicitly use them in web
-            "tether",
             "history",
-            "moment",
             "joi",
             "sprintf-js",
             "bootstrap",
@@ -52,22 +54,51 @@ var frontend = {
     },
 
     module: {
-        loaders: [
+        rules: [
             {
-                test: /\.tsx?$/,
-                loader: "ts-loader",
-                options: {
-                    compilerOptions: {
-                        "target": "es2015",
-                    }
-                }
+                test: /\.ts(x?)$/,
+                exclude: /node_modules/,
+                use: [
+                    { loader: 'ts-loader' }
+                ]
+            }, 
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: [{ loader: 'babel-loader', options: babelOptions }]
             },
-            { test: /\.css$/, loader: "style-loader!css-loader" },
-            { test: /\.scss$/, loaders: [ 'style-loader', 'css-loader', 'sass-loader' ] },
-            { test: /\.less$/, loaders: [ 'style-loader', 'css-loader', 'less-loader' ] },
-            { test: /\.(ttf|eot|svg|woff2?)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" },
-            { test: /\.json$/, loader: "json-loader" },
-            { test: /\.(png|jpg)$/, loader: 'url-loader' }
+            {
+                test: /\.css$/,
+                use: [{ loader: 'style-loader!css-loader' }]
+            },
+            {
+                test: /\.scss$/,
+                use: [
+                    { loader: 'style-loader' },
+                    { loader: 'css-loader' },
+                    { loader: 'sass-loader' }
+                ]
+            },
+            {
+                test: /\.less$/,
+                use: [
+                    { loader: 'style-loader' },
+                    { loader: 'css-loader' },
+                    { loader: 'less-loader' }
+                ]
+            },
+            {
+                test: /\.(ttf|eot|svg|woff2?)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+                use: [{ loader: 'file-loader' }]
+            },
+            {
+                test: /\.json$/,
+                use: [{ loader: 'json-loader' }]
+            },
+            {
+                test: /\.(png|jpg)$/,
+                use: [{ loader: 'url-loader' }]
+            },
         ]
     },
 
@@ -84,7 +115,6 @@ var frontend = {
           'window.jQuery': 'jquery',
           '_':             'lodash',
           'ReactDOM':      'react-dom',
-          "window.Tether": 'tether',
         }),
         new webpack.ProvidePlugin({
             bootstrap: "bootstrap.css",
@@ -92,18 +122,7 @@ var frontend = {
         new HtmlWebpackPlugin({
             template: 'src/client/index.html'
         }),
-    ],
-
-    // When importing a module whose path matches one of the following, just
-    // assume a corresponding global variable exists and use that instead.
-    // This is important because it allows us to avoid bundling all of our
-    // dependencies, which allows browsers to cache those libraries between builds.
-    /*
-    externals: {
-        "react": "React",
-        "react-dom": "ReactDOM",
-    },
-    */
+    ]
 };
 
 module.exports = [

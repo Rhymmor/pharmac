@@ -3,12 +3,16 @@ import { Modifier } from '../../../client/utils/utils';
 import { ICommonOptions } from '../../../client/redux/reducers/solvers';
 import { UseKeys } from '../../../lib/utils';
 import { getValidationError } from '../../utils';
-import { ISolverConstructor } from '../../modules/solver/abstract-solver';
 import { IValidationResult, IValidator, validateSchema } from '../../modules/validator';
 import { IFormula, IModel, IParameters, schemaIModel, schemaIParameters } from '../../../client/redux/reducers/formulas';
 import {Request, Response} from 'express';
 import * as joi from 'joi';
 import {replace, cloneDeep, mapKeys} from 'lodash';
+import * as _ from 'lodash';
+import * as request from 'superagent';
+
+const solverPort = process.env.SOLVER_SERVER_PORT || 5555;
+const solverUrl = `http://localhost:${solverPort}`;
 
 export interface IModelRequest<T> {
     model: IModel;
@@ -17,13 +21,20 @@ export interface IModelRequest<T> {
 }
 
 export abstract class AbstractModelRest<K extends ICommonOptions, T extends IModelRequest<K>> {
-    private Solver: ISolverConstructor;
+    private url: string;
     private schemaOptionsKeys: UseKeys<K, joi.Schema>;
     private modifyBody: Modifier<T>;
+    private responseValidator: IValidator;
 
-    constructor(Solver: ISolverConstructor, schemaOptionsKeys: UseKeys<K, joi.Schema>, modifyBody?: Modifier<T>) {
-        this.Solver = Solver;
+    constructor(
+        url: string, 
+        schemaOptionsKeys: UseKeys<K, joi.Schema>, 
+        responseValidator: IValidator,
+        modifyBody?: Modifier<T>,
+    ) {
+        this.url = url;
         this.schemaOptionsKeys = schemaOptionsKeys;
+        this.responseValidator = responseValidator;
         if (modifyBody) {
             this.modifyBody = modifyBody;
         }
@@ -63,29 +74,39 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
         return mapKeys(params, (val, key) => this.prepareText(key));
     }
 
+    private prepareBody(body: any) {
+        const validator = this.validateRequest(body);
+        if (!validator.valid) {
+            logger.error(validator.error.message);
+            throw "Validation error: " + validator.error.message
+        }
+        validator.obj.model = AbstractModelRest.prepareModel(validator.obj.model);
+        validator.obj.params = AbstractModelRest.prepareParameters(validator.obj.params);
+        if (this.modifyBody) {
+            this.modifyBody(validator.obj);
+        }
+        return {
+            model: _.map(validator.obj.model, x => x.text),
+            initialValues: _.map(validator.obj.model, x => x.initialValue),
+            options: validator.obj.options,
+            parameters: validator.obj.params
+        };
+    }
+
     solveModel() {
         return async (req: Request, res: Response) => {
-            const validator = this.validateRequest(req.body);
-            validator.obj.model = AbstractModelRest.prepareModel(validator.obj.model);
-            validator.obj.params = AbstractModelRest.prepareParameters(validator.obj.params);
-            if (this.modifyBody) {
-                this.modifyBody(validator.obj);
-            }
-            if (!validator.valid) {
-                logger.error(validator.error.message);
-                res.status(400).json(getValidationError(validator.error));
-                return;
-            }
-            const solver = new this.Solver(validator.obj.model);
             try {
-                const solution = await solver.solve({
-                    params: validator.obj.params,
-                    options: validator.obj.options
-                });
-                res.status(200).json(solution);
-            } catch (e) {
+                const body = this.prepareBody(req.body);
+                const solutionRes = await request.post(solverUrl + this.url).send(body);
+                const validator = this.responseValidator(solutionRes.body);
+                if (!validator.valid) {
+                    return res.status(400).json({message: `Solution validation error. ${validator.error.message}`})
+                }
+                return res.status(200).json(validator.obj);
+            }
+            catch (e) {
                 logger.error(e);
-                res.status(400).json({error: e});
+                res.status(400).json({message: e});
             }
         }
     }
