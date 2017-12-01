@@ -1,4 +1,3 @@
-import "reflect-metadata";
 import { ConnectionOptions } from 'typeorm/connection/ConnectionOptions';
 import { Parameter } from './database/entity/parameter';
 import { Formula } from './database/entity/formula';
