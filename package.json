@@ -9,7 +9,7 @@
     "prepare-pm2": "./scripts/prepare-pm2.sh",
     "dev-webpack": "node scripts/dev-server.js",
     "dev-backend": "nodemon --watch 'src/**/*.ts' --ignore src/client --exec 'ts-node' src/server/main.ts",
-    "dev": "concurrently -p name -c bgBlue,bgMagenta --kill-others -n DB,API,WEB 'npm run start-db' 'npm run dev-backend' 'npm run dev-webpack'",
+    "dev": "concurrently -p name -c bgWhite,bgBlue,bgMagenta,bgWhite --kill-others -n DB,API,WEB,PY 'npm run start-db' 'npm run dev-backend' 'npm run dev-webpack' 'npm run solver'",
     "backend": "ts-node src/server/main.ts",
     "frontend": "node scripts/prod/prod-server.js",
     "solver": "python3 src/solver-server/main.py",
