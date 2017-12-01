@@ -1,6 +1,5 @@
 from copy import deepcopy
 from random import gauss, uniform
-from time import time
 
 from numpy.linalg import norm
 from numpy import subtract, linspace
@@ -79,7 +78,6 @@ def solve_monte_carlo(model):
     """
         Identifiability analysis of model by monte carlo simulation method
     """
-    start_time = time()
     parser = ModelParser(model['model'])
     options = model['options']
 
@@ -90,4 +88,4 @@ def solve_monte_carlo(model):
     synth_data_points_count = 10 # TODO: options['dataOptions']['dataPoints']
     inverse_data = get_synth_data(y_0, params_dict, synth_data_points_count, space, parser)
 
-    return get_avg_estimation_error(model, inverse_data)
+    return {'solution': get_avg_estimation_error(model, inverse_data)}
