@@ -27,6 +27,17 @@ class NumpyEncoder(json.JSONEncoder):
             return super(NumpyEncoder, self).default(obj)
 
 def min_func(q, data, y0, space, param_keys, parser):
+    """
+        Functional for minimization problems
+
+        Keyword arguments:
+        q           -- array of parameter values from problem solution on i-th iteration
+        data        -- array of inverse data with which we will be comparing solution
+        y0          -- initial data
+        space       -- time points in which we will solve ODE with solution parameters 'q'
+        param_keys  -- array of corresponding to 'q' parameter names
+        parser      -- ODE from text parser
+    """
     res = 0.0
     params_dict = get_dict(param_keys, q)
     sol = odeint(model_eval, y0, space, args=(params_dict, parser))
