@@ -23,9 +23,11 @@ const schemaISolutionKeys: UseKeys<IInverseProblemSolution, joi.Schema> = {
     solution: joi.object().pattern(/^/, joi.number()), 
     parameters: joi.object().keys(schemaISolutionParametersKeys) 
 } 
-function validateSolution(obj: any): IValidationResult<any> { 
-    return validateSchema<IInverseProblemSolution>(obj, joi.object().keys(schemaISolutionKeys)); 
-} 
+function validateSolution() {
+    return (obj: any): IValidationResult<any> => { 
+        return validateSchema<IInverseProblemSolution>(obj, joi.object().keys(schemaISolutionKeys)); 
+    }
+}
 
 export interface IInverseProblemRequest extends IModelRequest<IInverseProblemOptions> {
 }

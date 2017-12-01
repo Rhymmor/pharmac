@@ -6,17 +6,26 @@ import {
     schemaIIdentifyabilityOptionsKeys,
     IdentifiabilityMethods
 } from '../../../client/redux/reducers/solvers/identifiability';
-import { AbstractModelRest, IModelRequest } from './abstract-model-rest';
+import { AbstractModelRest, IModelRequest, ISolverPostBody } from './abstract-model-rest';
 import * as joi from 'joi';
 
 export interface IIdentifiabilitySolution { 
-    solution: {[key: string]: number} 
+    solution: {[key: string]: number} | number;
 } 
-const schemaISolutionKeys: UseKeys<IIdentifiabilitySolution, joi.Schema> = { 
+const schemaIParametersSolutionKeys: UseKeys<IIdentifiabilitySolution, joi.Schema> = { 
     solution: joi.object().pattern(/^/, joi.number()) 
+}
+const schemaINumberSolutionKeys: UseKeys<IIdentifiabilitySolution, joi.Schema> = { 
+    solution: joi.number().required()
 } 
-function validateSolution(obj: any): IValidationResult<any> { 
-    return validateSchema<IIdentifiabilitySolution>(obj, joi.object().keys(schemaISolutionKeys)); 
+
+function validateSolution(body: ISolverPostBody<IIdentifiabilityOptions>) {
+    return (obj: any): IValidationResult<any> => {
+        const schema = body.options.method === IdentifiabilityMethods.Sensitivity
+            ? schemaIParametersSolutionKeys
+            : schemaINumberSolutionKeys;
+        return validateSchema<IIdentifiabilitySolution>(obj, joi.object().keys(schema)); 
+    }
 } 
 
 export interface IIdentifiabilityRequest extends IModelRequest<IIdentifiabilityOptions> {

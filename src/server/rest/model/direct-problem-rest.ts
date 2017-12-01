@@ -12,9 +12,11 @@ import * as joi from 'joi';
 const schemaIDirectProblemSolutionKeys: UseKeys<IDirectProblemSolution, joi.Schema> = { 
     solution: joi.array().items(joi.array().items(joi.number())).required() 
 } 
-function validateIDirectProblemSolution(obj: any): IValidationResult<any> { 
-    return validateSchema<IDirectProblemSolution>(obj, joi.object().keys(schemaIDirectProblemSolutionKeys)); 
-} 
+function validateIDirectProblemSolution() {
+    return (obj: any): IValidationResult<any> => { 
+        return validateSchema<IDirectProblemSolution>(obj, joi.object().keys(schemaIDirectProblemSolutionKeys)); 
+    } 
+}
 
 export interface IDirectProblemRequest extends IModelRequest<IDirectProblemOptions> {
 }

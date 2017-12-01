@@ -20,16 +20,23 @@ export interface IModelRequest<T> {
     params: IParameters;
 }
 
+export interface ISolverPostBody<K extends ICommonOptions> {
+    model: string[];
+    initialValues: number[];
+    options: K;
+    parameters: IParameters;
+}
+
 export abstract class AbstractModelRest<K extends ICommonOptions, T extends IModelRequest<K>> {
     private url: string;
     private schemaOptionsKeys: UseKeys<K, joi.Schema>;
     private modifyBody: Modifier<T>;
-    private responseValidator: IValidator;
+    private responseValidator: (body: ISolverPostBody<K>) => IValidator;
 
     constructor(
         url: string, 
         schemaOptionsKeys: UseKeys<K, joi.Schema>, 
-        responseValidator: IValidator,
+        responseValidator: (body: ISolverPostBody<K>) => IValidator,
         modifyBody?: Modifier<T>,
     ) {
         this.url = url;
@@ -74,7 +81,7 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
         return mapKeys(params, (val, key) => this.prepareText(key));
     }
 
-    private prepareBody(body: any) {
+    private prepareBody(body: any): ISolverPostBody<K> {
         const validator = this.validateRequest(body);
         if (!validator.valid) {
             logger.error(validator.error.message);
@@ -98,7 +105,7 @@ export abstract class AbstractModelRest<K extends ICommonOptions, T extends IMod
             try {
                 const body = this.prepareBody(req.body);
                 const solutionRes = await request.post(solverUrl + this.url).send(body);
-                const validator = this.responseValidator(solutionRes.body);
+                const validator = this.responseValidator(body)(solutionRes.body);
                 if (!validator.valid) {
                     return res.status(400).json({message: `Solution validation error. ${validator.error.message}`})
                 }
