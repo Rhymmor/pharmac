@@ -1,5 +1,6 @@
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var LodashModuleReplacementPlugin = require('lodash-webpack-plugin') 
 
 var path = require('path');
 
@@ -34,6 +35,7 @@ var frontend = {
         path: path.resolve(__dirname, "browser-bundle/"),
         publicPath: '/',
         filename: "[name].js",
+        chunkFilename: '[name].js',        
     },
 
     // Enable sourcemaps for debugging webpack's output.
@@ -41,11 +43,7 @@ var frontend = {
 
     resolve: {
         extensions: [".js", ".ts", ".tsx"],
-        modules: ['src', node_modules],
-
-        alias: {
-            //'lodash': path.resolve(path.join(__dirname, 'node_modules', 'lodash'))
-        },
+        modules: ['src', node_modules]
     },
 
     node: {
@@ -103,10 +101,11 @@ var frontend = {
     },
 
     plugins: [
+        new LodashModuleReplacementPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             name: "vendor",
-	    filename: "[name].js",
-            minChunks: 2,
+	        filename: "[name].js",
+            minChunks: Infinity,
         }),
 
         new webpack.ProvidePlugin({
