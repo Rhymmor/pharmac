@@ -101,7 +101,6 @@ var frontend = {
     },
 
     plugins: [
-        new LodashModuleReplacementPlugin(),
         new webpack.optimize.CommonsChunkPlugin({
             name: "vendor",
 	        filename: "[name].js",
