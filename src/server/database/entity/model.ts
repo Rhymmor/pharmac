@@ -8,11 +8,8 @@ export class Model {
     @ObjectIdColumn()
     _id: ObjectID;
 
-    @Column()
+    @Column({unique: true})
     name: string;
-
-    @Column()
-    names: string[];
 
     @ArrayColumn(type => Formula)
     formulas: Formula[];
