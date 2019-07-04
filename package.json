@@ -13,7 +13,9 @@
     "frontend": "node scripts/prod/prod-server.js",
     "solver": "python3 src/solver-server/main.py",
     "compile": "sh ./scripts/compile-prod.sh",
-    "start": "concurrently -p name --kill-others -n API,WEB,PY 'npm run backend' 'npm run frontend' 'npm run solver'"
+    "start": "concurrently -p name --kill-others -n API,WEB,PY 'npm run backend' 'npm run frontend' 'npm run solver'",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "dependencies": {
     "body-parser": "^1.18.2",
@@ -44,7 +46,8 @@
     "shortid": "^2.2.6",
     "superagent": "^3.8.1",
     "typeorm": "^0.1.2",
-    "winston": "^2.3.0"
+    "winston": "^2.3.0",
+    "snyk": "^1.189.0"
   },
   "devDependencies": {
     "@types/body-parser": "0.0.33",
@@ -112,5 +115,6 @@
     "webpack-bundle-analyzer": "^2.9.1",
     "webpack-dev-server": "^2.9.5",
     "webpack-hot-middleware": "^2.21.0"
-  }
+  },
+  "snyk": true
 }
